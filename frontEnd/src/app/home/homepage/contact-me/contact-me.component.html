@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<body>
+    <title>Contact Form</title>
+    <div class="form-body">
+        <h1 class="title">Get In Touch!</h1>
+        <p class="form-description">Products not avaliable for your date, looking for a style not in my inventory, or wanting to sell your decor? Please reach out to me! </p>
+        <form action="/submit-form" method="POST">
+            <div class="form-body-inputs">
+                <div class="form-items">
+                    <!-- Name field -->
+                    <div class="form-item">
+                        <label for="name">NAME</label>
+                        <input type="text" id="name" name="name" maxlength="50" required>
+                    </div>
+
+                    <!-- Email field -->
+                    <div class="form-item">
+                        <label for="email">EMAIL</label>
+                        <input type="email" id="email" name="email" maxlength="80" required>
+                    </div>
+
+                        <!-- Phone field -->
+                        <div class="form-item">
+                        <label for="phone-number">PHONE</label>
+                        <input type="tel" id="phone-number" name="phone-number" pattern="[0-9]*" inputmode="numeric" maxlength="10" required>
+                    </div>
+                </div>
+                <div class="form-message">
+                    <!-- Message field -->
+                    <div class="form-item">
+                        <label for="message">MESSAGE</label>
+                        <textarea id="message" name="message" maxlength="400" required></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Submit button -->
+            <div class="submit-button-container">
+                <button type="submit">
+                    <p>SEND></p>
+                </button>
+            </div>
+        </form>
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,40 @@
+
+.product-list {
+    padding-left: 8%;
+    padding-right: 8%;
+}
+
+.products-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* Create 3 equal columns */
+    gap: 16px; /* Space between grid items */
+    
+  }
+
+.products-grid a {
+  text-decoration: none;
+}
+  
+app-product-box {
+  height: auto; /* Let height adjust based on content */
+}
+
+/* Optional: Adjustments for responsiveness */
+@media (max-width: 900px) {
+  .products-grid {
+    grid-template-columns: repeat(2, 1fr); /* Two items per row on smaller screens */
+  }
+}
+
+@media (max-width: 600px) {
+  .products-grid {
+    grid-template-columns: repeat(1, 1fr); /* One item per row on very small screens */
+  }
+}
+
+@media (min-width: 1500px) {
+  .products-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+}

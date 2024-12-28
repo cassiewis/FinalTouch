@@ -1,0 +1,19 @@
+<body>
+    <div *ngIf= "product1 || product2 || product3" class="header">
+        Our Most Popular Items:
+    </div>
+    <div class="boxes">
+        <a *ngIf= "product1" [routerLink]="['/product', product1.productId]" class="box box1">
+            <img [src]="product1.imageUrl" alt="{{ product1.name }}" class="product-image" />
+            <p>{{ product1.name }}</p>
+        </a>
+        <a *ngIf= "product2" [routerLink]="['/product', product2.productId]" class="box box2">
+            <img [src]="product2.imageUrl" alt="{{ product2.name }}" class="product-image" />
+            <p>{{ product2.name }}</p>
+        </a>
+        <a *ngIf= "product3" [routerLink]="['/product', product3.productId]" class="box box3">
+            <img [src]="product3.imageUrl" alt="{{ product3.name }}" class="product-image" />
+            <p>{{ product3.name }}</p>
+        </a>
+    </div>
+</body>

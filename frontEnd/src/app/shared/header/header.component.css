@@ -1,0 +1,116 @@
+/* Basic styling for the header */
+header {
+    /* position: relative; Set the header to relative to position title absolutely */
+    display: flex;
+    justify-content: space-between; /* Space the left and right links */
+    align-items: center;
+    background-color: #FAFAF5;
+    padding: 0px 20px; /* Added horizontal padding for better spacing */
+    color: #454545;
+    /* box-shadow: 0 4px 6px rgba(141, 141, 141, 0.1); Horizontal, vertical offset, blur, color */
+    padding: 30px;
+}
+
+nav {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+}
+
+/* Styling the navigation links */
+.nav-links {
+    list-style: none;
+    display: flex;
+    padding: 0; /* Remove default padding */
+    margin: 0; /* Remove default margin */
+}
+
+/* Left and right links styling */
+.left-links {
+    display: flex; /* Keep them aligned */
+}
+
+.right-links {
+    display: flex; /* Keep them aligned */
+    margin-left: auto;
+}
+
+/* General link styles */
+.links {
+    text-decoration: none;
+    color: #454545;
+    transition: color 0.3s;
+    margin: 0 30px; /* Equal margins on left and right for each link */
+}
+
+/* Change link color on hover */
+.links:hover {
+    color: #606060;
+    cursor: pointer;
+}
+
+/* Title styling */
+.title {
+    position: absolute; /* Position the title absolutely */
+    left: 50%; /* Center it horizontally */
+    transform: translateX(-50%); /* Offset by half its width to ensure true centering */
+    font-size: 50px;
+    font-weight: normal;
+    text-align: center;
+    text-decoration: none;
+    color: #454545;
+}
+
+.cart-link-container {
+    position: relative;
+}
+
+.cart-notification {
+    display: inline-block;
+    background-color: #dc7c81; /* Red background for visibility */
+    color: white;
+    border-radius: 12px;
+    padding: 2px 6px; /* Padding around the text */
+    font-size: 14px;
+    position: absolute;
+    top: -8px;
+    right: 5px;
+}
+
+/* Responsive Design for smaller screens */
+@media (max-width: 915px) {
+    header {
+        flex-direction: column; /* Stack items vertically */
+        align-items: center; /* Center items horizontally */
+        padding: 20px;
+    }
+
+    nav {
+        display: flex;
+        align-items: center;
+        justify-content:center;
+    }
+
+    .left-links, .right-links {
+        /* order: 2; Change order for smaller screens */
+        margin: 5px 0; /* Optional margin */
+    }
+
+    .title {
+        /* order: 1; Make title the first item */
+        margin-bottom: 10px; /* Space below the title */
+        width: 100%; /* No width restriction */
+        position: relative;
+        text-align: center;
+    }
+}
+
+@media (max-width: 610px) {
+    .links {
+        font-size: 3vw; /* Responsive font size */
+    }
+
+    .title {
+        font-size: 7vw; /* Responsive font size for title */
+    }
+}

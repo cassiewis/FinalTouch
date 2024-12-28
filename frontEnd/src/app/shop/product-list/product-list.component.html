@@ -1,0 +1,15 @@
+<body>
+    <div *ngIf="loading">
+        <app-loading-icon></app-loading-icon>
+      </div>
+      
+    <div *ngIf="!loading" class="product-list">
+        <div class="products-grid">
+            <div *ngFor="let product of products">
+                <a [routerLink]="['/product', product.productId]" class="product-box">
+                <app-product-box [product]="product"></app-product-box>
+                </a>
+            </div>
+        </div>
+    </div>
+</body>

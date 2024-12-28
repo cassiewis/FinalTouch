@@ -1,0 +1,50 @@
+<div class="cart-page">
+  <div class="title">
+    <h1>
+        Your Cart
+    </h1>
+    <hr class="cart-line">
+  </div>
+
+  <div class="cart-empty" *ngIf="cartItems.length === 0">
+    <p>No items in cart... yet!</p>
+    <button (click)="goShop()" class="shop-button">Shop</button>
+  </div>
+
+  <div class="cart-full" *ngIf="cartItems.length > 0">
+      <div class="cart-items-list">
+        <div class="grid-header">
+          <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PRODUCT</p>
+          <p></p>
+          <p>PRICE</p>
+          <p>DATES</p>
+          <p></p>
+        </div>
+        <div class="cart-item" *ngFor="let item of cartItems">
+          <app-cart-item [item]="item" (updateCart)="updateCart()"></app-cart-item>
+        </div>
+      </div>
+    <div class="cart-total-list">
+      <div class="cart-pricing">
+        <h1>Order Summary</h1>
+        <hr>
+        <div class="price-info">
+          <p>Subtotal: ${{ totalCost }}</p>
+          <div class="deposit-container">
+            <p>Refundable Deposit: ${{ totalDeposit }}</p>
+            <div class="info-hover-container">
+              <span class="info-icon">i</span>
+              <span class="tooltip-text">Refunded open return if items are in acceptable condition</span>
+            </div>
+          </div>
+        </div>
+        <hr>
+        <h2>Total: ${{ totalCost + totalDeposit }}</h2>
+        <i>Due 6 months before reservation date</i>
+      </div>
+      <form></form>
+      <button class="checkout-button" (click)="showPopup()">Checkout</button>
+    </div>
+  </div>
+  <app-checkout-popup></app-checkout-popup>
+</div>

@@ -1,0 +1,23 @@
+body {
+    background-color: #FAFAF5;
+}
+
+.inventory-title {
+    padding: 35px;
+    color: #454545;
+    font-weight: normal;
+    /* font-size: 50px; */
+}
+
+.inventory-title h1 {
+    font-weight: normal;
+    font-size: 40px;
+}
+
+.inventory-line {
+    height:5px;
+    border-top:1.5px solid #E6E6E6;
+    border-bottom:3px solid #E6E6E6;
+    border-left: none;
+    border-right: none;
+}

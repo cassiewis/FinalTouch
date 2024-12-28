@@ -1,0 +1,19 @@
+
+.social-media-banner {
+    display: flex;
+    background-color: #dfa1a3;
+    text-align: center;
+
+}
+
+.social-media-banner {
+    display: flex;
+    justify-content: space-between;
+}
+
+.profile {
+    display: flex;
+    align-items: center;
+    font-size: 18px;
+    color: #454545;
+}

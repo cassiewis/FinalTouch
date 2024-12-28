@@ -1,0 +1,12 @@
+<div class="cart-item-details">
+    <img (click)="routeToProduct()" [src]="this.item.imageUrl" alt="{{ this.item.name }}" class="cart-item-image">
+    <h2 (click)="routeToProduct()">{{ item.name }}
+      <div *ngIf="hasDateErrors" class="info-hover-container price-error">
+        <span class="info-icon">!</span>
+        <span class="tooltip-text">This item is no longer avaliable for your desired date</span>
+      </div>
+    </h2>
+  <p>${{ this.item.price }}</p>
+  <p>{{ formatDateRange(this.item.datesReserved) }}</p>
+  <button class="remove-button" (click)="removeItem()">X</button>
+</div>

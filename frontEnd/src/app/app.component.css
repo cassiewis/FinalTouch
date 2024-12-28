@@ -1,0 +1,28 @@
+html, body {
+    height: 100%; /* Ensure the body takes the full height */
+    margin: 0; /* Remove default margin */
+    min-height: 100vh;
+    background-color: #FAFAF5;
+    /* font-family: ; */
+}
+
+.ultra-header {
+    display: flex;
+    background-color: #DFA1A3;
+    color: white;
+    justify-content: space-between;
+    font-size: 14px;
+}
+
+
+.wrapper {
+    display: flex; /* Enable Flexbox */
+    flex-direction: column; /* Arrange children in a column */
+    /* min-height: 100vh; Minimum height of 100% of the viewport */
+}
+
+main {
+    flex: 1; /* Allow main to grow and fill available space */
+    margin: 0; /* Remove default margin */
+    min-height: 70vh;
+}

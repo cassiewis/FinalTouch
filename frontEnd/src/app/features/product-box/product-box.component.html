@@ -1,0 +1,10 @@
+<!-- Product-box -->
+<div class="product-item">
+    <img [src]="product.imageUrl" alt="{{ product.name }}" class="product-image" />
+    <h2 class="product-name">{{ product.name }}</h2>
+    <hr class="product-line">
+    <div class="item-info">
+      <h3 class="info-count">{{ product.count }} avaliable</h3>
+      <h3 class="info-price">${{ product.price }}</h3>
+    </div>
+  </div>

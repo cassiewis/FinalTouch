@@ -1,0 +1,73 @@
+* {
+  box-sizing: border-box;
+}
+
+.about-me-container {
+  display: flex;
+  flex-direction: row;
+  height: 100%;
+  background-color: #FAFAF5;
+  color: #454545;
+  min-height: 50vh;
+  }
+
+.about-me-image {
+  width: 40%;
+  text-align: left;
+  margin-top: -50px;
+}
+
+img {
+  max-height: 80vh;  
+  max-width: 100%;   
+  height: auto;      
+  width: auto;       
+  object-fit: contain; /* Scale the image to fit within its container while maintaining aspect ratio */
+}
+  
+.about-me {
+  display: flex;
+  flex-direction: column;
+  width: 60%;
+  text-align: center;
+  padding-left: 7%;
+  padding-right: 5%;
+  justify-content: center;
+  line-height: 1.5;
+  /* border: 1px solid black; */
+}
+
+.about-me h2 {
+  font-size: 45px;
+  font-weight: normal;
+  margin: 0;
+}
+
+.profile-box {
+  font-size: 1.15rem;
+}
+
+@media (max-width: 915px) {
+  .about-me-container {
+    flex-direction: column;
+  }
+
+  .about-me {
+    width: 100%;
+    padding: 30px;
+  }
+
+  .about-me-image {
+    width: 100%;
+    text-align: center;
+  }
+
+  img {
+    width: 75%;
+    height: auto;
+  }
+
+
+
+
+}

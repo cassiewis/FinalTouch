@@ -1,0 +1,85 @@
+/* Make sure body takes the full viewport height */
+body, html {
+    height: 100%;
+    margin: 0;
+    overflow: hidden; /* Prevent scrolling on the body */
+}
+
+/* Main container for sidebar and content area */
+.container {
+    display: flex;
+    height: 100vh; /* Full viewport height */
+}
+
+/* Sidebar styling */
+.sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    padding: 0px 30px 30px 30px;
+    background-color: #c6ced6;
+    width: 150px;     /* Set a fixed width */
+    flex-shrink: 0;
+}
+
+.links-container {
+    flex-grow: 1; /* Pushes front office link to the bottom */
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.frontoffice-container {
+    display: flex;
+    justify-content: flex-end;
+}
+
+/* Content area for routed views */
+.content {
+    flex-grow: 1; /* Takes up remaining space next to sidebar */
+    overflow-y: auto; /* Enables vertical scrolling if needed */
+    padding: 20px; /* Optional padding for content area */
+    background-color: #FAFAF5;
+}
+
+/* General link styles */
+.links {
+    list-style: none;
+    text-decoration: none;
+    color: #454545;
+    transition: color 0.3s;
+    margin: 0 30px; /* Equal margins on left and right for each link */
+}
+
+/* Change link color on hover */
+.links:hover {
+    color: #606060;
+    cursor: pointer;
+}
+
+.title-container {
+    text-align: center;
+    color: #454545;
+    margin: 20px 0px 20px 0px;
+}
+
+.title {
+    font-size: 30px;
+    text-decoration: none;
+    padding: 0px;
+    font-weight: normal;
+}
+
+.subtitle {
+    font-size: 20px;
+    margin-top: -15px;
+    font-weight: normal;
+}
+
+.favicon {
+    width: 60px;
+    height: auto;
+    opacity: .7;
+    margin-bottom: -20px;
+}
+

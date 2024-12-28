@@ -1,0 +1,43 @@
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '3.3.4'
+	id 'io.spring.dependency-management' version '1.1.6'
+}
+
+group = 'Website'
+version = '0.0.1-SNAPSHOT'
+
+java {
+	toolchain {
+		languageVersion = JavaLanguageVersion.of(17)
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter'
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    // Add other dependencies as needed
+
+	implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.15.2'
+
+    // AWS SDK for DynamoDB
+	implementation 'software.amazon.awssdk:dynamodb:2.20.86'
+
+    // AWS SDK for S3
+    implementation 'software.amazon.awssdk:s3:2.20.92'
+    implementation 'software.amazon.awssdk:core:2.20.92'
+	implementation 'com.fasterxml.jackson.core:jackson-databind:2.15.2' // Jackson for JSON parsing
+
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}

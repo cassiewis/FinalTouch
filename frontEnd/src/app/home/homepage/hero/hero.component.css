@@ -1,0 +1,79 @@
+body {
+    display: flex; /* Ensure the component occupies space */
+    background-color: #FAFAF5;
+    gap: 60px;
+    height: 100vh;
+    padding: 20px;
+}
+
+
+.text-side {
+    width: 55%;
+    height: 100%; /* Change to 100% to use full height from the parent */
+    display: flex; /* Enable Flexbox for vertical centering */
+    flex-direction: column; /* Arrange children in a column */
+    justify-content: center; /* Center content vertically */
+    text-align: left; 
+}
+
+.image-side {
+    width: 45%;
+    height: 100%; /* Change to 100% to use full height from the parent */
+    display: flex; /* Enable Flexbox for vertical centering */
+    justify-content: right; /* Center content horizontally */
+    align-items: center; /* Center content vertically */
+}
+
+.hero-image {
+    max-width: 450px;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 3/4;
+}
+
+h1 {
+    /* text-align: center; */
+    font-size: 45px;
+    color: #EB838B;
+    font-weight: normal;
+    width: 65%;
+    line-height: 1.25; /* Adjust the line height */
+
+}
+
+.flower-image {
+    width: 180px;
+}
+
+.shop-button {
+    color: #454545;
+    font-size: 18px;
+    cursor: pointer; /* Pointer cursor on hover */
+    /* text-decoration: none; */
+}
+
+.shop-button:hover {
+    color: #696969;
+
+}
+
+/* Responsive Design for smaller screens */
+@media (max-width: 915px) {
+
+    body {
+        flex-direction: column;
+        height: 100%;
+    }
+
+    .text-side {
+        width: 100%;
+        text-align: center;
+        align-items: center;
+    }
+    
+    .image-side {
+        width: 100%;
+        justify-content: center; /* Center content horizontally */
+    }
+
+}

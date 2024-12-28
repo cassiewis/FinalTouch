@@ -1,0 +1,44 @@
+.input-box {
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: column;
+    /* padding: 10px;  Optional: add padding for better spacing within the box */
+}
+
+.availability-checker {
+    display: flex;
+    flex-direction: row;
+    margin: 20px;
+    gap: 10px; /* Add gap between the date picker and button */
+}
+
+mat-hint {
+    font-size: 11px;
+}
+
+.reserve-button {
+    background-color: #EB838B;
+    border-radius: 8px;
+    border-style: none;
+    box-sizing: border-box;
+    color: #FFFFFF;
+    cursor: pointer;
+    font-family: "Philosopher", sans-serif;
+    font-size: 18px;
+    height: 55px;
+    width: 100px;
+    padding: 5px;
+    position: relative;
+    text-align: center;
+    text-decoration: none;
+    transition: color 100ms;
+    vertical-align: baseline;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+}
+
+.reserve-button:hover,
+.reserve-button:focus {
+  background-color: #cd6d75;
+}

@@ -1,0 +1,135 @@
+/* Overlay background */
+.popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+  
+  /* Popup content box */
+  .popup-content {
+    background-color: #F8F7F2;
+    width: 90%;
+    max-width: 900px;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    overflow-y: auto; /* Scrolls if content is too long */
+    max-height: 80vh; /* Limits the height */
+  }
+  
+  /* Form body spacing */
+  .form-section {
+    display: flex;
+    gap: 16px; /* Adds space between each form field */
+  }
+
+  .info-side {
+    width: 60%;
+  }
+
+  .items-side {
+    width: 40%;
+  }
+
+  .price-container, .name-container {
+    display: flex;
+    gap: 16px;
+  }
+  
+  /* Title styling */
+  .title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+    text-align: center;
+  }
+  
+  /* Close button styling */
+  .back-button {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    font-size: 1.2rem;
+    color: #ff0000;
+    cursor: pointer;
+    background: none;
+    border: none;
+  }
+  
+  /* Form fields styling */
+  mat-form-field {
+    width: 100%;
+  }
+  
+  /* Submit button */
+  button[mat-raised-button] {
+    width: 100%;
+    margin-top: 20px;
+    font-size: 1rem;
+    font-weight: bold;
+  }
+
+  .create-button {
+    border: 0;
+    outline: 0;
+    cursor: pointer;
+    color: rgb(60, 66, 87);
+    background-color: none;
+    box-shadow: rgb(0 0 0 / 0%) 0px 0px 0px 0px, rgb(0 0 0 / 0%) 0px 0px 0px 0px, rgb(0 0 0 / 12%) 0px 1px 1px 0px, rgb(60 66 87 / 16%) 0px 0px 0px 1px, rgb(0 0 0 / 0%) 0px 0px 0px 0px, rgb(0 0 0 / 0%) 0px 0px 0px 0px, rgb(60 66 87 / 8%) 0px 2px 5px 0px;
+    border-radius: 50px;
+    font-size: 14px;
+    font-weight: 500;
+    padding: 16px 10px;
+    display: inline-block;
+    min-height: 28px;
+    transition: background-color .24s,box-shadow .24s;
+  }
+  
+  .create-button:hover,
+  .create-button:focus {
+    box-shadow: rgb(0 0 0 / 0%) 0px 0px 0px 0px, rgb(0 0 0 / 0%) 0px 0px 0px 0px, rgb(0 0 0 / 12%) 0px 1px 1px 0px, rgb(60 66 87 / 16%) 0px 0px 0px 1px, rgb(0 0 0 / 0%) 0px 0px 0px 0px, rgb(60 66 87 / 8%) 0px 3px 9px 0px, rgb(60 66 87 / 8%) 0px 2px 5px 0px;
+  }
+
+  .items-container {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  
+  .checkbox-item {
+    display: inline-block;
+  }
+  
+  .picture-checkbox {
+    cursor: pointer;
+    border: 2px solid transparent;
+    border-radius: 8px;
+    overflow: hidden;
+    display: inline-block;
+    width: 150px; /* Adjust size as needed */
+    text-align: center;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .picture-checkbox img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+  
+  .picture-checkbox .product-info {
+    padding: 8px;
+    background-color: #f9f9f9;
+  }
+  
+  .picture-checkbox.checked {
+    border-color: #007bff; /* Highlight color when selected */
+    box-shadow: 0 0 8px rgba(0, 123, 255, 0.5);
+  }
