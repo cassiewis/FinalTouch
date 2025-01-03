@@ -1,70 +1,60 @@
 package Website.EventRentals.model;
 
-import jakarta.persistence.*;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
-import org.hibernate.mapping.PrimaryKey;
+import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbPartitionKey;
+import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbSortKey;
+import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbBean;
 
-@Entity
-@Table(name = "ProductReservations")
-@IdClass(PrimaryKey.class)
+
+@DynamoDbBean
 public class ProductReservation {
 
-    @Id
-    private PrimaryKey key;
-
-    @DynamoDBAttribute(attributeName = "reservationId")
+    private String productId;
+    private String date;  // Change LocalDate to String for DynamoDB compatibility
     private String reservationId;
-
-    @DynamoDBAttribute(attributeName = "status")
     private String status;
 
-    // Default constructor
-    public ProductReservation() {}
-
-    public ProductReservation(PrimaryKey key, String reservationId, String status) {
-        this.key = key;
-        this.reservationId = reservationId;
-        this.status = status;
-    }
-
-    // Getters and setters
-    public String getProductId() { 
-        return key.getProductId();
+    // Partition key for DynamoDB (primary key)
+    @DynamoDbPartitionKey
+    public String getProductId() {
+        return productId;
     }
 
     public void setProductId(String productId) {
-        if(key== null){
-            key = new PrimaryKey();
-        }
-        key.setProductId(productId);
+        this.productId = productId;
     }
 
-    public LocalDate getDate() { 
-        return key.getDate();
+    // Sort key for DynamoDB (secondary sort key)
+    @DynamoDbSortKey
+    public String getDate() {
+        return date;
     }
 
     public void setDate(LocalDate date) {
-        if(key== null){
-            key = new PrimaryKey();
-        }
-        key.setDate(date);
+        // Convert LocalDate to String for storage in DynamoDB
+        this.date = date.format(DateTimeFormatter.ISO_LOCAL_DATE);
     }
 
-
-    public String getReservationId() {
-        return reservationId;
+    // Helper method to convert String back to LocalDate when fetching from DynamoDB
+    public LocalDate getDateAsLocalDate() {
+        return LocalDate.parse(this.date, DateTimeFormatter.ISO_LOCAL_DATE);
     }
 
     public void setReservationId(String reservationId) {
         this.reservationId = reservationId;
     }
 
-    public String getStatus() {
-        return status;
+    public String getReservationId() {
+        return reservationId;
     }
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getStatus() {
+        return status;
     }
 }

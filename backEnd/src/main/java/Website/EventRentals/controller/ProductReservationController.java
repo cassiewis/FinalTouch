@@ -1,6 +1,6 @@
 package Website.EventRentals.controller;
 import Website.EventRentals.model.ProductReservation;
-import Website.EventRentals.service.ProductReservationService;
+import Website.EventRentals.service.DynamoDbProductReservationService;
 
 import org.antlr.v4.runtime.misc.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,11 +13,11 @@ import java.time.LocalDate;
 public class ProductReservationController {
 
     @Autowired
-    private ProductReservationService productReservationService;
+    private DynamoDbProductReservationService dynamoDbProductReservationService;
 
     @PostMapping("/add")
     public ProductReservation addReservation(@RequestBody ProductReservationRequest request) {
-        return productReservationService.addProductReservation(
+        return dynamoDbProductReservationService.addProductReservation(
                 request.getProductId(),
                 request.getDate(),
                 request.getReservationId(),

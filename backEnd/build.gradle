@@ -24,16 +24,22 @@ dependencies {
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-    // Add other dependencies as needed
+	implementation 'com.amazonaws:aws-java-sdk-dynamodb:1.12.567'
+
+
+    // AWS SDK for DynamoDB (version 2.x)
+    implementation 'software.amazon.awssdk:dynamodb:2.20.86'
+	implementation 'software.amazon.awssdk:dynamodb-enhanced:2.20.86'  // Use the latest version
+
+    // AWS SDK for S3 (version 2.x)
+    implementation 'software.amazon.awssdk:s3:2.20.92'
+
+    // AWS SDK Core (needed for both DynamoDB and S3)
+    implementation 'software.amazon.awssdk:core:2.20.92'
+	implementation 'mysql:mysql-connector-java:8.0.29' // Use the appropriate version
+
 
 	implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.15.2'
-
-    // AWS SDK for DynamoDB
-	implementation 'software.amazon.awssdk:dynamodb:2.20.86'
-
-    // AWS SDK for S3
-    implementation 'software.amazon.awssdk:s3:2.20.92'
-    implementation 'software.amazon.awssdk:core:2.20.92'
 	implementation 'com.fasterxml.jackson.core:jackson-databind:2.15.2' // Jackson for JSON parsing
 
 }

@@ -1,18 +1,19 @@
 package Website.EventRentals.service;
+
 import Website.EventRentals.model.ProductReservation;
-import Website.EventRentals.repositories.ProductReservationRepository;
+import Website.EventRentals.repositories.DynamoDbProductReservationRepository;
 import java.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class ProductReservationService {
+public class DynamoDbProductReservationService {
 
-    private final ProductReservationRepository productReservationRepository;
+    private final DynamoDbProductReservationRepository dynamoDbProductReservationRepository;
 
     @Autowired
-    public ProductReservationService(ProductReservationRepository productReservationRepository) {
-        this.productReservationRepository = productReservationRepository;
+    public DynamoDbProductReservationService(DynamoDbProductReservationRepository dynamoDbProductReservationRepository) {
+        this.dynamoDbProductReservationRepository = dynamoDbProductReservationRepository;
     }
 
     public ProductReservation addProductReservation(String productId, LocalDate date, String reservationId, String status) {
@@ -22,6 +23,6 @@ public class ProductReservationService {
         productReservation.setReservationId(reservationId);
         productReservation.setStatus(status);
 
-        return productReservationRepository.save(productReservation);
+        return dynamoDbProductReservationRepository.save(productReservation);
     }
 }
