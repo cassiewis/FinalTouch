@@ -9,7 +9,7 @@ import org.springframework.context.annotation.ComponentScan;
 // import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @SpringBootApplication(exclude = {DataSourceAutoConfiguration.class, HibernateJpaAutoConfiguration.class})
-@ComponentScan(basePackages = {"Website.EventRentals.config"})
+// @ComponentScan(basePackages = {"Website.EventRentals.config"})
 // @EnableJpaRepositories(basePackages = "Website.EventRentals.repositories")
 // @EntityScan(basePackages = "Website.EventRentals.model")
 public class EventRentalsApplication {

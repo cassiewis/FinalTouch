@@ -13,15 +13,13 @@ import software.amazon.awssdk.auth.credentials.ProfileCredentialsProvider;
 public class AwsConfig {
 
     // AWS Credentials
-//     private final String accessKeyId = "AKIA4SYAMUJHOZTCZBPS";
-//     private final String secretAccessKey = "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";
     private final Region region = Region.US_EAST_2;
 
     // S3 Configuration
     @Bean
     public S3Client s3Client() {
         return S3Client.builder()
-                .region(region) // Adjust region as necessary
+                .region(region)
                 .credentialsProvider(ProfileCredentialsProvider.create())
                 .build();
     }
