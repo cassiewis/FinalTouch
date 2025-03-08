@@ -1,0 +1,58 @@
+body {
+    background-color: #ccc4ba;
+    padding: 50px 0px;
+    margin: 0;
+}
+
+.carousel {
+    width: 100%;
+    margin: 0 auto;
+    overflow: hidden;
+    position: relative;
+    height: 100%; /* Adjust based on content */
+  }
+  
+  /* Carousel track */
+  .carousel-track {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+    width: 100%;
+
+  }
+  
+  /* Each review */
+  .review {
+    display: flex;
+    flex: 0 0 100%; /* Each review takes up the full width of the container */
+    text-align: center;
+    justify-content: center;
+  }
+
+  .single-review {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50%;
+    background-color: rgba(250, 250, 250, 0.6);
+    border-radius: 12px;
+    padding: 20px;
+  }
+
+  .see-reviews-button-container {
+    z-index: 1;
+    display: flex;
+    align-items: end;
+    justify-content: right;
+    margin: 30px;
+  }
+
+  .see-reviews-button {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 1rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transform: rotate(-15deg); /* Adjust the angle here */
+    transition: transform 0.3s ease, background-color 0.3s ease;
+  }

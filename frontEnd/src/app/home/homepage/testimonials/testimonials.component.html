@@ -1,0 +1,12 @@
+<body>
+    <div class="carousel">
+        <div class="carousel-track" [style.transform]="getTransformStyle()">
+          <div class="review" *ngFor="let review of reviews">
+            <div class="single-review">{{ review }}</div>
+          </div>
+        </div>
+      </div>
+      <!-- <div class="see-reviews-button-container">
+        <button class="see-reviews-button">see all reviews</button>
+      </div> -->
+</body>

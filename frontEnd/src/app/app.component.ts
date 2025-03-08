@@ -1,11 +1,6 @@
 import { Component } from '@angular/core';
 import { RouterOutlet, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { HeaderComponent } from "./shared/header/header.component";
-import { FooterComponent } from "./shared/footer/footer.component";
-import { BackofficeComponent } from './backoffice/backoffice.component';
-import { ReservationsComponent } from './backoffice/reservations/reservations.component';
-import { MessagesComponent } from './backoffice/messages/messages.component'; // Example component
 import { HttpClientModule } from '@angular/common/http';
 import { ProductService } from './services/product.service';
 
@@ -14,12 +9,7 @@ import { ProductService } from './services/product.service';
   standalone: true,
   imports: [
     RouterOutlet, 
-    CommonModule, 
-    HeaderComponent, 
-    BackofficeComponent, 
-    FooterComponent, 
-    ReservationsComponent, 
-    MessagesComponent,
+    CommonModule,
     HttpClientModule,
   ],
   templateUrl: './app.component.html',

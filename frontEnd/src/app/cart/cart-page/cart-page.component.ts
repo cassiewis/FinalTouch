@@ -5,13 +5,14 @@ import { CommonModule } from '@angular/common';
 import { CheckoutPopupComponent } from './checkout-popup/checkout-popup.component';
 import { ProductService } from '../../services/product.service';
 import { CartItemComponent } from '../cart-item/cart-item.component';
+import { HeaderComponent } from '../../shared/header/header.component';
 
 @Component({
   selector: 'app-cart',
   templateUrl: './cart-page.component.html',
   styleUrls: ['./cart-page.component.css'],
   standalone: true,
-  imports: [CommonModule, RouterModule, CheckoutPopupComponent, CartItemComponent]
+  imports: [CommonModule, RouterModule, CheckoutPopupComponent, CartItemComponent, HeaderComponent]
 })
 export class CartComponent implements OnInit{
   cartItems: CartItem[] = [];

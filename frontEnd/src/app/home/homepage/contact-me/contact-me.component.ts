@@ -9,4 +9,8 @@ import { Component } from '@angular/core';
 })
 export class ContactMeComponent {
 
+  openEmailClient() {
+    window.location.href = "mailto:finaltouchco.info@gmail.com";
+  }
+
 }

@@ -1,40 +1,73 @@
+package Website.EventRentals.config;
+
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import software.amazon.awssdk.auth.credentials.AwsBasicCredentials;
-import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider;
+
+import software.amazon.awssdk.auth.credentials.ProfileCredentialsProvider;
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbEnhancedClient;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
 import software.amazon.awssdk.services.s3.S3Client;
-import software.amazon.awssdk.auth.credentials.ProfileCredentialsProvider;
 
 
 @Configuration
 public class AwsConfig {
 
-    // AWS Credentials
-    private final Region region = Region.US_EAST_2;
+    @Value("${aws.region}")
+    private String region;
 
-    // S3 Configuration
     @Bean
-    public S3Client s3Client() {
+    public S3Client generalS3Client() {
         return S3Client.builder()
-                .region(region)
-                .credentialsProvider(ProfileCredentialsProvider.create())
+                .region(Region.of(region))
+                .credentialsProvider(ProfileCredentialsProvider.builder()
+                        .profileName("general")
+                        .build())
                 .build();
     }
 
-    // DynamoDB Configuration
     @Bean
-    public DynamoDbClient dynamoDbClient() {
+    public DynamoDbClient generalDynamoDbClient() {
         return DynamoDbClient.builder()
-                .region(region)
-                .credentialsProvider(ProfileCredentialsProvider.create())
+                .region(Region.of(region))
+                .credentialsProvider(ProfileCredentialsProvider.builder()
+                        .profileName("general")
+                        .build())
                 .build();
     }
 
     @Bean
-    public DynamoDbEnhancedClient dynamoDbEnhancedClient(DynamoDbClient dynamoDbClient) {
-        return DynamoDbEnhancedClient.builder().dynamoDbClient(dynamoDbClient).build();
+    public DynamoDbEnhancedClient generalDynamoDbEnhancedClient(DynamoDbClient generalDynamoDbClient) {
+        return DynamoDbEnhancedClient.builder()
+                .dynamoDbClient(generalDynamoDbClient)
+                .build();
+    }
+
+    @Bean
+    public S3Client adminS3Client() {
+        return S3Client.builder()
+                .region(Region.of(region))
+                .credentialsProvider(ProfileCredentialsProvider.builder()
+                        .profileName("admin")
+                        .build())
+                .build();
+    }
+
+    @Bean
+    public DynamoDbClient adminDynamoDbClient() {
+        return DynamoDbClient.builder()
+                .region(Region.of(region))
+                .credentialsProvider(ProfileCredentialsProvider.builder()
+                        .profileName("admin")
+                        .build())
+                .build();
+    }
+
+    @Bean
+    public DynamoDbEnhancedClient adminDynamoDbEnhancedClient(DynamoDbClient adminDynamoDbClient) {
+        return DynamoDbEnhancedClient.builder()
+                .dynamoDbClient(adminDynamoDbClient)
+                .build();
     }
 }

@@ -1,4 +1,4 @@
-<body>
+<!-- <body>
     <div *ngIf= "product1 || product2 || product3" class="header">
         Our Most Popular Items:
     </div>
@@ -14,6 +14,26 @@
         <a *ngIf= "product3" [routerLink]="['/product', product3.productId]" class="box box3">
             <img [src]="product3.imageUrl" alt="{{ product3.name }}" class="product-image" />
             <p>{{ product3.name }}</p>
+        </a>
+    </div>
+</body> -->
+
+<body>
+    <div *ngIf= "product1 || product2 || product3" class="header">
+        Browse:
+    </div>
+    <div class="boxes">
+        <a [routerLink]="['/shop']" class="box box1">
+            <img class="box box1" src="images/quick-view-icons/signage.png">
+        </a>
+        <a [routerLink]="['/shop']" class="box box1">
+            <img class="box box1" src="images/quick-view-icons/lighting.png">
+        </a>
+        <a [routerLink]="['/shop']" class="box box1">
+            <img class="box box1" src="images/quick-view-icons/florals.png">
+        </a>
+        <a [routerLink]="['/shop']" class="box box1">
+            <img class="box box1" src="images/quick-view-icons/tablesettings.png">
         </a>
     </div>
 </body>

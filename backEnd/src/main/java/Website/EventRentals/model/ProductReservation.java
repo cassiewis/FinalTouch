@@ -1,22 +1,31 @@
 package Website.EventRentals.model;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 
+import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbBean;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbPartitionKey;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbSortKey;
-import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbBean;
-
 
 @DynamoDbBean
 public class ProductReservation {
-
     private String productId;
-    private String date;  // Change LocalDate to String for DynamoDB compatibility
+    private LocalDate date;
     private String reservationId;
     private String status;
 
-    // Partition key for DynamoDB (primary key)
+    // Default constructor
+    public ProductReservation() {
+    }
+
+    // Parameterized constructor
+    public ProductReservation(String productId, LocalDate date, String reservationId, String status) {
+        this.productId = productId;
+        this.date = date;
+        this.reservationId = reservationId;
+        this.status = status;
+    }
+
+    // Getters and setters
     @DynamoDbPartitionKey
     public String getProductId() {
         return productId;
@@ -26,35 +35,28 @@ public class ProductReservation {
         this.productId = productId;
     }
 
-    // Sort key for DynamoDB (secondary sort key)
     @DynamoDbSortKey
-    public String getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
     public void setDate(LocalDate date) {
-        // Convert LocalDate to String for storage in DynamoDB
-        this.date = date.format(DateTimeFormatter.ISO_LOCAL_DATE);
-    }
-
-    // Helper method to convert String back to LocalDate when fetching from DynamoDB
-    public LocalDate getDateAsLocalDate() {
-        return LocalDate.parse(this.date, DateTimeFormatter.ISO_LOCAL_DATE);
-    }
-
-    public void setReservationId(String reservationId) {
-        this.reservationId = reservationId;
+        this.date = date;
     }
 
     public String getReservationId() {
         return reservationId;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
+    public void setReservationId(String reservationId) {
+        this.reservationId = reservationId;
     }
 
     public String getStatus() {
         return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }
