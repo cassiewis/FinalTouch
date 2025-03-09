@@ -1,11 +1,9 @@
 package Website.EventRentals.controller;
 
+import Website.EventRentals.service.S3ServiceImage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import Website.EventRentals.service.S3ServiceImage;
-
 import java.util.List;
 
 @RestController
