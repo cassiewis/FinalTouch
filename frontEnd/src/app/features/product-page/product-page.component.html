@@ -1,38 +1,42 @@
+<app-header></app-header>
+<body>
+  <div class="loading-section" *ngIf="loading">
+    <app-loading-icon></app-loading-icon>
+  </div>
 
-<div *ngIf="loading">
-  <app-loading-icon></app-loading-icon>
-</div>
-
-<body *ngIf="!loading">
-  <button (click)="goBack()" class="back-button">< back</button>
-  <hr class="product-line">
-  <div class="product-body">
-    <div class="product-image-box">
-      <img [src]="product.imageUrl" alt="product-image" class="product-image" (load)="loading=false">
+  <div *ngIf="!loading">
+    <div class="path-container">
+      <p (click)="goBack()" class="path page-title">INVENTORY ></p>
+      <p class="subpage">{{ product.name }}</p>
     </div>
-    <div class="product-description-container">
-      <div class="product-description">
-        <h1>{{ product.name }}</h1>
-        <h2>{{ product.description }}</h2>
-        <div class="price-container">
-          <p>${{ product.price }}</p>
+    <div class="product-body">
+      <div class="product-image-box">
+        <img [src]="product.imageUrl" alt="product-image" class="product-image" (load)="loading=false">
+      </div>
+      <div class="product-description-container">
+        <div class="product-descriptions">
+          <p class="product-name">{{ product.name }}</p>
+          <p class="product-description">{{ product.description }}</p>
+          <div class="price-container">
+            <p>${{ product.price }}</p>
+          </div>
+        </div>
+        <div class="cart-button-container">
+          <app-reserve></app-reserve>
         </div>
       </div>
-      <div class="cart-button-container">
-        <app-reserve></app-reserve>
+    </div>
+
+    <div class="footer-container">
+      <div class="deposit-container">
+        <p>
+          A deposit of ${{ product.deposit }} will be added to your total. 
+          This is refundable upon return of items with no damages.
+        </p>
+      </div>
+      <div class="footer-image-container">
       </div>
     </div>
   </div>
-
-  <div class="footer-container">
-    <div class="deposit-container">
-      <p>
-        A deposit of ${{ product.deposit }} will be added to your total. 
-        This is refundable upon return of items with no damages.
-      </p>
-    </div>
-    <div class="footer-image-container">
-    </div>
-  </div>
+  <app-footer></app-footer>
 </body>
-

@@ -80,4 +80,19 @@ public class AdminReservationController {
             return ResponseEntity.status(500).body("Error deleting reservation from S3: " + e.getMessage());
         }
     }
+
+    // Method to change the status of a reservation
+    @PreAuthorize("hasRole('ADMIN')")
+    @PutMapping("/changeStatus/{reservationId}")
+    public ResponseEntity<String> changeReservationStatus(@PathVariable String reservationId, @RequestBody String status) {
+        try {
+            adminS3ServiceReservation.changeReservationStatus(reservationId, status);
+            // reservationsService.changeReservationStatus(reservationId, status);
+            return ResponseEntity.ok("Reservation status changed successfully");
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Error changing reservation status: " + e.getMessage());
+        }
+    }
+
+
 }

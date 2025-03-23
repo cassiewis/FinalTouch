@@ -9,18 +9,18 @@ import { tap } from 'rxjs/operators';
 export class ImageService {
 
   private apiUrl = 'http://localhost:8080/api/images';
-  private cacheKey = 'cachedImageUrls';
 
   constructor(private http: HttpClient) { }
 
-  // Fetch all image URLs
-  getAllImageUrls(): Observable<string[]> {
-    const cachedImageUrls = this.getCachedImageUrls();
-    if (cachedImageUrls) {
-      return of(cachedImageUrls);
+  // Fetch all image URLs with a specific cache key
+  getInspoImageUrls(): Observable<string[]> {
+    const cacheKey = "cacheInspoImagesKey";
+    const cachedInspoImageUrls = this.getCachedImageUrls(cacheKey);
+    if (cachedInspoImageUrls) {
+      return of(cachedInspoImageUrls);
     } else {
-      return this.http.get<string[]>(this.apiUrl).pipe(
-        tap(imageUrls => this.cacheImageUrls(imageUrls))
+      return this.http.get<string[]>(`${this.apiUrl}/inspo`).pipe(
+        tap(imageUrls => this.cacheImageUrls(cacheKey, imageUrls))
       );
     }
   }
@@ -30,14 +30,14 @@ export class ImageService {
     return this.http.get<string>(`${this.apiUrl}/${imageKey}`);
   }
 
-    // Cache image URLs in local storage
-    private cacheImageUrls(imageUrls: string[]): void {
-      localStorage.setItem(this.cacheKey, JSON.stringify(imageUrls));
-    }
-  
-    // Retrieve cached image URLs from local storage
-    private getCachedImageUrls(): string[] | null {
-      const cachedImageUrls = localStorage.getItem(this.cacheKey);
-      return cachedImageUrls ? JSON.parse(cachedImageUrls) : null;
-    }
+  // Cache image URLs in local storage with a specific cache key
+  private cacheImageUrls(cacheKey: string, imageUrls: string[]): void {
+    localStorage.setItem(cacheKey, JSON.stringify(imageUrls));
+  }
+
+  // Retrieve cached image URLs from local storage with a specific cache key
+  private getCachedImageUrls(cacheKey: string): string[] | null {
+    const cachedImageUrls = localStorage.getItem(cacheKey);
+    return cachedImageUrls ? JSON.parse(cachedImageUrls) : null;
+  }
 }

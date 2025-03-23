@@ -1,48 +1,89 @@
 .product-item {
-    border-radius: 8px;
-    padding: 16px;
-    margin: 10px;
+    padding: 10px;
     transition: transform 0.2s;
-    color: #454545;
-  }
-  
-.product-item:hover {
-    transform: scale(1.05);
-}
-
-.product-line {
-
-    border:1px solid #454545;
-    border-left: none;
-    border-right: none;
-    margin-top: -5px;
-    margin-bottom: -5px;
-}
-
-.product-image {
-    max-width: 100%;
-    height: auto;
-    aspect-ratio: 4/5;
-}
-
-.product-name {
-    font-size:1.5rem;
-    font-weight: normal;
+    position: relative; /* Ensures the product-item container is positioned correctly */
 }
 
 .item-info {
-    display: flex;
-    text-decoration: none;
-    font-size: 1rem;
-    font-weight: normal;
+    padding: 10px 0;
 }
 
-.info-count {
+
+.product-item:hover {
+    transform: scale(1.03); /* Adds a hover effect */
+}
+
+.image-placeholder {
+    position: relative; /* Establishes a positioning context for the custom-icon */
+    width: 100%; /* Ensures the placeholder takes up the full width */
+}
+
+.image-container {
+    position: relative; /* Ensures the custom-icon is positioned relative to this container */
+    width: 100%; /* Ensures the container matches the placeholder width */
+    height: auto; /* Maintains aspect ratio */
+}
+
+.product-image {
+    display: block; /* Ensures the image doesn't add extra space */
+    width: 100%; /* Makes the image responsive */
+    height: auto; /* Maintains the aspect ratio */
+    object-fit: cover; /* Ensures the image covers the container without distortion */
+    transition: opacity 0.25s ease-in-out; /* Smooth transition for image loading */
+    aspect-ratio: 4/5;
+}
+
+.product-image.loaded {
+    opacity: 1; /* Ensures the image is fully visible once loaded */
+}
+
+.product-name {
+    font-size: 1.5rem;
     font-weight: normal;
+    margin: 0;
+    padding: 0;
 }
 
 .info-price {
-    margin-left: auto;
-    font-weight: normal;
+    font-size: 1rem;
+    margin: 0;
+    padding: 2px 0 0 0;
+}
+  
+.custom-hover-container {
+    position: absolute; /* Allows the icon to be positioned relative to the image-container */
+    bottom: -10px; /* Adjusts the distance from the top */
+    right: -10px; /* Adjusts the distance from the right */
+    width: 50px; /* Adjust the size of the icon */
+    height: auto; /* Maintain aspect ratio */
+    z-index: 10; /* Ensures the icon appears above the main image */
+    display: block; /* Ensures the icon is visible */
+}
 
+.custom-icon {
+    width: 100%;
+    height: auto;
+}
+
+.tooltip-text {
+    font-size: .75rem;
+    visibility: hidden;
+    width: 180px;
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    border-radius: 5px;
+    padding: 8px;
+    position: absolute;
+    bottom: 125%; /* Position the tooltip above the icon */
+    left: -125%;
+    transform: translateX(-50%);
+    opacity: 0.5;
+    transition: opacity 0.3s;
+    z-index: 1;
+}
+
+.custom-hover-container:hover .tooltip-text {
+    visibility: visible;
+    opacity: 1;
 }

@@ -1,5 +1,13 @@
 /* You can add global styles to this file, and also import other style files */
 @import '../node_modules/@angular/material/prebuilt-themes/indigo-pink.css';
+html, body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden; /* Prevents horizontal scrolling caused by overflowing elements */
+  font-size: 16px;
+  font-weight: normal;
+  color: rgb(50, 50, 50);
+}
 
 .philosopher-regular {
   font-family: "Philosopher", sans-serif;
@@ -41,3 +49,82 @@ body {
 
 html, body { height: 100%; }
 body { margin: 0; font-family: "Philosopher", sans-serif; font-weight: normal; }
+
+
+
+/*
+ * Custom styles for the app 
+ */
+ .white-background {
+  background-color: #f8f7f2;
+}
+.green-background {
+  background-color: #9b9b72;
+}
+.pink-background {
+  background-color: #dfa1a3;
+}
+.light-pink-background {
+  background-color: #f1d8d9;
+}
+.blue-background {
+  background-color: #c6ced6;
+}
+.yellow-background {
+  background-color: #efe6b9;
+}
+/* font colors: */
+.white-font {
+  color: #f8f7f2;
+}
+.black-font {
+  color: #323232;
+}
+.green-font {
+  color: #9b9b72;
+}
+.pink-font {
+  color: #dfa1a3;
+}
+.light-pink-font {
+  color: #f1d8d9;
+}
+.blue-font {
+  color: #c6ced6;
+}
+.yellow-font {
+  color: #efe6b9;
+}
+.main-font {
+  /* philosopher */
+  font-family: 'Philosopher', sans-serif;
+}
+.secondary-font {
+  /* Chau Philomene One */
+  font-family: 'Chau Philomene One', sans-serif;
+  font-weight: bold;
+}
+.page-title {
+  padding: 40px 0 40px 10%;
+  font-size: 2rem;
+  font-weight: normal;
+  margin: 0;
+}
+
+.button-theme {
+  border: none;
+  color: black;
+  padding: 8px 10px;
+  text-align: center;
+  text-decoration: none;
+  font-style: italic;
+  border-radius: 6px;
+  font-size: 14px;
+  margin: 4px 2px;
+  cursor: pointer;
+  width: 100px;
+}
+
+.button-theme:hover {
+  opacity: 0.8;  
+}

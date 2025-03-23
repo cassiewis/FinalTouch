@@ -1,7 +1,8 @@
 package Website.EventRentals.service;
+import Website.EventRentals.model.Reservation;
 
-import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -12,7 +13,6 @@ import org.springframework.stereotype.Service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
-import Website.EventRentals.model.Reservation;
 import software.amazon.awssdk.core.ResponseInputStream;
 import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.services.s3.S3Client;
@@ -29,11 +29,14 @@ public class AdminS3ServiceReservation {
     private final S3Client s3Client;
     private final ObjectMapper objectMapper = new ObjectMapper()
             .registerModule(new JavaTimeModule());
+    private final AdminDynamoDbReservedDateService adminDynamoDbReservedDateService;
 
     private final String bucketName = "reservations-bucket-final-touch";
 
-    public AdminS3ServiceReservation(@Qualifier("adminS3Client") S3Client adminS3Client) {
+    public AdminS3ServiceReservation(@Qualifier("adminS3Client") S3Client adminS3Client, 
+                                    AdminDynamoDbReservedDateService adminDynamoDbReservedDateService) {
         this.s3Client = adminS3Client;
+        this.adminDynamoDbReservedDateService = adminDynamoDbReservedDateService;
     }
 
     // Fetch all reservations from S3
@@ -159,16 +162,33 @@ public class AdminS3ServiceReservation {
         }
     }
 
-    private String getObjectContent(S3Object s3Object) {
-        try (ResponseInputStream<GetObjectResponse> inputStream = s3Client.getObject(GetObjectRequest.builder()
-                .bucket(bucketName)
-                .key(s3Object.key())
-                .build())) {
-            return new String(inputStream.readAllBytes(), StandardCharsets.UTF_8);
-        } catch (IOException e) {
-            // Handle the IOException (e.g., log the error, rethrow it, etc.)
-            throw new RuntimeException("Error reading content from S3", e);
+    public void changeReservationStatus(String reservationId, String status) {
+        // Fetch the reservation details based on reservationId
+        Reservation reservation = getReservation(reservationId);
+        if (reservation == null) {
+            throw new IllegalArgumentException("Reservation not found: " + reservationId);
         }
+    
+        List<String> productIds = reservation.getItemIds(); // List of product IDs
+        List<LocalDate> dates = reservation.getDates(); // List of date ranges (start and end dates)
+        
+        if (status.equals("active")) {
+            // If the status is "active", we need to add reserved dates
+            // iterate through productIds and dates1
+            for (String productId : productIds) {
+                for (LocalDate date : dates) {
+                    System.out.println("CASSIE ReservationService: saving reservedDate: " + date.toString() + " for productId: " + productId);
+                    adminDynamoDbReservedDateService.addReservedDate(productId, date.toString(), reservationId, status);
+                }
+            }
+        } else if (status.equals("fulfilled") || status.equals("canceled") || status.equals("pending")) {
+            // If the status is changed to filfilled, canceled, or pending, we need to remove reserved dates
+            for (String productId : productIds) {
+                for (LocalDate date : dates) {
+                    adminDynamoDbReservedDateService.deleteReservedDate(productId, date.toString());
+                }
+            }
+        } // else do nothing because the status is not recognized
     }
 
 }

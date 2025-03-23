@@ -2,16 +2,18 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  private apiUrl = 'http://localhost:8080/api/auth/login'; // Update with your backend login endpoint
+  private apiUrl = 'http://localhost:8080/api/auth/login';
   private tokenKey = 'authToken';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private router: Router) {}
 
+  // Authenticate the user and store the token in local storage
   login(username: string, password: string): Observable<boolean> {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     return this.http.post<{ token: string }>(this.apiUrl, { username, password }, { headers }).pipe(
@@ -26,15 +28,25 @@ export class AuthService {
     );
   }
 
-  logout() {
-    localStorage.removeItem(this.tokenKey);
-  }
-
+  // Check if this.tokenKey is present and not expired
   isLoggedIn(): boolean {
     const token = localStorage.getItem(this.tokenKey);
-    return !!token;
+    if (!token) {
+      return false;
+    }
+    const expiry = (JSON.parse(atob(token.split('.')[1]))).exp;
+    return (Math.floor((new Date).getTime() / 1000)) <= expiry;
   }
 
+  // log the user out by removing the token from local storage
+  logout(): void {
+    localStorage.removeItem(this.tokenKey);
+    // localStorage.remoteItem("");
+    this.router.navigate(['/login']);
+    console.log('AuthService: loggedout');
+  }
+
+  // get the specified token from local storage
   getToken(): string | null {
     return localStorage.getItem(this.tokenKey);
   }

@@ -1,14 +1,15 @@
 package Website.EventRentals.service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.ListObjectsV2Request;
 import software.amazon.awssdk.services.s3.model.ListObjectsV2Response;
 import software.amazon.awssdk.services.s3.model.S3Object;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class S3ServiceImage {
@@ -29,6 +30,20 @@ public class S3ServiceImage {
 
         return response.contents().stream()
                 .map(S3Object::key)
+                .map(key -> String.format("https://%s.s3.amazonaws.com/%s", bucketName, key))
+                .collect(Collectors.toList());
+    }
+
+    public List<String> getInspoImageUrls() {
+        ListObjectsV2Request request = ListObjectsV2Request.builder()
+                .bucket(bucketName)
+                .build();
+
+        ListObjectsV2Response response = s3Client.listObjectsV2(request);
+
+        return response.contents().stream()
+                .map(S3Object::key)
+                .filter(key -> key.startsWith("inspo-"))
                 .map(key -> String.format("https://%s.s3.amazonaws.com/%s", bucketName, key))
                 .collect(Collectors.toList());
     }

@@ -2,11 +2,12 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { OnInit } from '@angular/core';
 import { ImageService } from '../services/image.service';
-
+import { HeaderComponent } from '../shared/header/header.component';
+import { FooterComponent } from '../shared/footer/footer.component';
 @Component({
   selector: 'app-inspo',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, HeaderComponent, FooterComponent],
   templateUrl: './inspo.component.html',
   styleUrl: './inspo.component.css'
 })
@@ -23,7 +24,7 @@ export class InspoComponent implements OnInit {
   }
 
   fetchInspoPhotos() {
-    this.imageService.getAllImageUrls().subscribe(
+    this.imageService.getInspoImageUrls().subscribe(
       (imageUrls) => {
         this.inspoPhotos = imageUrls;
         console.log('Fetched images:', this.inspoPhotos);

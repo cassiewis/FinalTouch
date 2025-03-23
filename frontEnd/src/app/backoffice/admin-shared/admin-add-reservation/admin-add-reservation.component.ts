@@ -35,7 +35,7 @@ export class AdminAddReservationComponent {
   products: Product[] = [];
   selectedItems: { [key: string]: boolean } = {}; // Initialize as empty object
   reservation: Reservation = {
-    status: 'active', // active, canceled, or fufilled
+    status: 'pending', // pending, active, canceled, or fufilled
     reservationId: '', // generate random number
     name: '',
     dates: [],

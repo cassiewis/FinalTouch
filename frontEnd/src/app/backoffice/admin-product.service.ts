@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Product } from '../models/product.model';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { tap, switchMap } from 'rxjs/operators';
+import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -11,11 +12,12 @@ export class AdminProductService {
     private apiUrl = 'http://localhost:8080/api/admin/products'; // Admin API endpoint
 
     // Admin-specific product cache (includes all products)
-    private adminProductsCache: Product[] = [];
-    private adminProductsSubject = new BehaviorSubject<Product[]>(this.adminProductsCache);
+    private localStorageKey = 'adminProductsCache'; // Key to store cache in localStorage
+    private adminProductsCache: Product[] = this.loadCacheFromLocalStorage();
+    private adminProductsSubject = new BehaviorSubject<Product[]>(this.adminProductsCache || []);
     adminProducts$ = this.adminProductsSubject.asObservable();
 
-    constructor(private http: HttpClient) {}
+    constructor(private http: HttpClient, private authService: AuthService) {}
 
     /**
    * Fetch all products for admin, including inactive or archived products.
@@ -31,6 +33,7 @@ export class AdminProductService {
         tap(products => {
             console.log('Fetched admin products:', products);
             this.adminProductsCache = products; // All products for admin
+            this.saveCacheToLocalStorage(products);
             this.adminProductsSubject.next(this.adminProductsCache); // Notify admin-specific subscribers
         })
         );
@@ -99,8 +102,23 @@ export class AdminProductService {
       );
     }
 
+    /**
+   * Save cache to localStorage.
+    */
+    private saveCacheToLocalStorage(products: Product[]): void {
+      localStorage.setItem(this.localStorageKey, JSON.stringify(products));
+    }
+  
+    /**
+     * Load cache from localStorage.
+     */
+    private loadCacheFromLocalStorage(): Product[] {
+      const cachedData = localStorage.getItem(this.localStorageKey);
+      return cachedData ? JSON.parse(cachedData) : [];
+    }
+
     private getAdminToken(): string {
         // Retrieve the admin token from local storage or another secure place
-        return localStorage.getItem('authToken') || '';
+        return this.authService.getToken() || ''; 
     }
 }

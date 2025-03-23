@@ -35,6 +35,7 @@ public class SecurityConfig {
                 .requestMatchers("/api/reservations", "/api/reservations/**").permitAll() // Allow access to reservation APIs
                 .requestMatchers("/api/products", "/api/products/**").permitAll() // Allow access to product APIs
                 .requestMatchers("/api/images", "/api/images/**").permitAll() // Allow access to image APIs
+                .requestMatchers("/api/reservedDates", "/api/reservedDates/**").permitAll() // Require authentication for admin reserved date APIs
                 .requestMatchers("/api/admin/**").authenticated() // Require authentication for admin APIs
                 .anyRequest().authenticated() // Require authentication for other requests
             .and()

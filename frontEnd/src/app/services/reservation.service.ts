@@ -13,7 +13,7 @@ export class ReservationService {
 
   private autoRefreshInterval = 1800000; // Auto-refresh every 30 minutes (in milliseconds)
 
-  constructor(private http: HttpClient) { 
+  constructor(private http: HttpClient) {
   }
 
   // Add a new reservation
@@ -23,6 +23,9 @@ export class ReservationService {
     const name = reservation.name.replace(/\s+/g, '');
     const generatedString = Math.random().toString(36).substring(2, 10);
     reservation.reservationId = name + "-" + generatedString;
+
+    // set status as pending for security
+    reservation.status = 'pending';
 
     console.log("ReservationService: adding reservation");
     return this.http.post<Reservation>(this.apiUrl, reservation).pipe(

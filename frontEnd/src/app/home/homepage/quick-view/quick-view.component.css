@@ -1,5 +1,5 @@
 body {
-    background-color: #C5CAB9;
+    /* background-color: #C5CAB9; */
     padding: 50px;
     margin: 0;
 }
@@ -8,7 +8,6 @@ body {
     text-align: center;
     font-size: 20px;
     padding-bottom: 40px;
-    color: #454545;
 }
 
 .boxes {
@@ -20,7 +19,7 @@ body {
 
 .box {
     flex: 1 1 25%; /* Shrinks to 30% of the container width */
-    max-width: 300px; /* Prevents the box from getting too large */
+    max-width: 280px; /* Prevents the box from getting too large */
     text-decoration: none;
     color: #454545;
     transition: transform 0.2s;

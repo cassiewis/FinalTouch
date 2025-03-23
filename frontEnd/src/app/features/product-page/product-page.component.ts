@@ -7,13 +7,14 @@ import { Location } from '@angular/common';
 import { CartService } from '../../cart/cart-service.service';
 import { ReserveComponent } from './reserve/reserve.component';
 import { LoadingIconComponent } from '../../shared/loading-icon/loading-icon.component';
-
+import { FooterComponent } from '../../shared/footer/footer.component';
+import { HeaderComponent } from '../../shared/header/header.component';
 @Component({
   selector: 'app-product-page',
   templateUrl: './product-page.component.html',
   styleUrls: ['./product-page.component.css'],
   standalone: true,
-  imports: [ReserveComponent, CommonModule, LoadingIconComponent],
+  imports: [ReserveComponent, CommonModule, LoadingIconComponent, HeaderComponent, FooterComponent],
 })
 export class ProductPageComponent implements OnInit {
   product!: Product; // Assert that Product will always be defined

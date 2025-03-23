@@ -1,77 +1,91 @@
 /* src/app/product-page/product-page.component.css */
 body {
   background-color: #FAFAF5;
+  min-height: 100vh;
 }
 
 .product-body {
   display: grid;
   grid-template-columns: repeat(2, 1fr); /* Create 2 equal columns for desktop */
-  gap: 5vw;
-  margin-left: 8%;
-  margin-right: 8%;
-  margin-top: 3%;
-  margin-bottom: 3%;
-  color: rgb(95, 95, 95);
+  /* gap: 5vw; */
+  margin: 0 0 5% 0;
   height: 100%;
 }
 
-.back-button {
-  border: none;
-  background-color: #FAFAF5;
-  margin: 2%;
-  margin-left: 3%;
-  font-family: "Philosopher", sans-serif;
-  font-size: 20px;
-  color: rgb(95, 95, 95);
-  cursor: pointer;
-
+.path-container {
+  display: flex;
 }
 
-.product-line {
-  margin-right: 3%;
-  margin-left: 3%;
-  height: 5px;
-  border-top: 1.5px solid #E6E6E6;
-  border-bottom: 3px solid #E6E6E6;
-  border-left: none;
-  border-right: none;
+.path { 
+  cursor: pointer;
+}
+
+.path :hover {
+  color: rgb(100, 100, 100); 
+}
+
+.subpage {
+  color: rgb(165, 165, 165);
+  padding: 40px 0 40px 10px;
+  font-size: 1.5rem;
+  font-weight: normal;
+  margin: 0;
+  display: flex;
+  align-items: center;
 }
   
 .product-image-box {
   display: flex;
   justify-content: right;
-  align-items:flex-start;
+  align-items: flex-start;
   height: 100%;
+  /* border: 1px solid blue; */
 }
 
 .product-description-container {
   display: flex;
-  position: relative;
-  display:flex;
   flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
   height: 100%;
+  border: 1px solid red;
+  margin: 0 15% 0 5%;
+}
+
+.product-description-container p {
+  text-align: left; /* Aligns text to the left */
+  justify-content: flex-start; /* Aligns content to the left */
+
 }
 
 .product-image {
   aspect-ratio: 4/5;
-  width: 90%;
+  width: 80%;
   max-width: 450px;
+  object-fit: cover;
+  padding-right: 5%;
+}
+
+.product-descriptions {
+  margin-top: 10%;
+  border: 1px solid green;
+  /* display: flex;
+  flex-direction: column; */
+  /* text-align: left; */
+}
+
+.product-name {
+  font-size: 1.5rem;
+  font-weight: normal;
+  text-align: left;
 }
 
 .product-description {
-  margin-top: 10%;
-}
-
-.product-description h1 {
-  font-size: 26px;
-  font-weight: normal;
-}
-
-.product-description h2 {
   font-size: 20px;
   font-weight: normal;
-  text-align: center;
   margin: 10%;
+  font-size: 1rem;
+  text-align: left;
 }
 
 .price-container {
@@ -79,8 +93,9 @@ body {
   background-size: contain;
   background-position: right;
   background-repeat: no-repeat;
-  font-size: 18px;
-  width: 180px;
+  font-size: 1.25rem;
+  width: 150px;
+  height: auto;
   float: right;
   margin-top: -30px;
   margin-right: 10%;

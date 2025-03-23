@@ -18,4 +18,9 @@ export class ProductBoxComponent {
   goToProductPage(): void {
     this.router.navigate(['/product', this.product.productId]); // Navigate to product detail page
   }
+
+  onImageLoad(event: Event) {
+    const imgElement = event.target as HTMLImageElement;
+    imgElement.classList.add('loaded');
+  }
 }

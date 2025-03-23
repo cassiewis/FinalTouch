@@ -1,58 +1,75 @@
 body {
-    background-color: #ccc4ba;
+    margin: 0px;
     padding: 50px 0px;
-    margin: 0;
+    display: flex;
 }
 
-.carousel {
-    width: 100%;
-    margin: 0 auto;
-    overflow: hidden;
-    position: relative;
-    height: 100%; /* Adjust based on content */
-  }
-  
-  /* Carousel track */
-  .carousel-track {
-    display: flex;
-    transition: transform 0.5s ease-in-out;
-    width: 100%;
+.title-side {
+  width: 45%;
+  height: 100%; /* Change to 100% to use full height from the parent */
+  display: flex; /* Enable Flexbox for vertical centering */
+  justify-content: right; /* Center content vertically */
+}
 
-  }
-  
-  /* Each review */
-  .review {
-    display: flex;
-    flex: 0 0 100%; /* Each review takes up the full width of the container */
-    text-align: center;
-    justify-content: center;
-  }
+.title-container {
+  width: 60%;
+  align-items: right;
+  text-align: left;
+  padding: 30px;
+}
 
-  .single-review {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 50%;
-    background-color: rgba(250, 250, 250, 0.6);
-    border-radius: 12px;
-    padding: 20px;
-  }
+.title-container p {
+  margin: 0;
+  padding: 10px;
+}
 
-  .see-reviews-button-container {
-    z-index: 1;
-    display: flex;
-    align-items: end;
-    justify-content: right;
-    margin: 30px;
-  }
+.title {
+  font-size: 2.5rem;
+}
 
-  .see-reviews-button {
-    display: inline-block;
-    padding: 10px 20px;
-    font-size: 1rem;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transform: rotate(-15deg); /* Adjust the angle here */
-    transition: transform 0.3s ease, background-color 0.3s ease;
-  }
+.reviews-side {
+  width: 55%;
+  display: flex; /* Aligns child elements in a row */
+  overflow-x: auto; /* Enables horizontal scrolling */
+  white-space: nowrap; /* Prevents wrapping of child elements */
+  align-items: center; /* Centers items vertically */
+  gap: 30px; /* Adds spacing between review boxes */
+  padding: 10px; /* Optional: Adds padding around the scrollable area */
+}
+
+.review {
+  flex: 0 0 auto; /* Prevents the review boxes from shrinking or growing */
+  background-color: white;
+  border-radius: 10px;
+  width: 180px; /* Ensures each review box has a consistent width */
+  height: 275px; /* Sets a fixed height for the review box */
+  text-align: center;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Adds a subtle shadow for better visuals */
+  overflow: hidden; /* Ensures content stays within the box */
+  padding: 15px;
+}
+
+.review-text {
+  text-align: left; /* Aligns text to the left */
+  white-space: normal; /* Allows text to wrap inside the review box */
+  word-wrap: break-word; /* Breaks long words to prevent overflow */
+  font-size: 1rem;
+  overflow: hidden; /* Prevents horizontal overflow */
+}
+
+.review-author {
+  text-align: left; /* Aligns text to the left */
+  font-size: 1rem;
+  font-style: italic;
+}
+
+.stars {
+  font-size: 1.25rem; /* Increase the size of the stars */
+  display: flex; /* Use flexbox to control spacing between stars */
+  justify-content: center; /* Center the stars horizontally */
+  gap: 5px; /* Add space between the stars */
+}
+
+.star {
+  font-size: inherit;
+}

@@ -9,11 +9,13 @@ import { CommonModule } from '@angular/common';
   styleUrl: './testimonials.component.css'
 })
 export class TestimonialsComponent implements OnInit, OnDestroy {
-    reviews: string[] = [
-      '"This is the best service I’ve ever used!" - Customer A',
-      '"Amazing quality and fantastic support!" - Customer B',
-      '"Highly recommend to anyone looking for great deals. Something way longer to test the height so i hope this works oh i bet it will." - Customer C',
-      '"Highly recommend to anyone looking for great deals. Something way longer to test the height so i hope this works oh i bet it will. Highly recommend to anyone looking for great deals. Something way longer to test the height so i hope this works oh i bet it will." - Customer C'
+    reviews: Review[] = [
+      new Review('John Doe', 'This service was amazing! Highly recommend going with final touch for your next event. She delivered in a timely fashion and always love seeing someone so dedicated to weddings!! Love love love!', 5),
+      new Review('Jane Smith', 'Absolutely loved the experience!', 4),
+      new Review('Alice Johnson', 'Will definitely use this service again.', 5),
+      new Review('Bob Brown', 'Not what I expected, but still okay.', 3),
+      new Review('Jane Smith', 'Absolutely loved the experience!', 4),
+      new Review('Alice Johnson', 'Will definitely use this service again.', 5)
     ];
     currentIndex: number = 0;
     private intervalId!: any;
@@ -45,4 +47,16 @@ export class TestimonialsComponent implements OnInit, OnDestroy {
     getTransformStyle(): string {
       return `translateX(-${this.currentIndex * 100}%)`;
     }
+}
+
+class Review {
+  author: string;
+  content: string;
+  stars: number;
+
+  constructor(author: string, content: string, stars: number) {
+    this.author = author;
+    this.content = content;
+    this.stars = stars;
+  }
 }

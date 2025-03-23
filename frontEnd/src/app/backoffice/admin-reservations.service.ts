@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { tap, switchMap } from 'rxjs/operators';
 import { Reservation } from '../models/reservation.model';
+import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +12,7 @@ export class AdminReservationsService {
     private apiUrl = 'http://localhost:8080/api/admin/reservations'; // Admin API endpoint
 
     // Admin-specific reservation cache (includes all reservations)
-    private localStorageKey = 'reservationsCache'; // Key to store cache in localStorage
+    private localStorageKey = 'adminReservationsCache'; // Key to store cache in localStorage
     private adminReservationsCache: Reservation[] = this.loadCacheFromLocalStorage();
     private adminReservationsSubject = new BehaviorSubject<Reservation[]>(this.adminReservationsCache || []);
     private adminActiveReservationsSubject = new BehaviorSubject<Reservation[]>([]);
@@ -19,7 +20,7 @@ export class AdminReservationsService {
     adminActiveReservations$ = this.adminActiveReservationsSubject.asObservable();
   
 
-    constructor(private http: HttpClient) {}
+    constructor(private http: HttpClient, private authService: AuthService) {}
 
     /**
      * Fetch reservations from the backend and update the cache and observable.
@@ -70,7 +71,7 @@ export class AdminReservationsService {
         );
       }
 
-      /**
+    /**
      * Update an existing reservation in the backend and synchronize the cache.
      */
     updateReservation(reservation: Reservation): Observable<Reservation> {
@@ -106,6 +107,12 @@ export class AdminReservationsService {
       );
     }
 
+    updateReservationStatus(reservationId: string, status: string): Observable<void> {
+      const token = this.getAdminToken(); // Retrieve the JWT token from local storage
+      const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+      return this.http.put<void>(`${this.apiUrl}/changeStatus/${reservationId}`, status, { headers });
+    }
+
     /**
    * Save cache to localStorage.
     */
@@ -123,7 +130,7 @@ export class AdminReservationsService {
 
     private getAdminToken(): string {
       // Retrieve the admin token from local storage or another secure place
-      return localStorage.getItem('authToken') || '';
+      return this.authService.getToken() || '';
     }
 
 

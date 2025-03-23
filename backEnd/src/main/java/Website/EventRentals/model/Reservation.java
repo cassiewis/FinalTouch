@@ -73,6 +73,10 @@ public class Reservation {
         return this.items;
     }
 
+    public List <String> getItemIds() {
+        return this.items.stream().map(ReservedItem::getProductId).toList();
+    }
+
     public void setItems(List<ReservedItem> items) {
         this.items = items;
     }

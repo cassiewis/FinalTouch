@@ -1,24 +1,22 @@
 package Website.EventRentals.model;
-
-import java.time.LocalDate;
-
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbBean;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbPartitionKey;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbSortKey;
 
 @DynamoDbBean
-public class ProductReservation {
+public class ReservedDate {
+
     private String productId;
-    private LocalDate date;
+    private String date; // Store as String in DynamoDB
     private String reservationId;
     private String status;
 
     // Default constructor
-    public ProductReservation() {
+    public ReservedDate() {
     }
 
     // Parameterized constructor
-    public ProductReservation(String productId, LocalDate date, String reservationId, String status) {
+    public ReservedDate(String productId, String date, String reservationId, String status) {
         this.productId = productId;
         this.date = date;
         this.reservationId = reservationId;
@@ -36,11 +34,11 @@ public class ProductReservation {
     }
 
     @DynamoDbSortKey
-    public LocalDate getDate() {
-        return date;
+    public String getDate() {
+        return this.date;
     }
 
-    public void setDate(LocalDate date) {
+    public void setDate(String date) {
         this.date = date;
     }
 

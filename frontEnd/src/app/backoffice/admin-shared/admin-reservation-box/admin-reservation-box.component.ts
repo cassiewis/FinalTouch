@@ -17,6 +17,7 @@ export class AdminReservationBoxComponent {
 @Input() reservation!: Reservation;
   expandBox: boolean = false;
   editMode: boolean = false;
+  showStatusDropdown: boolean = false;
   editableReservation!: Reservation; // Editable copy of reservation
   datesForm: FormGroup = new FormGroup({
     start: new FormControl(),
@@ -138,5 +139,23 @@ export class AdminReservationBoxComponent {
 
   displayTotalDeposit() : number {
     return this.reservation.items.reduce((total, item) => total + item.deposit, 0);
+  }
+
+  toggleStatusDropdown(event: Event): void {
+    event.stopPropagation(); // Prevent the click from triggering the expanded box
+    this.showStatusDropdown = !this.showStatusDropdown;
+  }
+
+  updateReservationStatus(newStatus: string): void {
+    this.adminReservationService.updateReservationStatus(this.reservation.reservationId, newStatus)
+      .subscribe({
+        next: () => {
+          this.reservation.status = newStatus; // Update the status locally
+          this.showStatusDropdown = false; // Close the dropdown
+        },
+        error: (err) => {
+          console.error('Error updating reservation status:', err);
+        }
+      });
   }
 }

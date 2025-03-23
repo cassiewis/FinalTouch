@@ -1,14 +1,14 @@
 
 .product-list {
-    padding-left: 8%;
-    padding-right: 8%;
+/* border: 1px solid red; */
+  padding: 0 5%;
+  margin-bottom: 100px;
 }
 
 .products-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr); /* Create 3 equal columns */
+    grid-template-columns: repeat(3, 1fr); /* Change to 4 when adding more products */
     gap: 16px; /* Space between grid items */
-    
   }
 
 .products-grid a {

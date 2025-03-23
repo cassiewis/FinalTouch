@@ -51,6 +51,7 @@
     aspect-ratio: 4/5;
     position: relative;
     z-index: 1; /* Ensures it stays below the button */
+    object-fit: cover;
 }
 
 

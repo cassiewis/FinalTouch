@@ -1,25 +1,28 @@
 body {
-    color: #454545;
-    background-color: #C6CED6;
+    padding: 0px;
     margin: 0px;
-    padding: 80px;
-    position: relative;
-
 }
 
 .title {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
     text-align: center;
     font-size: 2rem;
-    /* font-weight: normal; */
+    height: 100px;
+    margin: 0px;
+    font-weight: normal;
+}
+.title-hearts {
+    width: 120px;
+    padding: 30px;
+    opacity: 0.3;
 }
 
-.step {
-    /* border: 1px solid black; */
-}
-
-.step-number {
-    font-size: 5rem;
-    font-family: 'Brush Script MT', cursive;
+.step-image {
+    height: 100px;
+    width: auto;
 }
 
 .steps-container {
@@ -27,7 +30,8 @@ body {
     grid-template-columns: repeat(3, 1fr);
     justify-content: center;
     align-items: center;
-    margin-top: 50px;
+    margin: 50px;
+    height: 50vh;
 }
 
 .step, .step-description {
@@ -37,27 +41,7 @@ body {
 }
 
 .step-description {
+    font-size: 1rem;
     text-align: center;
-    margin: -30px 50px;
-}
-
-.custom-shape-divider-bottom-1741473848 {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    overflow: hidden;
-    line-height: 0;
-    transform: rotate(180deg);
-}
-
-.custom-shape-divider-bottom-1741473848 svg {
-    position: relative;
-    display: block;
-    width: calc(144% + 1.3px);
-    height: 90px;
-}
-
-.custom-shape-divider-bottom-1741473848 .shape-fill {
-    fill: #FFFFFF;
+    padding: 0px 80px;
 }

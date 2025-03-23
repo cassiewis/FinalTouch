@@ -7,7 +7,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import Website.EventRentals.model.Reservation;
-import Website.EventRentals.model.ReservedItem;
 import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
@@ -37,9 +36,6 @@ public class S3ServiceReservation {
                 RequestBody.fromString(reservationJson)
         );
 
-        // for (ReservedItem item : reservation.getItems()) {
-        //     // TODO update reservations table
-        // }
         return reservation;
     }
 

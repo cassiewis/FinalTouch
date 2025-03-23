@@ -7,19 +7,17 @@
                     'grey-background': reservation.status == 'canceled',
                     'red-background': reservation.status == 'fulfilled',
                     'yellow-background': reservation.status == 'pending'
-                }">
-                <div *ngIf="!editMode">
-                    <p class="status">{{ reservation.status }}</p>
-                </div>
-            
-                <ng-template [ngIf]="editMode">
-                    <select [(ngModel)]="editableReservation.status" class="status-dropdown">
-                        <option value="active">Active</option>
-                        <option value="canceled">Canceled</option>
-                        <option value="fulfilled">Fulfilled</option>
-                        <option value="pending">Pending</option>
-                    </select>
-                </ng-template>
+                }"
+                (click)="toggleStatusDropdown($event)">
+                <p class="status">{{ reservation.status }}</p>
+            </div>
+            <div *ngIf="showStatusDropdown" class="status-dropdown">
+                <select [(ngModel)]="editableReservation.status" (change)="updateReservationStatus(editableReservation.status)">
+                    <option value="active">Active</option>
+                    <option value="canceled">Canceled</option>
+                    <option value="fulfilled">Fulfilled</option>
+                    <option value="pending">Pending</option>
+                </select>
             </div>
         </div>
         <div class="name-container subcontainer">

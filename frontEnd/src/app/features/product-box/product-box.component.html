@@ -1,10 +1,19 @@
 <!-- Product-box -->
+
 <div class="product-item">
-    <img [src]="product.imageUrl" alt="{{ product.name }}" class="product-image" />
-    <h2 class="product-name">{{ product.name }}</h2>
-    <hr class="product-line">
-    <div class="item-info">
-      <h3 class="info-count">{{ product.count }} avaliable</h3>
-      <h3 class="info-price">${{ product.price }}</h3>
+    <div class="image-placeholder">
+      <div class="image-container">
+        <div class="custom-hover-container">
+          <img class="custom-icon" src="/images/custom-icon.png" alt="Custom Icon">
+          <span class="tooltip-text"><b>Custom Item</b><br>This item is customizable, read description for more details.</span>
+        </div>
+        <!-- <img class="custom-icon" src="/images/custom-icon.png" alt="Custom Icon"> -->
+        <img [src]="product.imageUrl" alt="{{ product.name }}" class="product-image" (load)="onImageLoad($event)">
+      </div>
     </div>
-  </div>
+    <div class="item-info black-font">
+      <p class="product-name black-font">{{ product.name }}</p>
+      <!-- <p class="info-count">{{ product.count }} avaliable</p> -->
+      <p class="info-price black-font">${{ product.price }}</p>
+    </div>
+</div>
