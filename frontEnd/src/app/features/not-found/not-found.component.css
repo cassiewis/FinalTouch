@@ -3,85 +3,57 @@ body {
     align-items: center;
     text-align: center;
     background-color: #FAFAF5;
+    height: 100%;
+    flex: 1;
+    min-height: 80vh;
+    padding: 0 2vh;
 }
 
-.image { 
-    /* border: 1px solid black; */
-    width: 35%;
+.image-side { 
+    width: 45%;
 
 }
 .image img {
     max-width: 100%; /* Ensure the image doesn't exceed the container width */
     max-height: 100%; /* Ensure the image doesn't exceed the container height */
-
-    /* width: 500px; */
 }
 
-.text {
+.text-side {
     text-align: center;
-    /* border: 1px solid black; */
-    width: 60%;
+    width: 65%;
     height: 100%;
 }
 
-h2 {
-    font-size: 3vw;
+.oops {
+    font-size: 3.5vw;
     margin: 0;
     font-weight: 100;
 }
 
-h1 {
+.not-found {
     font-size: 13vw;
-    font-family: "Qwigley", cursive;
     margin: 0;
-    font-weight: 100;
+    font-weight: bold;
 }
 
-p { 
+.not-found.text { 
     font-size: 1.5vw;
     margin: 0;
-    margin-left: 20%;
-    margin-right: 20%;
-    padding-bottom: 8%;
+
 }
 
-button {
-    background-color: #C6CED6;
-    border-radius: 100px;
-    border-style: none;
-    box-sizing: border-box;
-    color: #FFFFFF;
-    cursor: pointer;
-    font-family: "Philosopher", sans-serif;
-    font-size: 18px;
-    height: 8vw;
-    min-height: 80px;
-    width: 8vw;
-    min-width: 80px;
-    padding: 5px;
-    position: relative;
-    text-align: center;
-    text-decoration: none;
-    transition: color 100ms;
-    vertical-align: baseline;
-    user-select: none;
-    -webkit-user-select: none;
-    touch-action: manipulation;
-}
 
 @media (max-width: 850px) {
 
-    .image {
+    .image-side {
         display: none;
     }
 
-    .text {
+    .text-side {
         text-align: center;
-        /* border: 1px solid black; */
         width: 100%;
         height: 100%;
-        margin: 10%;
-        border: 1px solid black;
+        /* margin: 10%; */
     }
 
 }

@@ -13,41 +13,10 @@ import { RouterModule } from '@angular/router';
   styleUrl: './quick-view.component.css'
 })
 export class QuickViewComponent {
-  product1!: Product;
-  product2!: Product;
-  product3!: Product;
-  products: Product[] = [];
 
   constructor(private productService: ProductService){}
 
   ngOnInit(): void {
-    // Subscribe to the observable
-    this.productService.getProducts().subscribe(
-      (products: Product[]) => {
-        this.products = products;
-      },
-      error => console.error('Error fetching products:', error)
-    );
-
-    this.productService.getProduct('custom-mirror-sign-gold').subscribe(
-      (product: Product) => {
-        this.product1 = product;
-      },
-      error => console.error('Error fetching product:', error)
-    );
-
-    this.productService.getProduct('custom-mirror-sign-black').subscribe(
-      (product: Product) => {
-        this.product2 = product;
-      },
-      error => console.error('Error fetching product:', error)
-    );
-
-    // this.productService.getProduct('custom-mirror-sign-gold').subscribe(
-    //   (product: Product) => {
-    //     this.product1 = product;
-    //   },
-    //   error => console.error('Error fetching product:', error)
-    // );
+  
   }
 }

@@ -1,44 +1,11 @@
 /* Overlay background */
-.popup-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background-color: rgba(0, 0, 0, 0.6); /* Semi-transparent dark overlay */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000; /* Ensure it appears above other content */
-  }
-  
-  /* Popup content box */
-  .popup-content {
-    position: relative;
-    background-color: #F8F7F2;
-    width: 90%;
-    max-width: 800px;
-    padding: 30px;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    overflow-y: auto; /* Scrolls if content is too long */
-    max-height: 80vh; /* Limits the height */
-    max-width: 50vh;
-  }
   
   /* Form body spacing */
   .form-section {
     display: flex;
     gap: 16px; /* Adds space between each form field */
   }
-  
-  /* Title styling */
-  .title {
-    font-size: 1.5rem;
-    font-weight: bold;
-    margin-bottom: 10px;
-    text-align: center;
-  }
+
 
   .numbers-container {
     display: grid;
@@ -46,48 +13,6 @@
     gap: 10px;
   }
 
-
-  /* Close button styling */
-  .back-button {
-    position: absolute; /* Absolute positioning */
-    top: 15px; /* Adjust distance from the top */
-    right: 15px; /* Adjust distance from the right */
-    font-size: 1.2rem; /* Font size for visibility */
-    color: #ff0000; /* Makes it red for visibility */
-    cursor: pointer;
-    background: none; /* Remove background if needed */
-    border: none; /* Remove border */
-}
-  
-  /* Form fields styling */
-  mat-form-field {
-    width: 100%;
-  }
-  
-  /* Submit button */
-  button[mat-raised-button] {
-    width: 100%;
-    margin-top: 20px;
-    font-size: 1rem;
-    font-weight: bold;
-  }
-
-  .create-button {
-    border: 0;
-    outline: 0;
-    cursor: pointer;
-    color: rgb(60, 66, 87);
-    background-color: none;
-    box-shadow: rgb(0 0 0 / 0%) 0px 0px 0px 0px, rgb(0 0 0 / 0%) 0px 0px 0px 0px, rgb(0 0 0 / 12%) 0px 1px 1px 0px, rgb(60 66 87 / 16%) 0px 0px 0px 1px, rgb(0 0 0 / 0%) 0px 0px 0px 0px, rgb(0 0 0 / 0%) 0px 0px 0px 0px, rgb(60 66 87 / 8%) 0px 2px 5px 0px;
-    border-radius: 50px;
-    font-size: 14px;
-    font-weight: 500;
-    padding: 16px 10px;
-    display: inline-block;
-    min-height: 28px;
-    transition: background-color .24s,box-shadow .24s;
-  }
-  
   input {
     background-color: red;
   }

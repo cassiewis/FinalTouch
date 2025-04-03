@@ -1,5 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-testimonials',
@@ -19,6 +20,9 @@ export class TestimonialsComponent implements OnInit, OnDestroy {
     ];
     currentIndex: number = 0;
     private intervalId!: any;
+
+    // constructor
+    constructor(private router: Router){};
   
     ngOnInit(): void {
       // Start the automatic carousel
@@ -46,6 +50,10 @@ export class TestimonialsComponent implements OnInit, OnDestroy {
   
     getTransformStyle(): string {
       return `translateX(-${this.currentIndex * 100}%)`;
+    }
+
+    routeToInspo() {
+      this.router.navigate(['/inspo']);
     }
 }
 

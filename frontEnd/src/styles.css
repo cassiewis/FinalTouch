@@ -128,3 +128,90 @@ body { margin: 0; font-family: "Philosopher", sans-serif; font-weight: normal; }
 .button-theme:hover {
   opacity: 0.8;  
 }
+
+
+
+.create-button-form {
+
+  .create-button {
+    border: 0;
+    outline: 0;
+    cursor: pointer;
+    color: rgb(60, 66, 87);
+    background-color: none;
+    box-shadow: rgb(0 0 0 / 0%) 0px 0px 0px 0px, rgb(0 0 0 / 0%) 0px 0px 0px 0px, rgb(0 0 0 / 12%) 0px 1px 1px 0px, rgb(60 66 87 / 16%) 0px 0px 0px 1px, rgb(0 0 0 / 0%) 0px 0px 0px 0px, rgb(0 0 0 / 0%) 0px 0px 0px 0px, rgb(60 66 87 / 8%) 0px 2px 5px 0px;
+    border-radius: 50px;
+    font-size: 14px;
+    font-weight: 500;
+    padding: 16px 10px;
+    display: inline-block;
+    min-height: 28px;
+    transition: background-color .24s,box-shadow .24s;
+  }
+
+  .create-button:hover,
+  .create-button:focus {
+    box-shadow: rgb(0 0 0 / 0%) 0px 0px 0px 0px, rgb(0 0 0 / 0%) 0px 0px 0px 0px, rgb(0 0 0 / 12%) 0px 1px 1px 0px, rgb(60 66 87 / 16%) 0px 0px 0px 1px, rgb(0 0 0 / 0%) 0px 0px 0px 0px, rgb(60 66 87 / 8%) 0px 3px 9px 0px, rgb(60 66 87 / 8%) 0px 2px 5px 0px;
+  }
+
+  .popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+  
+  /* Popup content box */
+  .popup-content {
+    background-color: #F8F7F2;
+    position: relative;
+    max-width: 90%;
+    max-width: 900px;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    overflow-y: auto; /* Scrolls if content is too long */
+    max-height: 80vh; /* Limits the height */
+  }
+
+  .title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin: 25px 0 35px 0;
+    text-align: center;
+  }
+
+  .close-button {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    font-size: 1.2rem;
+    text-decoration: none;
+    cursor: pointer;
+    background: none;
+    border: none;
+  }
+
+  button[mat-raised-button] {
+    width: 100%;
+    margin-top: 20px;
+    font-size: 1rem;
+    font-weight: bold;
+  }
+
+  mat-form-field {
+    width: 100%;
+  }
+}
+
+@media (max-width: 500px) {
+  .page-title {
+    font-size: 1.5rem;
+  }
+}

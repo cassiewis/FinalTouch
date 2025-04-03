@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import Website.EventRentals.model.ReservedDate;
 import Website.EventRentals.service.DynamoDbReservedDateService;
+import Website.EventRentals.shared.model.ReservedDate;
 
 @RestController
 @RequestMapping("/api/reservedDates")

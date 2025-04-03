@@ -4,7 +4,9 @@
     <div class="image-placeholder">
       <div class="image-container">
         <div class="custom-hover-container">
-          <img class="custom-icon" src="/images/custom-icon.png" alt="Custom Icon">
+
+          <!-- only display custom image if product.id contains custom in the name -->
+          <img *ngIf="product.productId.toLowerCase().includes('custom')" class="custom-icon" src="/images/custom-icon.png" alt="Custom Icon">
           <span class="tooltip-text"><b>Custom Item</b><br>This item is customizable, read description for more details.</span>
         </div>
         <!-- <img class="custom-icon" src="/images/custom-icon.png" alt="Custom Icon"> -->

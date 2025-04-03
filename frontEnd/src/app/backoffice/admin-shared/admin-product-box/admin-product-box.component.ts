@@ -7,7 +7,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCalendarCellClassFunction } from '@angular/material/datepicker';
-import { AdminProductService } from '../../admin-product.service';
+import { AdminProductService } from '../../admin-services/admin-product.service';
 
 @Component({
   selector: 'app-admin-product-box',

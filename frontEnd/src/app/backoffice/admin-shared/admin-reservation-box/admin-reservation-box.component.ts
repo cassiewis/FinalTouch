@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { FormGroup, FormControl, ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { ReservationService } from '../../../services/reservation.service';
-import { AdminReservationsService } from '../../admin-reservations.service';
+import { AdminReservationsService } from '../../admin-services/admin-reservations.service';
 
 @Component({
   selector: 'app-admin-reservation-box',
@@ -79,7 +79,7 @@ export class AdminReservationBoxComponent {
     );
 
     this.editMode = false; // Exit edit mode
-    window.location.reload(); // reload the page so reservations update
+    // window.location.reload(); // reload the page so reservations update
   }
 
   cancelChanges(): void {
@@ -147,11 +147,18 @@ export class AdminReservationBoxComponent {
   }
 
   updateReservationStatus(newStatus: string): void {
+    // update reservation status ONLY if status changes
+    if (this.reservation.status === newStatus) {
+      this.showStatusDropdown = false; // Close the dropdown
+      return;
+    }
+    // Call the service to update the reservation status
     this.adminReservationService.updateReservationStatus(this.reservation.reservationId, newStatus)
       .subscribe({
         next: () => {
           this.reservation.status = newStatus; // Update the status locally
           this.showStatusDropdown = false; // Close the dropdown
+          // todo update cache 
         },
         error: (err) => {
           console.error('Error updating reservation status:', err);

@@ -1,6 +1,6 @@
 package Website.EventRentals.service;
 import Website.EventRentals.repositories.DynamoDbReservedDateRepository;
-import Website.EventRentals.model.ReservedDate;
+import Website.EventRentals.shared.model.ReservedDate;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -35,6 +35,20 @@ public class DynamoDbReservedDateService {
         return StreamSupport.stream(reservedDateTable.scan(scanRequest).items().spliterator(), false)
                 .collect(Collectors.toList());
     }
+
+    public List<String> getReservedDatesByProductId(String productId) {
+        List<String> list =  reservedDateRepository.getDatesByProductId(productId);
+        System.out.println("Cassie Reserved dates for product " + productId + ": " + list);
+        return list;
+    }
+
+    // todo Fetch all products avaliable for a specific date (or date range??)
+    public List<String> getAvailableProductsByDate(String date) {
+        List<String> list = reservedDateRepository.getAvailableProductIdsByDate(date);
+        System.out.println("Cassie Available products for date " + date + ": " + list);
+        return list;
+    }
+
 
     public boolean itemExists(String productId, String date) {
         ReservedDate reservedDate = reservedDateRepository.get(productId, date);

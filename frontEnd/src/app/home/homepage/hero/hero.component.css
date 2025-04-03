@@ -43,6 +43,7 @@ h1 {
     display: flex;
     align-items: center;
     gap: 10px;
+
 }
 
 .location-text {
@@ -58,9 +59,14 @@ h1 {
 /* Responsive Design for smaller screens */
 @media (max-width: 915px) {
 
+    
     body {
         flex-direction: column;
         height: 100%;
+    }
+
+    h1 {
+        width: 80%;
     }
 
     .text-side {
@@ -74,4 +80,30 @@ h1 {
         justify-content: center; /* Center content horizontally */
     }
 
+} 
+
+
+/* Responsive Design for phone screens */
+@media (max-width: 500px) {
+
+    .flower-text-container {
+        width: 90%;
+        position: relative;
+    }
+
+    .flower-image {
+        width: 150px;
+    }
+
+    .location-text {
+        align-self: center;
+        margin: 0;
+        padding: 0 30px;
+        z-index: 1;
+        position: absolute;
+    }
+
+    .hero-image {
+        width: 90%;
+    }
 }

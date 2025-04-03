@@ -4,10 +4,11 @@ import { OnInit } from '@angular/core';
 import { ImageService } from '../services/image.service';
 import { HeaderComponent } from '../shared/header/header.component';
 import { FooterComponent } from '../shared/footer/footer.component';
+import { TestimonialsComponent } from '../home/homepage/testimonials/testimonials.component';
 @Component({
   selector: 'app-inspo',
   standalone: true,
-  imports: [CommonModule, HeaderComponent, FooterComponent],
+  imports: [CommonModule, HeaderComponent, FooterComponent, TestimonialsComponent],
   templateUrl: './inspo.component.html',
   styleUrl: './inspo.component.css'
 })

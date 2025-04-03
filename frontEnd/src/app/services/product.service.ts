@@ -7,18 +7,19 @@ import { tap, switchMap } from 'rxjs/operators';
 @Injectable({
   providedIn: 'root'
 })
+
 export class ProductService {
   private apiUrl = 'http://localhost:8080/api/products';
-  private productsCache: Product[] = this.loadCacheFromLocalStorage();
-  private productsSubject = new BehaviorSubject<Product[]>(this.productsCache || []);
+  private productsCache: Product[] | null = null; // Initialize as null
+  private productsSubject = new BehaviorSubject<Product[]>([]);
   products$ = this.productsSubject.asObservable();
-  private localStorageKey = 'productsCache';
+  private sessionStorageKey = 'productsCache';
 
-  private autoRefreshInterval = 1800000; // Auto-refresh every 30 minutes (in milliseconds)
+  private autoRefreshInterval = 86400000; // Auto-refresh every 24 hours (in milliseconds)
 
   constructor(private http: HttpClient) {
-    // Start auto-refresh timer
-    this.startAutoRefresh();
+    // Check for expired cache on app load
+    this.productsCache = this.loadCacheFromSessionStorage();
   }
 
   /**
@@ -27,9 +28,8 @@ export class ProductService {
   fetchProducts(): Observable<Product[]> {
     return this.http.get<Product[]>(this.apiUrl).pipe(
       tap(products => {
-        console.log('Fetched products from backend:', products);
         this.productsCache = products;
-        this.saveCacheToLocalStorage(products); // Save to localStorage
+        this.saveCacheToSessionStorage(products); // Save to localStorage
         this.productsSubject.next(products); // Notify subscribers
       })
     );
@@ -40,81 +40,71 @@ export class ProductService {
    * Uses cached products if available; otherwise fetches from the backend.
    */
   getProducts(): Observable<Product[]> {
-    if (this.productsCache.length === 0) {
-      // Fetch from backend if cache is empty
-      return this.fetchProducts().pipe(
-        tap(products => {
-          this.productsCache = products;
-          this.productsSubject.next(this.productsCache); // Notify active products
-        }),
-        switchMap(() => this.products$) // Return active products as observable
-      );
+    if (!this.productsCache) {
+      console.log('Cache is empty, loading from localStorage...');
+      this.productsCache = this.loadCacheFromSessionStorage();
     }
+
+    if (this.productsCache.length === 0) {
+      console.log('Cache is still empty, fetching products from backend...');
+      return this.fetchProducts();
+    }
+
+    console.log('Returning cached products:', this.productsCache);
+    this.productsSubject.next(this.productsCache);
     return this.products$;
   }
 
   /**
    * Get a single product by its ID.
-   * Always fetches from the backend to ensure the latest data.
+   * Gets product from the saved products cache.
    */
-  // todo only return active product
   getProduct(productId: string): Observable<Product> {
-    const url = `${this.apiUrl}/${productId}`;
-    return this.http.get<Product>(url).pipe(
-      tap(product => {
-        console.log('Fetched product:', product);
-      })
-    );
-  }
-
-  /**
-   * Save cache to localStorage.
-   */
-  private saveCacheToLocalStorage(products: Product[]): void {
-    localStorage.setItem(this.localStorageKey, JSON.stringify(products));
-  }
-
-  /**
-   * Load cache from localStorage.
-   */
-  private loadCacheFromLocalStorage(): Product[] {
-    const cachedData = localStorage.getItem(this.localStorageKey);
-    return cachedData ? JSON.parse(cachedData) : [];
-  }
-
-  /**
-   * Add a product to the cache (used by AdminProductService as well).
-   */
-  addProductToCache(product: Product): void {
-    this.productsCache.push(product);
-    this.productsSubject.next([...this.productsCache]);
-  }
-
-  /**
-   * Update a product in the cache (used by AdminProductService as well).
-   */
-  updateProductCache(updatedProduct: Product): void {
-    const index = this.productsCache.findIndex(p => p.productId === updatedProduct.productId);
-    if (index > -1) {
-      this.productsCache[index] = updatedProduct;
-      this.productsSubject.next([...this.productsCache]);
+    /* check if cache is null or not */
+    if (!this.productsCache) {
+      console.log('Cache is empty, loading from localStorage...');
+      this.productsCache = this.loadCacheFromSessionStorage();
     }
+    // if product is found in the cache, return it, otherwise fetch from backend
+    const product = this.productsCache.find(p => p.productId === productId);
+    if (product) {
+      return new Observable<Product>(subscriber => {
+        subscriber.next(product);
+        subscriber.complete();
+      });
+    }
+    return this.http.get<Product>(`${this.apiUrl}/${productId}`);
   }
 
   /**
-   * Remove a product from the cache (used by AdminProductService as well).
+   * Save cache to session storage.
    */
-  removeProductFromCache(productId: string): void {
-    this.productsCache = this.productsCache.filter(p => p.productId !== productId);
-    this.productsSubject.next([...this.productsCache]);
+  private saveCacheToSessionStorage(products: Product[]): void {
+    const cacheData = {
+      products,
+      timestamp: Date.now() // Save the current timestamp
+    };
+    sessionStorage.setItem(this.sessionStorageKey, JSON.stringify(cacheData));
   }
 
   /**
-   * Start an auto-refresh timer to periodically fetch products from the backend.
+   * Load cache from session storage.
    */
-  private startAutoRefresh(): void {
-    timer(0, this.autoRefreshInterval)
-      .pipe(switchMap(() => this.fetchProducts()))
-      .subscribe();
+  private loadCacheFromSessionStorage(): Product[] {
+    const cachedData = sessionStorage.getItem(this.sessionStorageKey);
+    if (cachedData) {
+      const { products, timestamp } = JSON.parse(cachedData);
+  
+      // Check if the cache is older than 24 hours
+      if (Date.now() - timestamp > this.autoRefreshInterval) {
+        console.log('Cache expired, clearing sessionStorage...');
+        sessionStorage.removeItem(this.sessionStorageKey); // Clear expired cache
+        return [];
+      }
+  
+      return products;
+    }
+    return [];
   }
+
 }

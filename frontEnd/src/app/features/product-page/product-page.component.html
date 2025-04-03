@@ -1,5 +1,4 @@
-<app-header></app-header>
-<body>
+<body class="container white-background">
   <div class="loading-section" *ngIf="loading">
     <app-loading-icon></app-loading-icon>
   </div>
@@ -21,22 +20,20 @@
             <p>${{ product.price }}</p>
           </div>
         </div>
-        <div class="cart-button-container">
+        <div class="reserve-container">
           <app-reserve></app-reserve>
         </div>
       </div>
     </div>
 
-    <div class="footer-container">
-      <div class="deposit-container">
-        <p>
-          A deposit of ${{ product.deposit }} will be added to your total. 
-          This is refundable upon return of items with no damages.
-        </p>
-      </div>
-      <div class="footer-image-container">
-      </div>
+    <!-- <div class="footer-container"> -->
+    <div class="deposit-container">
+      <img class="deposit-line" src="images/deposit-line.png">
+      <p class="deposit-text blue-background">
+        <b>A deposit of ${{ product.deposit }} will be added to your total.</b><br> 
+        This is refundable upon return of items within the agreed upon time, with no damages.
+      </p>
+      <img class="deposit-line" src="images/deposit-line-bow.png">
     </div>
   </div>
-  <app-footer></app-footer>
 </body>

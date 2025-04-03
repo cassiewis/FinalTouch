@@ -1,23 +1,26 @@
 package Website.EventRentals.model;
-import java.time.LocalDate;
+
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Reservation {
     private String status;
     private String reservationId;
     private String name;
-    private List<LocalDate> dates;
+    private List<String> dates;
     private String pickupNotes;
+
     @JsonProperty("items")
     private List<ReservedItem> items;
+
     private String email;
     private String phoneNumber;
     private String customerNotes;
     private double price;
     private double deposit;
-    private LocalDate reservedOn;
+    private String reservedOn;
     private String invoiceStatus;
     private String paymentStatus;
     private String depositStatus;
@@ -51,11 +54,11 @@ public class Reservation {
     }
 
     // Getter and Setter for dates
-    public List<LocalDate> getDates() {
+    public List<String> getDates() {
         return this.dates;
     }
 
-    public void setDates(List<LocalDate> dates) {
+    public void setDates(List<String> dates) { // conversion to string is handled in frontend
         this.dates = dates;
     }
 
@@ -73,7 +76,9 @@ public class Reservation {
         return this.items;
     }
 
+    @JsonIgnore
     public List <String> getItemIds() {
+        System.out.println("getItemIds() called. Items: " + (items == null ? "null" : items.size()));
         return this.items.stream().map(ReservedItem::getProductId).toList();
     }
 
@@ -127,11 +132,11 @@ public class Reservation {
     }
 
     // Getter and Setter for reservedOn
-    public LocalDate getReservedOn() {
+    public String getReservedOn() {
         return this.reservedOn;
     }
 
-    public void setReservedOn(LocalDate reservedOn) {
+    public void setReservedOn(String reservedOn) {
         this.reservedOn = reservedOn;
     }
 

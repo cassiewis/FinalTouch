@@ -6,13 +6,14 @@ import { CheckoutPopupComponent } from './checkout-popup/checkout-popup.componen
 import { ProductService } from '../../services/product.service';
 import { CartItemComponent } from '../cart-item/cart-item.component';
 import { HeaderComponent } from '../../shared/header/header.component';
+import { FooterComponent } from '../../shared/footer/footer.component';
 
 @Component({
   selector: 'app-cart',
   templateUrl: './cart-page.component.html',
   styleUrls: ['./cart-page.component.css'],
   standalone: true,
-  imports: [CommonModule, RouterModule, CheckoutPopupComponent, CartItemComponent, HeaderComponent]
+  imports: [CommonModule, RouterModule, CheckoutPopupComponent, CartItemComponent, HeaderComponent, FooterComponent]
 })
 export class CartComponent implements OnInit{
   cartItems: CartItem[] = [];

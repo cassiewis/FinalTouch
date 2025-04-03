@@ -4,7 +4,7 @@ import { AdminAddReservationComponent } from '../admin-shared/admin-add-reservat
 import { HttpClientModule } from '@angular/common/http';
 import { Reservation } from '../../models/reservation.model';
 import { ReservationService } from '../../services/reservation.service';
-import { AdminReservationsService } from '../admin-reservations.service';
+import { AdminReservationsService } from '../admin-services/admin-reservations.service';
 import { MatDialog } from '@angular/material/dialog';
 import { AdminReservationBoxComponent } from '../admin-shared/admin-reservation-box/admin-reservation-box.component';
 
@@ -21,7 +21,7 @@ import { AdminReservationBoxComponent } from '../admin-shared/admin-reservation-
   styleUrl: './admin-reservations.component.css'
 })
 export class AdminReservationsComponent {
-reservations: Reservation[] = [];
+  reservations: Reservation[] = [];
   filteredReservations: Reservation[] = [];  // Array for filtered reservations
   selectedStatuses: string[] = []; // Array to track selected statuses
   loading: boolean = true;
@@ -30,11 +30,13 @@ reservations: Reservation[] = [];
 
   ngOnInit(): void {
     // Get reservations from service
-    this.adminReservationsService.getReservations().subscribe(
+    this.adminReservationsService.getAdminReservations().subscribe(
       (reservations: Reservation[]) => {
         // Separate reservations into those pending approval and others
         this.reservations = reservations;
+        console.log('Reservations:', this.reservations); // Debugging
         this.filteredReservations = [...this.reservations]; // Initialize filtered list
+        console.log('filteredReservations:', this.filteredReservations); // Debugging
         this.loading = false;
 
         // Always keep 'approval needed' reservations separate

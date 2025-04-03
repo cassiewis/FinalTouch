@@ -52,9 +52,23 @@ export class ReserveComponent {
     if (productId) {
 
       // Subscribe to the observable
+      // this.productService.getProduct(productId).subscribe(
+      //   (product: Product) => {
+      //     this.product = product;
+      //   },
+      //   error => console.error('Error fetching product:', error)
+      // );
+
+      // instead of get product, check if product.reservedDates == null
+      // if null, then get the products dates from the backend
+
       this.productService.getProduct(productId).subscribe(
         (product: Product) => {
           this.product = product;
+          console.log('Product:', this.product); // Debugging
+          if (this.product.datesReserved == null) {
+            // get product Reserved Dates
+          }
         },
         error => console.error('Error fetching product:', error)
       );

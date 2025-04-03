@@ -1,5 +1,4 @@
 body {
-    background-color: #FAFAF5;
     display: flex;
     justify-content: center;
     align-items: center; 
@@ -8,29 +7,33 @@ body {
 }
 
 .inspo-header {
-  /* border: 1px solid black; */
   margin: 20px;
   width: 90%;
 }
 
-h1 {
-}
-
 .grid-container {
-  columns: 4 200px;
-  column-gap: 1.5rem;
-  width: 90%;
+  columns: 4 200px; /* Change this to 5 in the future when I have a TON of photos*/
+  column-gap: 1rem;
+  width: 80%;
   margin: 0 auto;
   div {
     width: 150px;
     margin: 0 1.5rem 1.5rem 0;
     display: inline-block;
     width: 100%;
-
     img {
       width: 100%;
       border-radius: 5px;
     }
+
+  }
+}
+
+@media (max-width: 600px) {
+  .grid-container {
+    columns: 2 150px;
+    width: 95%;
+    column-gap: 0.75rem;
 
   }
 }

@@ -2,14 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ProductListComponent } from "./product-list/product-list.component";
 import { HttpClientModule } from '@angular/common/http';
-import { HeaderComponent } from '../shared/header/header.component';
-import { FooterComponent } from '../shared/footer/footer.component';
 @Component({
   selector: 'app-shop',
   templateUrl: './shop.component.html',
   styleUrls: ['./shop.component.css'],
   standalone: true, 
-  imports: [CommonModule, ProductListComponent, HeaderComponent, FooterComponent, HttpClientModule], // Import the ProductComponent
+  imports: [CommonModule, ProductListComponent, HttpClientModule], // Import the ProductComponent
   providers: [], // Provide the ProductService
 
 })

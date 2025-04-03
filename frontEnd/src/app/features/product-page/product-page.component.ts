@@ -7,14 +7,15 @@ import { Location } from '@angular/common';
 import { CartService } from '../../cart/cart-service.service';
 import { ReserveComponent } from './reserve/reserve.component';
 import { LoadingIconComponent } from '../../shared/loading-icon/loading-icon.component';
-import { FooterComponent } from '../../shared/footer/footer.component';
-import { HeaderComponent } from '../../shared/header/header.component';
+import { catchError } from 'rxjs/operators';
+import { of } from 'rxjs';
+
 @Component({
   selector: 'app-product-page',
   templateUrl: './product-page.component.html',
   styleUrls: ['./product-page.component.css'],
   standalone: true,
-  imports: [ReserveComponent, CommonModule, LoadingIconComponent, HeaderComponent, FooterComponent],
+  imports: [ReserveComponent, CommonModule, LoadingIconComponent],
 })
 export class ProductPageComponent implements OnInit {
   product!: Product; // Assert that Product will always be defined
@@ -37,18 +38,27 @@ export class ProductPageComponent implements OnInit {
     this.productId = this.route.snapshot.paramMap.get('productId');
 
     // Subscribe to the observable
-    if (this.productId){
-      this.productService.getProduct(this.productId).subscribe(
-        (product: Product) => {
-          this.product = product;
-          this.loading = false; 
-        },
-        error => console.error('Error fetching product:', error)
+    if (this.productId) {
+      console.log("Checking if product exists...");
+      this.productService.getProduct(this.productId).pipe(
+        catchError(error => {
+          console.log('Error fetching product. Rerouting to 404');
+          this.router.navigate(['/notFound']); // Navigate to the notFound page
+          return of(null); // Return an empty observable to complete the stream
+        })
+      ).subscribe(
+        (product: Product | null) => {
+          if (product) {
+            this.product = product;
+            this.loading = false;
+          }
+        }
       );
     } else {
       console.log("Cannot find ProductId");
       this.router.navigate(['/notFound']);
     }
+
 
     // Scroll to the top on page load
     this.router.events.subscribe(event => {

@@ -12,12 +12,12 @@
           <input matStartDate formControlName = "start" placeholder="Pickup date">
           <input matEndDate formControlName = "end" placeholder="Dropoff date">
         </mat-date-range-input>
-        <mat-hint>Reserve up to 5 days, days open 1 year out</mat-hint>
+        <mat-hint>Reserve up to 5 days, reservations open 1 year in advance</mat-hint>
         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
         <mat-date-range-picker #picker></mat-date-range-picker>    
     </mat-form-field>
   </div>
-  <button class="reserve-button"
+  <button class="reserve-button button-theme pink-background"
     (click)="onCartClick()">
     Reserve
 </button> 

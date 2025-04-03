@@ -1,12 +1,16 @@
 package Website.EventRentals.repositories;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
-import Website.EventRentals.model.ReservedDate;
+import Website.EventRentals.shared.model.ReservedDate;
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbEnhancedClient;
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbTable;
 import software.amazon.awssdk.enhanced.dynamodb.TableSchema;
+import software.amazon.awssdk.enhanced.dynamodb.model.QueryConditional;
 
 @Repository
 public class DynamoDbReservedDateRepository {
@@ -20,13 +24,7 @@ public class DynamoDbReservedDateRepository {
     // Your repository methods here
 
     public ReservedDate save(ReservedDate reservedDate) {
-        System.out.println("CASSIE ReservedDateRepository: save reservedDate: " + reservedDate);
-        System.out.println("CASSIE ReservedDateRepository: reservedDate productId: " + reservedDate.getProductId());
-        System.out.println("CASSIE ReservedDateRepository: reservedDate date: " + reservedDate.getDate());
-        System.out.println("CASSIE ReservedDateRepository: reservedDate status: " + reservedDate.getStatus());
-        System.out.println("CASSIE ReservedDateRepository: reservedDate reservationId: " + reservedDate.getReservationId());
         reservedDateTable.putItem(reservedDate);
-        System.out.println("CASSIE ReservedDateRepository: item was put");
         return reservedDate;
     }
 
@@ -36,6 +34,23 @@ public class DynamoDbReservedDateRepository {
 
     public void delete(String productId, String date) {
         reservedDateTable.deleteItem(r -> r.key(k -> k.partitionValue(productId).sortValue(date)));
+    }
+
+    public List<String> getDatesByProductId(String productId) {
+    return reservedDateTable.query(r -> r.queryConditional(QueryConditional.keyEqualTo(k -> k.partitionValue(productId))))
+            .items()
+            .stream()
+            .map(ReservedDate::getDate) // Extract dates
+            .collect(Collectors.toList());
+    }
+
+    public List<String> getAvailableProductIdsByDate(String date) {
+        return reservedDateTable.index("date-productId-index") // Use the GSI name
+                .query(r -> r.queryConditional(QueryConditional.keyEqualTo(k -> k.partitionValue(date))))
+                .stream() // Stream over the pages
+                .flatMap(page -> page.items().stream()) // Extract items from each page
+                .map(ReservedDate::getProductId) // Extract product IDs
+                .collect(Collectors.toList());
     }
 
     // Add more methods as needed

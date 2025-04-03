@@ -7,7 +7,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core'; // for date picker functionality
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Reservation } from '../../../models/reservation.model';
-import { ReservationService } from '../../../services/reservation.service';
+import { AdminReservationsService } from '../../admin-services/admin-reservations.service';
 import { Product } from '../../../models/product.model';
 import { ProductService } from '../../../services/product.service';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -55,7 +55,7 @@ export class AdminAddReservationComponent {
   
   constructor(
     private productService: ProductService, 
-    private reservationService: ReservationService,
+    private adminReservationService: AdminReservationsService,
     private snackBar: MatSnackBar){}
     
 
@@ -77,10 +77,12 @@ export class AdminAddReservationComponent {
 
     const { dates } = this.reservation;
 
+    // store in format YYYY-MM-DD
     if (dates && dates.length === 2) {
       const [start, end] = dates;
       this.reservation.dates = this.getDateRange(start, end);
-      console.log('Reservation data:', this.reservation);
+      
+      console.log('dates:', this.reservation.dates);
     }
 
     this.reservation.items = this.products.filter(product => this.selectedItems[product.productId]); // Filter selected products
@@ -104,7 +106,7 @@ export class AdminAddReservationComponent {
     // Logic to handle reservation submission, e.g., save data to backend or S3
     console.log('Reservation details:', this.reservation);
 
-    this.reservationService.addReservation(this.reservation).subscribe(
+    this.adminReservationService.addReservation(this.reservation).subscribe(
       (response: Reservation) => { // Specify the response type
         console.log('Reservation added successfully:', response);
       },

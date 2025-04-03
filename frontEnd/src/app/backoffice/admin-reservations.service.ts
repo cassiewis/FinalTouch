@@ -12,8 +12,8 @@ export class AdminReservationsService {
     private apiUrl = 'http://localhost:8080/api/admin/reservations'; // Admin API endpoint
 
     // Admin-specific reservation cache (includes all reservations)
-    private localStorageKey = 'adminReservationsCache'; // Key to store cache in localStorage
-    private adminReservationsCache: Reservation[] = this.loadCacheFromLocalStorage();
+    private sessionStorageKey = 'adminReservationsCache'; // Key to store cache in localStorage
+    private adminReservationsCache: Reservation[] = this.loadCacheFromSessionStorage();
     private adminReservationsSubject = new BehaviorSubject<Reservation[]>(this.adminReservationsCache || []);
     private adminActiveReservationsSubject = new BehaviorSubject<Reservation[]>([]);
     adminReservations$ = this.adminReservationsSubject.asObservable();
@@ -36,40 +36,40 @@ export class AdminReservationsService {
         tap(reservations => {
           console.log('Fetched reservations from backend:', reservations);
           this.adminReservationsCache = reservations;
-          this.saveCacheToLocalStorage(reservations); // Save to localStorage
+          this.saveCacheToSessionStorage(reservations); // Save to localStorage
           this.adminReservationsSubject.next(reservations); // Notify subscribers
         })
       );
     }
 
     // Fetch all reservations from the API
-      getReservations(): Observable<Reservation[]> {
+    getAdminReservations(): Observable<Reservation[]> {
 
-        if (this.adminReservationsCache.length === 0) {
-          // Fetch from backend if cache is empty
-          return this.fetchReservations().pipe(
-            tap(products => {
-              this.adminReservationsCache = products;
-              this.adminReservationsSubject.next(this.adminReservationsCache); // Notify active products
-            }),
-            switchMap(() => this.adminReservations$) // Return products as observable
-          );
-        }
-        return this.adminReservations$;
-      }
-    
-      getReservation(reservationId: string): Observable<Reservation> {
-        const headers = new HttpHeaders({
-          'Authorization': 'Bearer ' + this.getAdminToken() // Use a token or other method to authenticate as admin
-          });
-          
-        const url = `${this.apiUrl}/${reservationId}`;
-        return this.http.get<Reservation>(url, { headers }).pipe(
-          tap(reservation => {
-            console.log("Fetched Reservation: ", reservation);
-          })
+      if (this.adminReservationsCache.length === 0) {
+        // Fetch from backend if cache is empty
+        return this.fetchReservations().pipe(
+          tap(products => {
+            this.adminReservationsCache = products;
+            this.adminReservationsSubject.next(this.adminReservationsCache); // Notify active products
+          }),
+          switchMap(() => this.adminReservations$) // Return products as observable
         );
       }
+      return this.adminReservations$;
+    }
+  
+    getAdminReservation(reservationId: string): Observable<Reservation> {
+      const headers = new HttpHeaders({
+        'Authorization': 'Bearer ' + this.getAdminToken() // Use a token or other method to authenticate as admin
+        });
+        
+      const url = `${this.apiUrl}/${reservationId}`;
+      return this.http.get<Reservation>(url, { headers }).pipe(
+        tap(reservation => {
+          console.log("Fetched Reservation: ", reservation);
+        })
+      );
+    }
 
     /**
      * Update an existing reservation in the backend and synchronize the cache.
@@ -114,17 +114,17 @@ export class AdminReservationsService {
     }
 
     /**
-   * Save cache to localStorage.
+   * Save cache to sessionStorage.
     */
-    private saveCacheToLocalStorage(reservations: Reservation[]): void {
-      localStorage.setItem(this.localStorageKey, JSON.stringify(reservations));
+    private saveCacheToSessionStorage(reservations: Reservation[]): void {
+      sessionStorage.setItem(this.sessionStorageKey, JSON.stringify(reservations));
     }
   
     /**
-     * Load cache from localStorage.
+     * Load cache from sessionStorage.
      */
-    private loadCacheFromLocalStorage(): Reservation[] {
-      const cachedData = localStorage.getItem(this.localStorageKey);
+    private loadCacheFromSessionStorage(): Reservation[] {
+      const cachedData = sessionStorage.getItem(this.sessionStorageKey);
       return cachedData ? JSON.parse(cachedData) : [];
     }
 

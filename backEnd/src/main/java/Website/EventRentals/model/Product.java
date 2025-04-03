@@ -2,8 +2,6 @@ package Website.EventRentals.model;
 import java.time.LocalDate;
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-
 public class Product {
     private String productId;
     private boolean active;
@@ -12,8 +10,7 @@ public class Product {
     private double deposit;
     private String description;
     private String imageUrl; // Store the S3 URL for the image
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    private List<LocalDate> datesReserved;
+    private final List<LocalDate> datesReserved = null;
 
     public String getProductId() {
         return productId;
@@ -69,13 +66,5 @@ public class Product {
 
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
-    }
-
-    public List<LocalDate> getDatesReserved () {
-        return datesReserved;
-    }
-
-    public void setDatesReserved (List<LocalDate> reservedDates) {
-        this.datesReserved = reservedDates;
     }
 }

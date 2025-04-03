@@ -8,7 +8,7 @@ import { MatNativeDateModule } from '@angular/material/core'; // for date picker
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Product } from '../../../models/product.model';
 import { ProductService } from '../../../services/product.service';
-import { AdminProductService } from '../../admin-product.service';
+import { AdminProductService } from '../../admin-services/admin-product.service';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatSnackBar } from '@angular/material/snack-bar';  // Import Snackbar
 

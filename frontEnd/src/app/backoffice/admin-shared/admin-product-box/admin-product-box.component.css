@@ -122,6 +122,9 @@
 
 .description {
     font-size: 12px;
+    max-height: 150px;
+    /* make it scrollable if it exeeds height */
+    overflow-y: auto;
 }
 
 .edit-popup {

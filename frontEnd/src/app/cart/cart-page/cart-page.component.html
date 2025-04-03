@@ -1,31 +1,26 @@
-<app-header></app-header>
-
-<div class="cart-page">
+<div class="cart-page white-background">
   <div class="title">
-    <h1>
-        Your Cart
-    </h1>
-    <hr class="cart-line">
+    <p class="page-title">Your Cart</p>
   </div>
 
   <div class="cart-empty" *ngIf="cartItems.length === 0">
-    <p>No items in cart... yet!</p>
-    <button (click)="goShop()" class="shop-button">Shop</button>
+    <p>No items in you cart... yet!</p>
+    <button (click)="goShop()" class="shop-button button-theme light-pink-background">shop now</button>
   </div>
 
   <div class="cart-full" *ngIf="cartItems.length > 0">
-      <div class="cart-items-list">
-        <div class="grid-header">
-          <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PRODUCT</p>
-          <p></p>
-          <p>PRICE</p>
-          <p>DATES</p>
-          <p></p>
-        </div>
-        <div class="cart-item" *ngFor="let item of cartItems">
-          <app-cart-item [item]="item" (updateCart)="updateCart()"></app-cart-item>
-        </div>
+    <div class="cart-items-list">
+      <div class="grid-header secondary-font">
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PRODUCT</p>
+        <p></p>
+        <p>PRICE</p>
+        <p>DATES</p>
+        <p></p>
       </div>
+      <div class="cart-item" *ngFor="let item of cartItems">
+        <app-cart-item [item]="item" (updateCart)="updateCart()"></app-cart-item>
+      </div>
+    </div>
     <div class="cart-total-list">
       <div class="cart-pricing">
         <h1>Order Summary</h1>
@@ -42,10 +37,10 @@
         </div>
         <hr>
         <h2>Total: ${{ totalCost + totalDeposit }}</h2>
-        <i>Due 6 months before reservation date</i>
+        <!-- <i>Due 6 months before reservation date</i> todo figure out when its due and write here -->
       </div>
       <form></form>
-      <button class="checkout-button" (click)="showPopup()">Checkout</button>
+      <button class="checkout-button white-font green-background" (click)="showPopup()">Checkout</button>
     </div>
   </div>
   <app-checkout-popup></app-checkout-popup>

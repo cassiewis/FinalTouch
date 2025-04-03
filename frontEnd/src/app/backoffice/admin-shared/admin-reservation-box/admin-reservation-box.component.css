@@ -253,10 +253,6 @@ input[type="text"], input[type="number"], input[type="date"], input[type="email"
     border: 1px solid black;
 }
 
-.date-range-row p {
-    /* margin: 0; */
-}
-  
 
   @media (max-width: 900px) {
 

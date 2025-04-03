@@ -2,7 +2,6 @@
     display: flex;
     justify-content: flex-start;
     flex-direction: column;
-    /* padding: 10px;  Optional: add padding for better spacing within the box */
 }
 
 .availability-checker {
@@ -13,32 +12,34 @@
 }
 
 mat-hint {
-    font-size: 11px;
+    font-size: 0.6rem;
 }
 
 .reserve-button {
-    background-color: #EB838B;
-    border-radius: 8px;
-    border-style: none;
-    box-sizing: border-box;
-    color: #FFFFFF;
-    cursor: pointer;
-    font-family: "Philosopher", sans-serif;
-    font-size: 18px;
-    height: 55px;
-    width: 100px;
-    padding: 5px;
-    position: relative;
-    text-align: center;
-    text-decoration: none;
-    transition: color 100ms;
-    vertical-align: baseline;
-    user-select: none;
-    -webkit-user-select: none;
-    touch-action: manipulation;
-}
+    height: 50px;
+    color: rgb(60, 60, 60);
+ }
 
-.reserve-button:hover,
-.reserve-button:focus {
-  background-color: #cd6d75;
+
+@media (max-width: 500px) {
+
+    .input-box {
+        width: 200px;
+        margin: 0;
+    }
+
+    .reserve-button {
+        width: 100%;
+        font-size: 0.75rem;
+    }
+
+    mat-label {
+        font-size: 0.75rem;
+    }
+
+    mat-hint {
+        padding: 0;
+        margin: 0 -115px 0 -15px;
+    }
+    
 }

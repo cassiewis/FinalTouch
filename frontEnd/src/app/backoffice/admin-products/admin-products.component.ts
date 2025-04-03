@@ -4,7 +4,7 @@ import { AdminAddProductComponent } from '../admin-shared/admin-add-product/admi
 import { Product } from '../../models/product.model';
 import { AdminProductBoxComponent } from '../admin-shared/admin-product-box/admin-product-box.component';
 // import { ProductService } from '../../services/product.service';
-import { AdminProductService } from '../admin-product.service';
+import { AdminProductService } from '../admin-services/admin-product.service';
 
 @Component({
   selector: 'app-admin-products',

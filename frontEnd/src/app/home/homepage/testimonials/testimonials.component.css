@@ -1,3 +1,7 @@
+* {
+  box-sizing: border-box;
+}
+
 body {
     margin: 0px;
     padding: 50px 0px;
@@ -41,8 +45,8 @@ body {
   flex: 0 0 auto; /* Prevents the review boxes from shrinking or growing */
   background-color: white;
   border-radius: 10px;
-  width: 180px; /* Ensures each review box has a consistent width */
-  height: 275px; /* Sets a fixed height for the review box */
+  width: 190px; /* Ensures each review box has a consistent width */
+  height: 290px; /* Sets a fixed height for the review box */
   text-align: center;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Adds a subtle shadow for better visuals */
   overflow: hidden; /* Ensures content stays within the box */
@@ -53,7 +57,7 @@ body {
   text-align: left; /* Aligns text to the left */
   white-space: normal; /* Allows text to wrap inside the review box */
   word-wrap: break-word; /* Breaks long words to prevent overflow */
-  font-size: 1rem;
+  font-size: 0.9rem;
   overflow: hidden; /* Prevents horizontal overflow */
 }
 
@@ -72,4 +76,35 @@ body {
 
 .star {
   font-size: inherit;
+}
+
+@media (max-width: 915px) {
+  body {
+    flex-direction: column;
+  }
+
+  .reviews-side, .title-side {
+    width: 100%;
+    justify-content: left;
+    padding: 20px;
+  }  
+
+  .title-container {
+    padding: 0;
+    width: 100%;
+    align-items: left;
+  }
+
+}
+
+@media (max-width: 500px) {
+
+  .review {
+      font-size: 0.8rem;
+  }
+
+  .stars {
+    padding: 5px;
+    margin: 0;
+  }
 }

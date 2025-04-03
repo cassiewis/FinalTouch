@@ -1,32 +1,14 @@
 .cart-page {
-  /* padding: 50px; */
-  background-color: #FAFAF5;
-  color: #454545;
-  font-weight: normal;
-}
-
-.title {
-  padding: 35px;
-  color: #454545;
-  font-weight: normal;
-}
-
-.title h1 {
-  font-weight: normal;
-  font-size: 40px;
-}
-
-.cart-line {
-  height:5px;
-  border-top:1.5px solid #E6E6E6;
-  border-bottom:3px solid #E6E6E6;
-  border-left: none;
-  border-right: none;
+  flex: 1; /* Allows the cart page to grow and fill the available space */
+  display: flex;
+  flex-direction: column; /* Ensures content inside the cart page is stacked */
+  min-height: 68vh; /* Ensures it stretches to fill the height */
 }
 
 .cart-empty {
   text-align: center;
   margin: 30px;
+  font-weight: normal;
 }
 
 .cart-full {
@@ -36,35 +18,6 @@
   gap: 25px;
 }
 
-.shop-button {
-  background-color: #b1c4d6;
-  border-radius: 100px;
-  border-style: none;
-  box-sizing: border-box;
-  color: #FFFFFF;
-  cursor: pointer;
-  font-family: "Philosopher", sans-serif;
-  font-size: 18px;
-  height: 7vw;
-  min-height: 80px;
-  width: 7vw;
-  min-width: 80px;
-  padding: 5px;
-  position: relative;
-  text-align: center;
-  text-decoration: none;
-  transition: color 100ms;
-  vertical-align: baseline;
-  user-select: none;
-  -webkit-user-select: none;
-  touch-action: manipulation;
-  cursor: pointer;
-}
-
-.shop-button:hover,
-.shop-button:focus {
-  background-color: #c6ced6;
-}
 
 .grid-header {
   display: grid;
@@ -75,6 +28,7 @@
   align-items: center;
   border-bottom: 1px solid gray;
   width: 100%;
+  font-size: .8rem;
 }
 
 .cart-items-list {
@@ -146,9 +100,7 @@
 
 .checkout-button {
   padding: 15px 0px;
-  background-color: #b2ba9e;
   font-size: 18px;
-  color: white;
   border: none;
   cursor: pointer;
   width: 100%;
@@ -219,8 +171,10 @@
     font-size: 30px;
     
   }
+
   .cart-full {
     flex-direction: column;
+    padding: 10px;
   }
 
   .cart-items-list {
@@ -228,10 +182,20 @@
   }
 
   .cart-total-list {
-    /* display: flex;
-    flex-direction: column; */
     max-width: 500px;
-    width: 100%;
+    width: 90%;
+    align-self: center;
+    margin-bottom: 50px;
+  }
+
+}
+
+
+@media (max-width: 500px) {
+
+  .cart-item {
+    height: auto;
+
   }
 
 }

@@ -1,5 +1,6 @@
 
-.popup-overlay {
+.popup-container {
+    z-index: 1000;
     position: fixed;
     top: 0;
     left: 0;
@@ -7,51 +8,64 @@
     height: 100%;
     background: rgba(0, 0, 0, 0.5);
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
-  }
-  
-  .popup-content {
-    background-color: #ccc4ba;
-    padding: 15px;
-    border-radius: 4px;
+    padding: 0;
+    margin: 0;
   }
 
-.back-button {
-    position: absolute; /* Make the button fixed inside the container */
-    top: 0; /* Align to the top */
-    left: 0; /* Align to the left */
-    margin: 10px; /* Optional: Add some margin if you want space from the edges */
-  
-    border: none;
-    background-color: white;
-    /* margin: 2%; */
-    /* margin-left: 3%; */
-    font-family: "Philosopher", sans-serif;
-    font-size: 25px;
-    color: rgb(95, 95, 95);
-    cursor: pointer;
-  }
+.popup-content {
+    position: relative;
+    margin: 15px;
+    flex: 0 1 60%; 
+    max-width: 800px; 
+    min-width: 300px; 
+    transition: width 0.3s ease; 
+    max-height: 90%;
+    min-height: 75%;
+    overflow-y: auto;
+}
 
+.form-container {
+    display: flex;
+    flex-direction: column;
+    padding: 30px;
+}
+
+.reservation-header {
+    /* add background image*/
+    background-image: url("/images/reservation-form-header.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    /* opacity: 0.7; */
+    border: 2px solid white;
+    
+}
 
 .title {
     text-align: center;
-    margin-bottom: 20px;
-    color: #393838;
-    text-shadow: 3px 3px 5px rgb(220, 220, 220);
+    font-size: 2rem;
+    font-weight: normal;
+    padding: 20px;
+    color: black;
+    opacity: 1;
 }
 
-.form-body {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    background-color: white;
-    max-width: 800px;
-    padding: 30px;
-    border-radius: 4px;
-    margin: 0 auto;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-}
+
+.back-button {
+    position: absolute; 
+    background: none;
+    top: 0; 
+    left: 0; 
+    margin: 10px; 
+    border: none;
+    /* background-color: none/; */
+    font-family: "Philosopher", sans-serif;
+    font-size: 25px;
+    cursor: pointer;
+  }
 
 .form-items {
     text-align: center;
@@ -75,10 +89,10 @@
     padding: 10px;
     font-size: 16px;
     margin-top: 5px;
-    border: 1px solid #ccc;
+    border: 1px solid black;
     border: none;
     border-radius: 4px;
-    background-color: rgb(246, 246, 246);
+    background-color: white;
     resize: none; 
 }
 
@@ -87,37 +101,6 @@
     justify-content: center;
     width: 100%;
     margin-top: 20px;
-}
-
-.submitButton {
-    background-color: #EB838B;
-    border-radius: 4px;
-    border-style: none;
-    box-sizing: border-box;
-    color: #FFFFFF;
-    cursor: pointer;
-    display: inline-block;
-    font-family: "Philosopher", sans-serif;
-    font-size: 18px;
-    height: 50px;
-    width: 150px;
-    line-height: 20px;
-    list-style: none;
-    margin: 0;
-    outline: none;
-    padding: 10px 16px;
-    position: relative;
-    text-align: center;
-    text-decoration: none;
-    transition: color 100ms;
-    vertical-align: baseline;
-    user-select: none;
-    -webkit-user-select: none;
-    touch-action: manipulation;
-}
-
-.submitButton:hover {
-    background-color: #cd6d75;;
 }
 
 .submitButton:disabled {
@@ -131,7 +114,20 @@
     cursor: pointer;
   }
 
-/* .final-notes {
-    text-align: center;
-    padding: 30px;
-} */
+@media (max-width: 600px) {
+    .popup-content {
+        flex: 1 1 100%; /* Sets the base width to 100% of the container */
+        max-width: 95%; /* Prevents the item from growing too large */
+        min-width: 80%; /* Ensures the item doesn't shrink too much */
+
+    }
+
+    .form-items {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        gap: 10px;
+    }
+
+
+}

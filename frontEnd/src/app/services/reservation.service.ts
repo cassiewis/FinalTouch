@@ -11,10 +11,7 @@ import { BehaviorSubject, Observable, timer } from 'rxjs';
 export class ReservationService {
   private apiUrl = 'http://localhost:8080/api/reservations';
 
-  private autoRefreshInterval = 1800000; // Auto-refresh every 30 minutes (in milliseconds)
-
-  constructor(private http: HttpClient) {
-  }
+  constructor(private http: HttpClient) {}
 
   // Add a new reservation
   addReservation(reservation: Reservation): Observable<Reservation> {

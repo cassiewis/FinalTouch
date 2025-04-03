@@ -1,12 +1,12 @@
 import { Component, Input } from '@angular/core';
 import { Product } from '../../models/product.model';
 import { Router } from '@angular/router';
-
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-product-box',
   standalone: true,
-  imports: [],
+  imports: [CommonModule],
   templateUrl: './product-box.component.html',
   styleUrl: './product-box.component.css'
 })

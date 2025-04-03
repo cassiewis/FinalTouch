@@ -1,15 +1,17 @@
 
-.cart-item {
-    display: flex;
-    align-items: center;
-    border-bottom: 1px solid gray;
-    height: 180px;
-  }
   
   .cart-item-image {
     width: 100%; /* Image spans full width of its cell */
     object-fit: cover;
     aspect-ratio: 3/4;
+  }
+
+  .product-title {
+    font-size: 1.25rem;
+  }
+
+  .product-title:hover {
+    cursor: pointer;
   }
     
   .cart-item-details {
@@ -28,11 +30,9 @@
   }
   
   .remove-button {
-    background-color: #FAFAF5;
     border: none;
     font-family: "Philosopher", sans-serif;
     font-size: 18px;
-    height: 3vw;
     cursor: pointer;
   }
   
@@ -85,3 +85,32 @@
     visibility: visible;
     opacity: 1;
   }
+
+
+
+@media (max-width: 500px) {
+
+  .cart-item-details {
+    position: relative; /* Establishes a positioning context for the remove button */
+    grid-template-columns:  1fr 3fr 1fr 2fr; /* Each item will take at least 200px and can stretch */
+  }
+
+    /* position the remove button so it sits on the bottom right of the container, not affected by other elements */
+  .remove-button {
+    position: absolute; /* Take it out of the normal flow */
+    top: 0; /* Adjust as needed */
+    right: 0px; /* Adjust as needed */
+    font-size: 16px; /* Make sure it's not too large for the small screen */
+    height: 2.5vw; /* Adjust height for smaller screens */
+    width: auto; /* Let width adjust based on content */
+   
+  }
+  .product-title {
+    font-size: 1.15rem;
+  }
+
+  .item-info {
+    font-size: 0.9rem;
+  }
+
+}

@@ -7,6 +7,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -28,6 +29,12 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http, JwtAuthenticationFilter jwtAuthenticationFilter) throws Exception {
+        // http.csrf(csrf -> csrf.disable())
+        //     .authorizeHttpRequests(auth -> auth.anyRequest().authenticated())
+        //     .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+        //     .formLogin(AbstractHttpConfigurer::disable)
+        //     .logout(logout -> logout.permitAll());
+
         http
             .csrf().disable() // Disable CSRF for simplicity
             .authorizeHttpRequests()
@@ -47,7 +54,6 @@ public class SecurityConfig {
 
         http.cors().configurationSource(corsConfigurationSource()); // Apply CORS configuration
 
-        System.out.println("CASSIE SecurityConfig: SecurityFilterChain built");
         return http.build();
     }
 

@@ -5,9 +5,9 @@ import { AdminAddReservationComponent } from '../admin-shared/admin-add-reservat
 import { Reservation } from '../../models/reservation.model';
 import { Product } from '../../models/product.model';
 import { ReservationService } from '../../services/reservation.service';
-import { AdminReservationsService } from '../admin-reservations.service';
+import { AdminReservationsService } from '../admin-services/admin-reservations.service';
 import { ProductService } from '../../services/product.service';
-import { AdminProductService } from '../admin-product.service';
+import { AdminProductService } from '../admin-services/admin-product.service';
 import { RouterModule, Router, ActivatedRoute } from '@angular/router';
 import { AuthService } from '../auth.service';
 import {
@@ -63,7 +63,7 @@ export class AdminDashboardComponent implements OnInit, AfterViewInit {
 
 
 
-    this.adminReservationService.getReservations().subscribe(
+    this.adminReservationService.getAdminReservations().subscribe(
       (reservations: Reservation[]) => {
         // Separate reservations into those pending approval and others
         this.reservations = reservations;

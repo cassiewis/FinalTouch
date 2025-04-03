@@ -1,3 +1,7 @@
+* {
+  box-sizing: border-box;
+}
+
 body {
   margin: 0;
   padding: 0;
@@ -8,7 +12,7 @@ body {
   flex-direction: row; /* Aligns children side by side */
   justify-content: space-between; /* Ensures the children are spaced out */
   align-items: stretch; /* Ensures both sections stretch to the same height */
-  height: 90vh; /* Makes the section take up the full viewport height */
+  min-height: 90vh; /* Makes the section take up the full viewport height */
 }
 
 .about-me-container {
@@ -50,7 +54,7 @@ body {
 }
 
 .profile-box {
-  font-size: 20px;
+  font-size: 1.25rem;
 }
 
 .flower {
@@ -69,4 +73,69 @@ body {
   height: 220px; /* Sets the size of the image */
   z-index: 0; /* Ensures it appears below other elements (negative value = behind) */
   pointer-events: none; /* Prevents the image from interfering with clicks on other elements */
+}
+
+@media (max-width: 915px) {
+
+  .about-section {
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    align-items: center; /* Centers the items vertically */
+  }
+
+  .about-me-container, .image-container {
+    width: 100%;
+    padding: 40px; /* Reduces padding for smaller screens */
+  }
+
+  .title {
+    font-size: 2.5rem; /* Adjusts the font size of the title */
+
+  }
+
+  .image {
+    width: 80%;
+    height: 80%;
+  }
+
+
+}
+
+@media (max-width: 500px) {
+
+  .about-me-container, .image-container {
+    padding: 30px; /* Reduces padding for smaller screens */
+  }
+
+  .profile-box {
+    font-size: 1rem;
+  }
+
+  .title {
+    font-size: 2rem; /* Adjusts the font size of the title */
+
+  }
+  
+  .title-name {
+    font-size: 1rem; /* Adjusts the font size of the name */
+    margin-left: 15px;
+  }
+
+  .image {
+    width: 100%;
+    height: 100%;
+  }
+
+
+  .flower {
+    left: -20px; /* Adjusts the horizontal position */
+    height: 160px; /* Sets the size of the image */
+  }
+
+  .leaf {
+    right: -30px; /* Adjusts the horizontal position */
+    height: 170px; /* Sets the size of the image */
+  }
+
 }

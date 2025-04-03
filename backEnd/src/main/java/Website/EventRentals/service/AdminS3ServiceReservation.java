@@ -1,8 +1,5 @@
 package Website.EventRentals.service;
-import Website.EventRentals.model.Reservation;
-
 import java.nio.charset.StandardCharsets;
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -11,8 +8,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-
+import Website.EventRentals.model.Reservation;
 import software.amazon.awssdk.core.ResponseInputStream;
 import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.services.s3.S3Client;
@@ -27,8 +23,7 @@ import software.amazon.awssdk.services.s3.model.S3Object;
 @Service
 public class AdminS3ServiceReservation {
     private final S3Client s3Client;
-    private final ObjectMapper objectMapper = new ObjectMapper()
-            .registerModule(new JavaTimeModule());
+    private final ObjectMapper objectMapper = new ObjectMapper();
     private final AdminDynamoDbReservedDateService adminDynamoDbReservedDateService;
 
     private final String bucketName = "reservations-bucket-final-touch";
@@ -86,10 +81,14 @@ public class AdminS3ServiceReservation {
                 .key(reservationId + ".json")
                 .build();
 
+        System.out.println("Cassie Fetching reservation from S3 with key: " + reservationId + ".json");
+
         try (ResponseInputStream<GetObjectResponse> s3ObjectStream = s3Client.getObject(getObjectRequest)) {
             String reservationJson = new String(s3ObjectStream.readAllBytes(), StandardCharsets.UTF_8);
+            System.out.println("Cassie Fetched reservation JSON: " + reservationJson);
             return mapToReservation(reservationJson);
         } catch (Exception e) {
+            System.err.println("Cassie Error fetching reservation from S3 for ID: " + reservationId + ", Error: " + e.getMessage());
             throw new RuntimeException("Error fetching reservation from S3 for ID: " + reservationId, e);
         }
     }
@@ -106,8 +105,10 @@ public class AdminS3ServiceReservation {
     // Converts JSON string to reservation object
     public Reservation mapToReservation(String reservationJson) {
         try {
+            System.out.println("JSON to be deserialized: " + reservationJson); // Debugging log
             return objectMapper.readValue(reservationJson, Reservation.class);
         } catch (Exception e) {
+            System.err.println("Error converting JSON to Reservation: " + e.getMessage());
             throw new RuntimeException("Error converting JSON to Reservation", e);
         }
     }
@@ -170,24 +171,36 @@ public class AdminS3ServiceReservation {
         }
     
         List<String> productIds = reservation.getItemIds(); // List of product IDs
-        List<LocalDate> dates = reservation.getDates(); // List of date ranges (start and end dates)
+        List<String> dates = reservation.getDates(); // List of date ranges (start and end dates)
         
         if (status.equals("active")) {
             // If the status is "active", we need to add reserved dates
-            // iterate through productIds and dates1
+            // iterate through productIds and dates
             for (String productId : productIds) {
-                for (LocalDate date : dates) {
-                    System.out.println("CASSIE ReservationService: saving reservedDate: " + date.toString() + " for productId: " + productId);
-                    adminDynamoDbReservedDateService.addReservedDate(productId, date.toString(), reservationId, status);
+                for (String date : dates) {
+                    // format timestamp as YYYY-MM-DD
+                    String formattedDate = date.substring(0, 10);
+                    System.out.println("Cassie Adding reserved date for productId: " + productId + ", date: " + date + ", reservationId: " + reservationId + ", status: " + status);
+                    adminDynamoDbReservedDateService.addReservedDate(productId, formattedDate, reservationId, status);
                 }
             }
-        } else if (status.equals("fulfilled") || status.equals("canceled") || status.equals("pending")) {
-            // If the status is changed to filfilled, canceled, or pending, we need to remove reserved dates
+            // update the reservation
+            reservation.setStatus(status);
+            updateReservation(reservationId, reservation);
+
+        // if status changes FROM active to something else, we need to remove reserved dates
+        } else if (reservation.getStatus().equals("active") && (status.equals("fulfilled") || status.equals("canceled") || status.equals("pending"))) {
+            // If the status is changed to fulfilled, canceled, or pending, we need to remove reserved dates
             for (String productId : productIds) {
-                for (LocalDate date : dates) {
-                    adminDynamoDbReservedDateService.deleteReservedDate(productId, date.toString());
+                for (String date : dates) {
+                    String formattedDate = date.substring(0, 10); // Assuming the date is in the format YYYY-MM-DD
+                    System.out.println("Cassie Removing reserved date for productId: " + productId + ", date: " + date + ", reservationId: " + reservationId + ", status: " + status);
+                    adminDynamoDbReservedDateService.deleteReservedDate(productId, formattedDate);
                 }
             }
+            // update the reservation
+            reservation.setStatus(status);
+            updateReservation(reservationId, reservation); 
         } // else do nothing because the status is not recognized
     }
 
