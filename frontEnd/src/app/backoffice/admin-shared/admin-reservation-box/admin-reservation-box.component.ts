@@ -64,8 +64,17 @@ export class AdminReservationBoxComponent {
 
     // Update dates if they were edited in the form
     const formDates = this.datesForm.value;
-    if (formDates.start && formDates.end) {
-      this.reservation.dates = [new Date(formDates.start), new Date(formDates.end)];
+    if (formDates.start && formDates.end) {      
+      const startDate = new Date(formDates.start);
+      const endDate = new Date(formDates.end);
+      const dates = [];
+
+      // Generate all dates between startDate and endDate
+      for (let d = new Date(startDate); d <= endDate; d.setDate(d.getDate() + 1)) {
+        dates.push(new Date(d)); // Push a new Date instance to avoid reference issues
+      }
+
+      this.reservation.dates = dates; // Save the full range of dates
     }
 
     this.adminReservationService.updateReservation(this.reservation).subscribe(

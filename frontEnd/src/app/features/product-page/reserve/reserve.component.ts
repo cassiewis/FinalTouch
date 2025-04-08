@@ -13,7 +13,7 @@ import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angul
 import { CartService } from '../../../cart/cart-service.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { CustomSnackbarComponent } from '../../../shared/custom-snackbar/custom-snackbar.component';
-
+import { ReservedDatesService, ReservedDate } from '../../../services/reserved-dates.service';
 @Component({
   selector: 'app-reserve',
   standalone: true,
@@ -26,6 +26,7 @@ export class ReserveComponent {
   product!: Product;
   minDate: Date;
   maxDate: Date;
+  reservedDates: Date[];
   showReservationPopup: boolean = false;
   isAgreed: boolean = false;
   ItemInCartMessage: string = 'Item already in Cart';
@@ -38,41 +39,43 @@ export class ReserveComponent {
     private route: ActivatedRoute,
     private router: Router,
     private productService: ProductService,
+    private reservedDatesService: ReservedDatesService,
     public dialog: MatDialog,
     private cartService: CartService,
     private snackBar: MatSnackBar
   ) {
     const today = new Date();
     this.minDate = today;  // Current date
-    this.maxDate = new Date(today.getFullYear() + 1, today.getMonth(), today.getDate());  // 1 year from today
+    this.maxDate = new Date(today.getFullYear(), today.getMonth() + 6, today.getDate());  // 1 year from today
+    this.reservedDates = [];
   }
 
   ngOnInit(): void {
     const productId = this.route.snapshot.paramMap.get('productId');
     if (productId) {
 
-      // Subscribe to the observable
-      // this.productService.getProduct(productId).subscribe(
-      //   (product: Product) => {
-      //     this.product = product;
-      //   },
-      //   error => console.error('Error fetching product:', error)
-      // );
-
-      // instead of get product, check if product.reservedDates == null
-      // if null, then get the products dates from the backend
-
       this.productService.getProduct(productId).subscribe(
         (product: Product) => {
           this.product = product;
           console.log('Product:', this.product); // Debugging
           if (this.product.datesReserved == null) {
-            // get product Reserved Dates
+            // get product's reserved Dates
+            console.log("CASSIE productId: ", this.product.productId);
+            this.reservedDatesService.getReservedDatesByProductId(this.product.productId).subscribe(
+              (data: Date[]) => {
+                this.reservedDates = data;
+                console.log('Reserved Dates:', this.reservedDates);
+              },
+              (error) => {
+                console.error('Error fetching reserved dates:', error);
+              }
+            );
           }
         },
         error => console.error('Error fetching product:', error)
       );
     }
+    // todo navigate to 404
   }
 
 // Define the dateFilter function with buffer support
@@ -83,10 +86,10 @@ dateFilter = (date: Date | null): boolean => {
   }
 
   const bufferDays = 4; // Number of buffer days around each reserved date
-  // console.log("Checking date:", date);
+  console.log("ProductReservedDates:", this.reservedDates);
 
   // // Check if the current date is within the buffer range of any reserved date
-  const isDateDisabled = this.product.datesReserved.some((reservedDate) => {
+  const isDateDisabled = this.reservedDates.some((reservedDate) => {
     // Calculate start and end of buffer period
     const reserved = new Date(reservedDate).getTime();
     const bufferStart = new Date(reservedDate);

@@ -18,8 +18,8 @@ export class ReservationService {
     // generate random reservationId
     // todo check first that reservationId doesnt exist
     const name = reservation.name.replace(/\s+/g, '');
-    const generatedString = Math.random().toString(36).substring(2, 10);
-    reservation.reservationId = name + "-" + generatedString;
+    const generatedstring = Math.random().toString(36).substring(2, 10);
+    reservation.reservationId = name + "-" + generatedstring;
 
     // set status as pending for security
     reservation.status = 'pending';

@@ -18,10 +18,10 @@ export class CheckoutPopupComponent implements OnInit {
   showCheckoutPopup: boolean = false;
   isSubmitting: boolean = false;
   isAgreed: boolean = false;
-  name: String = '';
-  email: String = '';
-  phoneNumber: String = '';
-  customerNotes: String = '';
+  name: string = '';
+  email: string = '';
+  phoneNumber: string = '';
+  customerNotes: string = '';
 
   constructor(private cartService: CartService, private reservationService: ReservationService) {}
 

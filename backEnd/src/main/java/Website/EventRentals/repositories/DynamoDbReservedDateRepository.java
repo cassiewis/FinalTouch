@@ -37,6 +37,7 @@ public class DynamoDbReservedDateRepository {
     }
 
     public List<String> getDatesByProductId(String productId) {
+        System.out.println("DEBUG: productId = " + productId);
     return reservedDateTable.query(r -> r.queryConditional(QueryConditional.keyEqualTo(k -> k.partitionValue(productId))))
             .items()
             .stream()

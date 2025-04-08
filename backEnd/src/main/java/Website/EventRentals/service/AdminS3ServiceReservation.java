@@ -81,11 +81,8 @@ public class AdminS3ServiceReservation {
                 .key(reservationId + ".json")
                 .build();
 
-        System.out.println("Cassie Fetching reservation from S3 with key: " + reservationId + ".json");
-
         try (ResponseInputStream<GetObjectResponse> s3ObjectStream = s3Client.getObject(getObjectRequest)) {
             String reservationJson = new String(s3ObjectStream.readAllBytes(), StandardCharsets.UTF_8);
-            System.out.println("Cassie Fetched reservation JSON: " + reservationJson);
             return mapToReservation(reservationJson);
         } catch (Exception e) {
             System.err.println("Cassie Error fetching reservation from S3 for ID: " + reservationId + ", Error: " + e.getMessage());
@@ -129,6 +126,25 @@ public class AdminS3ServiceReservation {
         if (!reservationId.equals(updatedReservation.getReservationId())) {
             throw new IllegalArgumentException("Reservation ID in the URL and request body must match.");
         }
+
+        // Reservation existingReservation = getReservation(reservationId);
+        // if (!existingReservation.getDates().equals(updatedReservation.getDates())) { 
+        // // dates have changed
+        //     // remove old reserved dates
+        //     List<String> oldDates = existingReservation.getDates();
+        //     List<String> newDates = updatedReservation.getDates();
+        //     for (String date : oldDates) {
+        //         String formattedDate = date.substring(0, 10); // Assuming the date is in the format YYYY-MM-DD
+        //         System.out.println("Cassie Removing reserved date for reservationId: " + reservationId + ", date: " + date);
+        //         adminDynamoDbReservedDateService.deleteReservedDate(reservationId, formattedDate);
+        //     }
+        //     // add new reserved dates
+        //     for (String date : newDates) {
+        //         String formattedDate = date.substring(0, 10); // Assuming the date is in the format YYYY-MM-DD
+        //         System.out.println("Cassie Adding reserved date for reservationId: " + reservationId + ", date: " + date);
+        //         adminDynamoDbReservedDateService.addReservedDate(reservationId, formattedDate, reservationId, updatedReservation.getStatus());
+        //     }
+        // }
 
         String key = reservationId + ".json";
         String reservationJson = reservationToJson(updatedReservation);
