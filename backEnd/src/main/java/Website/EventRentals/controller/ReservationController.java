@@ -30,7 +30,7 @@ public class ReservationController {
             Reservation addedReservation = s3ServiceReservation.addReservation(reservation);
             return ResponseEntity.ok(addedReservation);
         } catch (Exception e) {
-            System.out.println("CASSIE ReservationController: Error adding reservation: " + e);
+            System.out.println("ReservationController: Error adding reservation: " + e);
             return ResponseEntity.badRequest().body(null);
         }
     }

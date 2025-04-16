@@ -33,7 +33,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         String jwt = getJwtFromRequest(request);
 
         // delete this
-        System.out.println("CASSIE Received JWT Token: " + jwt);
         if (jwt != null) {
             tokenProvider.printExpectedToken(jwt);
         }
@@ -48,9 +47,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
-            System.out.println("CASSIE doFilterInternal: JWT Token is valid");
-        } else {
-            System.out.println("CASSIE doFilterInternal: JWT Token is invalid");
         }
 
         filterChain.doFilter(request, response); 
@@ -59,10 +55,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private String getJwtFromRequest(HttpServletRequest request) {
         String bearerToken = request.getHeader("Authorization");
         if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
-            System.out.println("CASSIE getJwtFromRequest: bearerToken is: " + bearerToken);
             return bearerToken.substring(7);
         }
-        System.out.println("CASSIE getJwtFromRequest: bearerToken is null");
         return null;
     }
 }

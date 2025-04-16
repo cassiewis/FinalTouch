@@ -1,6 +1,7 @@
 package Website.EventRentals.shared.model;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbBean;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbPartitionKey;
+import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbSecondaryPartitionKey;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbSortKey;
 
 @DynamoDbBean
@@ -14,8 +15,6 @@ public class ReservedDate {
     // Default constructor
     public ReservedDate() {
     }
-
-
 
     // Parameterized constructor
     public ReservedDate(String productId, String date, String reservationId, String status) {
@@ -44,6 +43,7 @@ public class ReservedDate {
         this.date = date;
     }
 
+    @DynamoDbSecondaryPartitionKey(indexNames = "reservationId-productId-index")
     public String getReservationId() {
         return reservationId;
     }

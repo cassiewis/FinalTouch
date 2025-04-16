@@ -1,5 +1,7 @@
 package Website.EventRentals.service;
 
+import java.util.Map;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,13 +21,9 @@ public class AdminDynamoDbReservedDateService {
     public ReservedDate addReservedDate(String productId, String date, String reservationId, String status) {
         try {
             ReservedDate reservedDate = new ReservedDate(productId, date, reservationId, status);
-            System.out.println("Cassie Attempting to save ReservedDate: " + reservedDate);
             reservedDateRepository.save(reservedDate);
-            System.out.println("Cassie Successfully saved ReservedDate: " + reservedDate);
             return reservedDate;
         } catch (Exception e) {
-            System.out.println("Cassie ReservedDate class loader: " + ReservedDate.class.getClassLoader());
-            System.out.println("Cassie Error saving ReservedDate with productId: " + productId + ", date: " + date + ", reservationId: " + reservationId + ", status: " + status + " error message: " +  e);
             throw e; // Re-throw the exception after logging
         }
     }
@@ -41,5 +39,9 @@ public class AdminDynamoDbReservedDateService {
     public boolean itemExists(String productId, String date) {
         ReservedDate reservedDate = reservedDateRepository.get(productId, date);
         return reservedDate != null;
+    }
+
+    public List<ReservedDate> queryByReservationId(String reservationId) {
+        return reservedDateRepository.queryByReservationId(reservationId);
     }
 }

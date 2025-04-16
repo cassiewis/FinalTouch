@@ -44,13 +44,11 @@ public class JwtTokenProvider {
     public boolean validateToken(String authToken) {
         try {
             Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(authToken);
-            System.out.println("CASSIE validateToken: JWT Token is valid");
             return true;
         } catch (Exception e) {
             // Log the exception
             System.out.println("ERROR " + Exception.class.getName() + ": " + e.getMessage());
         }
-        System.out.println("CASSIE validateToken: JWT Token is invalid");
         return false;
     }
 
@@ -61,7 +59,6 @@ public class JwtTokenProvider {
                     .setSigningKey(jwtSecret)
                     .parseClaimsJws(token)
                     .getBody();
-            System.out.println("CASSIE Expected JWT Token: " + token);
             System.out.println("Token Subject: " + claims.getSubject());
         } catch (Exception e) {
             System.out.println("Invalid token: " + token);

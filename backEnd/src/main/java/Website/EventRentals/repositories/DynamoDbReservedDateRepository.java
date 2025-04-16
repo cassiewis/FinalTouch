@@ -1,10 +1,18 @@
 package Website.EventRentals.repositories;
 
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
+
+import com.amazonaws.services.dynamodbv2.document.Index;
+import com.amazonaws.services.dynamodbv2.document.ItemCollection;
+import com.amazonaws.services.dynamodbv2.document.QueryOutcome;
+import com.amazonaws.services.dynamodbv2.document.spec.QuerySpec;
+import com.amazonaws.services.dynamodbv2.document.utils.NameMap;
+import com.amazonaws.services.dynamodbv2.document.utils.ValueMap;
 
 import Website.EventRentals.shared.model.ReservedDate;
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbEnhancedClient;
@@ -16,12 +24,12 @@ import software.amazon.awssdk.enhanced.dynamodb.model.QueryConditional;
 public class DynamoDbReservedDateRepository {
 
     private final DynamoDbTable<ReservedDate> reservedDateTable;
+    private final DynamoDbEnhancedClient dynamoDbEnhancedClient;
 
     public DynamoDbReservedDateRepository(@Qualifier("adminDynamoDbEnhancedClient") DynamoDbEnhancedClient dynamoDbEnhancedClient) {
+        this.dynamoDbEnhancedClient = dynamoDbEnhancedClient;
         this.reservedDateTable = dynamoDbEnhancedClient.table("ProductReservations", TableSchema.fromBean(ReservedDate.class));
     }
-
-    // Your repository methods here
 
     public ReservedDate save(ReservedDate reservedDate) {
         reservedDateTable.putItem(reservedDate);
@@ -37,12 +45,11 @@ public class DynamoDbReservedDateRepository {
     }
 
     public List<String> getDatesByProductId(String productId) {
-        System.out.println("DEBUG: productId = " + productId);
-    return reservedDateTable.query(r -> r.queryConditional(QueryConditional.keyEqualTo(k -> k.partitionValue(productId))))
-            .items()
-            .stream()
-            .map(ReservedDate::getDate) // Extract dates
-            .collect(Collectors.toList());
+        return reservedDateTable.query(r -> r.queryConditional(QueryConditional.keyEqualTo(k -> k.partitionValue(productId))))
+                .items()
+                .stream()
+                .map(ReservedDate::getDate) // Extract dates
+                .collect(Collectors.toList());
     }
 
     public List<String> getAvailableProductIdsByDate(String date) {
@@ -54,5 +61,11 @@ public class DynamoDbReservedDateRepository {
                 .collect(Collectors.toList());
     }
 
-    // Add more methods as needed
+    public List<ReservedDate> queryByReservationId(String reservationId) {
+        return reservedDateTable.index("reservationId-productId-index")
+            .query(r -> r.queryConditional(QueryConditional.keyEqualTo(k -> k.partitionValue(reservationId)))).stream() // Stream over the pages
+            .flatMap(page -> page.items().stream()) // Extract items from each page
+            .collect(Collectors.toList());
+    }
+
 }

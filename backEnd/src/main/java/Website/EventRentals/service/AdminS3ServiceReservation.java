@@ -2,13 +2,16 @@ package Website.EventRentals.service;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Objects;
+// import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+
 import Website.EventRentals.model.Reservation;
+import Website.EventRentals.shared.model.ReservedDate;
 import software.amazon.awssdk.core.ResponseInputStream;
 import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.services.s3.S3Client;
@@ -19,6 +22,7 @@ import software.amazon.awssdk.services.s3.model.ListObjectsV2Request;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 import software.amazon.awssdk.services.s3.model.S3Exception;
 import software.amazon.awssdk.services.s3.model.S3Object;
+// import software.amazon.awssdk.services.dynamodb.model.AttributeValue;
 
 @Service
 public class AdminS3ServiceReservation {
@@ -121,44 +125,54 @@ public class AdminS3ServiceReservation {
         }
     }
 
+    boolean putReservation(String reservationId, Reservation reservation) {
+        try {
+            String key = reservationId + ".json";
+            String reservationJson = reservationToJson(reservation); // Use the method parameter directly
+            s3Client.putObject(
+                PutObjectRequest.builder()
+                        .bucket(bucketName)
+                        .key(key)
+                        .build(),
+                RequestBody.fromString(reservationJson)
+            );
+        } catch (S3Exception e) {
+            return false;
+        }
+        return true;
+    }
+
     // Update an existing reservation in S3
     public String updateReservation(String reservationId, Reservation updatedReservation) {
         if (!reservationId.equals(updatedReservation.getReservationId())) {
             throw new IllegalArgumentException("Reservation ID in the URL and request body must match.");
         }
 
-        // Reservation existingReservation = getReservation(reservationId);
-        // if (!existingReservation.getDates().equals(updatedReservation.getDates())) { 
-        // // dates have changed
-        //     // remove old reserved dates
-        //     List<String> oldDates = existingReservation.getDates();
-        //     List<String> newDates = updatedReservation.getDates();
-        //     for (String date : oldDates) {
-        //         String formattedDate = date.substring(0, 10); // Assuming the date is in the format YYYY-MM-DD
-        //         System.out.println("Cassie Removing reserved date for reservationId: " + reservationId + ", date: " + date);
-        //         adminDynamoDbReservedDateService.deleteReservedDate(reservationId, formattedDate);
-        //     }
-        //     // add new reserved dates
-        //     for (String date : newDates) {
-        //         String formattedDate = date.substring(0, 10); // Assuming the date is in the format YYYY-MM-DD
-        //         System.out.println("Cassie Adding reserved date for reservationId: " + reservationId + ", date: " + date);
-        //         adminDynamoDbReservedDateService.addReservedDate(reservationId, formattedDate, reservationId, updatedReservation.getStatus());
-        //     }
-        // }
+        Reservation existingReservation = getReservation(reservationId);
+        if (!existingReservation.getDates().equals(updatedReservation.getDates())) { 
+            // dates have changed, remove old reserved dates
+            List<ReservedDate> itemsToDelete = adminDynamoDbReservedDateService.queryByReservationId(reservationId);
+            List<String> newDates = updatedReservation.getDates();
+            
+            for (ReservedDate date : itemsToDelete) {
+                String formattedDate = date.toString().substring(0, 10); // Assuming the date is in the format YYYY-MM-DD
+                System.out.println("Cassie Removing reserved date for reservationId: " + reservationId + ", date: " + date);
+                adminDynamoDbReservedDateService.deleteReservedDate(reservationId, formattedDate);
+            }
+            // add new reserved dates
+            for (String date : newDates) {
+                String formattedDate = date.substring(0, 10); // Assuming the date is in the format YYYY-MM-DD
+                System.out.println("Cassie Adding reserved date for reservationId: " + reservationId + ", date: " + date);
+                adminDynamoDbReservedDateService.addReservedDate(reservationId, formattedDate, reservationId, updatedReservation.getStatus());
+            }
+        }
 
-        String key = reservationId + ".json";
-        String reservationJson = reservationToJson(updatedReservation);
+        boolean success = putReservation(reservationId, updatedReservation);
 
-        s3Client.putObject(
-                PutObjectRequest.builder()
-                        .bucket(bucketName)
-                        .key(key)
-                        .build(),
-                RequestBody.fromString(reservationJson)
-        );
-
-        System.out.println("Reservation updated successfully in S3 for key: " + key);
-        return key;
+        if (!success) {
+            throw new RuntimeException("Error updating reservation in S3");
+        }
+        return reservationId + ".json";
     }
 
     // Method to delete a reservation from S3 using its reservationId
@@ -180,44 +194,35 @@ public class AdminS3ServiceReservation {
     }
 
     public void changeReservationStatus(String reservationId, String status) {
-        // Fetch the reservation details based on reservationId
+        // change the status
         Reservation reservation = getReservation(reservationId);
-        if (reservation == null) {
-            throw new IllegalArgumentException("Reservation not found: " + reservationId);
+        reservation.setStatus(status);
+
+        if (putReservation(reservationId, reservation)){
+
+            if (status.equals("active")) {
+                // Add each item
+                for (String productId : reservation.getItemIds()) {
+                    for (String reservedDate : reservation.getDates()) {
+                        System.out.println("CASSIE Adding reserved date: " + reservedDate);
+                        adminDynamoDbReservedDateService.addReservedDate(productId, reservedDate, reservationId, "active");
+                    }
+                }
+            } else if (status.equals("fulfilled") || status.equals("canceled") || status.equals("pending")) {
+                System.out.println("Removing all reserved dates for reservationId: " + reservationId);
+
+                // Use the repository to query by reservationId
+                System.out.println("CASSIE about to call query");
+                List<ReservedDate> itemsToDelete = adminDynamoDbReservedDateService.queryByReservationId(reservationId);
+
+                // Delete each item
+                for (ReservedDate reservedDate : itemsToDelete) {
+                    System.out.println("CASSIE Deleting reserved date for reservationId: " + reservationId + ", productId: " + reservedDate.getProductId());
+                    adminDynamoDbReservedDateService.deleteReservedDate(reservedDate.getProductId(), reservedDate.getDate());
+                }
+            }
+        } else {
+            throw new RuntimeException("Error updating reservation in S3");
         }
-    
-        List<String> productIds = reservation.getItemIds(); // List of product IDs
-        List<String> dates = reservation.getDates(); // List of date ranges (start and end dates)
-        
-        if (status.equals("active")) {
-            // If the status is "active", we need to add reserved dates
-            // iterate through productIds and dates
-            for (String productId : productIds) {
-                for (String date : dates) {
-                    // format timestamp as YYYY-MM-DD
-                    String formattedDate = date.substring(0, 10);
-                    System.out.println("Cassie Adding reserved date for productId: " + productId + ", date: " + date + ", reservationId: " + reservationId + ", status: " + status);
-                    adminDynamoDbReservedDateService.addReservedDate(productId, formattedDate, reservationId, status);
-                }
-            }
-            // update the reservation
-            reservation.setStatus(status);
-            updateReservation(reservationId, reservation);
-
-        // if status changes FROM active to something else, we need to remove reserved dates
-        } else if (reservation.getStatus().equals("active") && (status.equals("fulfilled") || status.equals("canceled") || status.equals("pending"))) {
-            // If the status is changed to fulfilled, canceled, or pending, we need to remove reserved dates
-            for (String productId : productIds) {
-                for (String date : dates) {
-                    String formattedDate = date.substring(0, 10); // Assuming the date is in the format YYYY-MM-DD
-                    System.out.println("Cassie Removing reserved date for productId: " + productId + ", date: " + date + ", reservationId: " + reservationId + ", status: " + status);
-                    adminDynamoDbReservedDateService.deleteReservedDate(productId, formattedDate);
-                }
-            }
-            // update the reservation
-            reservation.setStatus(status);
-            updateReservation(reservationId, reservation); 
-        } // else do nothing because the status is not recognized
     }
-
 }
