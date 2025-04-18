@@ -86,7 +86,6 @@ dateFilter = (date: Date | null): boolean => {
   }
 
   const bufferDays = 4; // Number of buffer days around each reserved date
-  console.log("ProductReservedDates:", this.reservedDates);
 
   // // Check if the current date is within the buffer range of any reserved date
   const isDateDisabled = this.reservedDates.some((reservedDate) => {
@@ -96,9 +95,6 @@ dateFilter = (date: Date | null): boolean => {
     const bufferEnd = new Date(reservedDate);
     bufferStart.setDate(bufferStart.getDate() - bufferDays);
     bufferEnd.setDate(bufferEnd.getDate() + bufferDays);
-
-    console.log("Reserved date:", reservedDate);
-    console.log("Buffer period from", bufferStart, "to", bufferEnd);
 
     // Check if the current date falls within this buffer range
     const isWithinBuffer =
@@ -111,8 +107,6 @@ dateFilter = (date: Date | null): boolean => {
     }
     return isWithinBuffer;
   });
-
-  console.log(`Date ${date} is ${isDateDisabled ? "disabled" : "enabled"}.`);
   return !isDateDisabled;
 };
 

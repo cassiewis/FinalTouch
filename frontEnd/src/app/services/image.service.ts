@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
-import { tap } from 'rxjs/operators';
-
+import { tap, map } from 'rxjs/operators';
+import { ApiResponse } from '../models/ApiResponse.interface';
 @Injectable({
   providedIn: 'root'
 })
@@ -19,7 +19,11 @@ export class ImageService {
     if (cachedInspoImageUrls) {
       return of(cachedInspoImageUrls);
     } else {
-      return this.http.get<string[]>(`${this.apiUrl}/inspo`).pipe(
+      return this.http.get<ApiResponse<string[]>>(`${this.apiUrl}/inspo`).pipe(
+        map(response => {
+          if (response.success) return response.data; // Extract the image URLs from the ApiResponse
+          else throw new Error(response.message || 'Failed to fetch image URLs');
+        }),
         tap(imageUrls => this.cacheImageUrls(cacheKey, imageUrls))
       );
     }
@@ -27,7 +31,12 @@ export class ImageService {
 
   // Fetch a single image URL by key
   getImageUrl(imageKey: string): Observable<string> {
-    return this.http.get<string>(`${this.apiUrl}/${imageKey}`);
+    return this.http.get<ApiResponse<string>>(`${this.apiUrl}/${imageKey}`).pipe(
+      map(response => {
+        if (response.success) return response.data; // Extract the image URL from the ApiResponse
+        else throw new Error(response.message || 'Failed to fetch image URL');
+      })
+    );
   }
 
   // Cache image URLs in local storage with a specific cache key

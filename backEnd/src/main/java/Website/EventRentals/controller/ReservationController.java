@@ -1,5 +1,6 @@
 package Website.EventRentals.controller;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -8,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import Website.EventRentals.model.ApiResponse;
 import Website.EventRentals.model.Reservation;
 import Website.EventRentals.service.S3ServiceReservation;
 
@@ -25,13 +27,16 @@ public class ReservationController {
 
     // Endpoint for uploading a reservation
     @PostMapping
-    public ResponseEntity<Reservation> addReservation(@RequestBody Reservation reservation) {
+    public ResponseEntity<ApiResponse<Reservation>> addReservation(@RequestBody Reservation reservation) {
         try {
             Reservation addedReservation = s3ServiceReservation.addReservation(reservation);
-            return ResponseEntity.ok(addedReservation);
-        } catch (Exception e) {
-            System.out.println("ReservationController: Error adding reservation: " + e);
-            return ResponseEntity.badRequest().body(null);
+            return ResponseEntity.ok(new ApiResponse<>(true, addedReservation, "Reservation added successfully"));
+        } catch (IllegalArgumentException e) { // Client-side error (e.g., invalid status or reservation ID)
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(new ApiResponse<>(false, null, e.getMessage()));
+        } catch (Exception e) { // Server-side error (e.g., unexpected exception)
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(new ApiResponse<>(false, null, "An unexpected error occurred: " + e.getMessage()));
         }
     }
 

@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.server.ResponseStatusException;
 
+import Website.EventRentals.model.ApiResponse;
 import Website.EventRentals.model.Reservation;
 import Website.EventRentals.service.AdminS3ServiceReservation;
 
@@ -34,65 +34,93 @@ public class AdminReservationController {
     // Endpoint for fetching all reservations
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping
-    public List<Reservation> getReservations() {
-        return adminS3ServiceReservation.getReservations();
+    public ResponseEntity<ApiResponse<List<Reservation>>> getReservations() {
+        try {
+            List<Reservation> reservations = adminS3ServiceReservation.getReservations();
+            return ResponseEntity.ok(new ApiResponse<>(true, reservations, "Reservations fetched successfully"));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(new ApiResponse<>(false, null, "Error fetching reservations: " + e.getMessage()));
+        }
     }
 
     // Endpoint for fetching all reservations that are active, fulfilled, or pending
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/activeReservations")
-    public List<Reservation> getActiveReservations() {
-        return adminS3ServiceReservation.getActiveReservations();
+    public ResponseEntity<ApiResponse<List<Reservation>>> getActiveReservations() {
+        try {
+            List<Reservation> activeReservations = adminS3ServiceReservation.getActiveReservations();
+            return ResponseEntity.ok(new ApiResponse<>(true, activeReservations, "Active reservations fetched successfully"));
+        } catch (IllegalArgumentException e) { // Client-side error (e.g., invalid status or reservation ID)
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(new ApiResponse<>(false, null, e.getMessage()));
+        } catch (Exception e) { // Server-side error (e.g., unexpected exception)
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(new ApiResponse<>(false, null, "An unexpected error occurred: " + e.getMessage()));
+        }
     }
 
     // Endpoint for fetching a single reservation by ID
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("{reservationId}")
-    public Reservation getReservation(@PathVariable String reservationId) {
-        System.out.println("Get Reservation ran on ReservationController");
+    public ResponseEntity<ApiResponse<Reservation>> getReservation(@PathVariable String reservationId) {
         try {
-            return adminS3ServiceReservation.getReservation(reservationId);
-        } catch (RuntimeException e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Reservation not found: " + reservationId, e);
+            Reservation reservation = adminS3ServiceReservation.getReservation(reservationId);
+            return ResponseEntity.ok(new ApiResponse<>(true, reservation, "Reservation fetched successfully"));
+        } catch (IllegalArgumentException e) { // Client-side error (e.g., invalid status or reservation ID)
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(new ApiResponse<>(false, null, e.getMessage()));
+        } catch (Exception e) { // Server-side error (e.g., unexpected exception)
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(new ApiResponse<>(false, null, "An unexpected error occurred: " + e.getMessage()));
         }
     }
 
     // Endpoint for updating an existing reservation
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{reservationId}")
-    public String updateReservation(@PathVariable String reservationId, @RequestBody Reservation updatedReservation) {
-        System.out.println("Update Reservation ran on ReservationController");
+    public ResponseEntity<ApiResponse<String>> updateReservation(@PathVariable String reservationId, @RequestBody Reservation updatedReservation) {
         try {
-            return adminS3ServiceReservation.updateReservation(reservationId, updatedReservation);
-        } catch (IllegalArgumentException e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage(), e);
+            adminS3ServiceReservation.updateReservation(reservationId, updatedReservation);
+            return ResponseEntity.ok(new ApiResponse<>(true, "Reservation updated successfully", null));
+        } catch (IllegalArgumentException e) { // Client-side error (e.g., invalid status or reservation ID)
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(new ApiResponse<>(false, null, e.getMessage()));
+        } catch (Exception e) { // Server-side error (e.g., unexpected exception)
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(new ApiResponse<>(false, null, "An unexpected error occurred: " + e.getMessage()));
         }
     }
 
     // Method to delete a reservation by ID from S3
     @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/reservations/{reservationId}")
-    public ResponseEntity<String> deleteReservation(@PathVariable String reservationId) {
+    public ResponseEntity<ApiResponse<String>> deleteReservation(@PathVariable String reservationId) {
         try {
             adminS3ServiceReservation.deleteReservation(reservationId);
-            return ResponseEntity.ok("Reservation deleted successfully from S3");
-        } catch (Exception e) {
-            return ResponseEntity.status(500).body("Error deleting reservation from S3: " + e.getMessage());
+            return ResponseEntity.ok(new ApiResponse<>(true, "Reservation deleted successfully from S3", null));
+        } catch (IllegalArgumentException e) { // Client-side error (e.g., invalid status or reservation ID)
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(new ApiResponse<>(false, null, e.getMessage()));
+        } catch (Exception e) { // Server-side error (e.g., unexpected exception)
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(new ApiResponse<>(false, null, "An unexpected error occurred: " + e.getMessage()));
         }
     }
 
     // Method to change the status of a reservation
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/changeStatus/{reservationId}")
-    public ResponseEntity<String> changeReservationStatus(@PathVariable String reservationId, @RequestBody String status) {
+    public ResponseEntity<ApiResponse<String>> changeReservationStatus(@PathVariable String reservationId, @RequestBody String status) {
         try {
             adminS3ServiceReservation.changeReservationStatus(reservationId, status);
-            // reservationsService.changeReservationStatus(reservationId, status);
-            return ResponseEntity.ok("Reservation status changed successfully");
-        } catch (Exception e) {
-            return ResponseEntity.status(500).body("Error changing reservation status: " + e.getMessage());
+            return ResponseEntity.ok(new ApiResponse<>(true, "Reservation updated successfully", null));
+        } catch (IllegalArgumentException e) { // Client-side error (e.g., invalid status or reservation ID)
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(new ApiResponse<>(false, null, e.getMessage()));
+        } catch (Exception e) { // Server-side error (e.g., unexpected exception)
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(new ApiResponse<>(false, null, "An unexpected error occurred: " + e.getMessage()));
         }
     }
-
-
 }

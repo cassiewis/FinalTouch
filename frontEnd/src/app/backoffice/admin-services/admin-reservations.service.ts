@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { tap, switchMap } from 'rxjs/operators';
+import { tap, map } from 'rxjs/operators';
 import { Reservation } from '../../models/reservation.model';
 import { AuthService } from '../auth.service';
 import { ReservationService } from '../../services/reservation.service';
-
+import { ApiResponse } from '../../models/ApiResponse.interface';
 @Injectable({
   providedIn: 'root'
 })
@@ -32,8 +32,13 @@ export class AdminReservationsService {
       const headers = new HttpHeaders({
         'Authorization': 'Bearer ' + this.getAdminToken() // Use a token or other method to authenticate as admin
       });
-      return this.http.get<Reservation[]>(this.apiUrl, { headers }).pipe(
+      return this.http.get<ApiResponse<Reservation[]>>(this.apiUrl, { headers }).pipe(
+        map(response => {
+          if (response.success) return response.data; // Extract the Product array from the ApiResponse
+          else throw new Error(response.message || 'Failed to fetch products');  
+        }),
         tap(reservations => {
+          // Update the cache if it exists, or initialize it if null
           console.log('Fetched reservations from backend:', reservations);
           this.adminReservationsCache = reservations;
           this.saveCacheToSessionStorage(reservations); // Save to localStorage
@@ -71,10 +76,15 @@ export class AdminReservationsService {
           observer.complete();
         });
       }
-      return this.http.get<Reservation>(`${this.apiUrl}/${reservationId}`);
+      return this.http.get<ApiResponse<Reservation>>(`${this.apiUrl}/${reservationId}`).pipe(
+        map(response => {
+          if (response.success) return response.data; // Extract the Product array from the ApiResponse
+          else throw new Error(response.message || 'Failed to fetch products');  
+        })
+      );
     }
 
-    // Add a new reservation
+    // Add a new reservation, call into general reservation service
     addReservation(reservation: Reservation): Observable<Reservation> {
       return this.reservationService.addReservation(reservation).pipe(
         tap(newReservation => {
@@ -98,9 +108,13 @@ export class AdminReservationsService {
       const headers = new HttpHeaders({
         'Authorization': 'Bearer ' + this.getAdminToken() // Use a token or other method to authenticate as admin
       });
-
+    
       const url = `${this.apiUrl}/${reservation.reservationId}`;
-      return this.http.put<Reservation>(url, reservation, { headers }).pipe(
+      return this.http.put<ApiResponse<Reservation>>(url, reservation, { headers }).pipe(
+        map(response => {
+          if (response.success) return response.data; // Extract the Product array from the ApiResponse
+          else throw new Error(response.message || 'Failed to fetch products');  
+        }),
         tap(updatedReservation => {
           // Update the cache if it exists, or initialize it if null
           if (!this.adminReservationsCache) {
@@ -120,7 +134,10 @@ export class AdminReservationsService {
     const headers = new HttpHeaders({
       'Authorization': 'Bearer ' + this.getAdminToken() // Use a token or other method to authenticate as admin
     });
-    return this.http.delete<void>(`${this.apiUrl}/${reservationId}`, { headers }).pipe(
+    return this.http.delete<ApiResponse<String>>(`${this.apiUrl}/${reservationId}`, { headers }).pipe(
+      map(response => {
+        if (!response.success) throw new Error(response.message || 'Failed to delete reservation');
+      }),
       tap(() => {
         if (!this.adminReservationsCache) {
           this.adminReservationsCache = this.loadCacheFromSessionStorage();
@@ -131,17 +148,25 @@ export class AdminReservationsService {
     );
   }
 
-  updateReservationStatus(reservationId: string, status: string): Observable<void> {
-    const token = this.getAdminToken(); // Retrieve the JWT token from local storage
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-    return this.http.put<void>(`${this.apiUrl}/changeStatus/${reservationId}`, status, { headers }).pipe(
-      tap(() => {
+  updateReservationStatus(reservationId: string, status: string): Observable<Reservation> {
+      const headers = new HttpHeaders({
+        'Authorization': 'Bearer ' + this.getAdminToken() // Use a token or other method to authenticate as admin
+      });
+
+      return this.http.put<ApiResponse<Reservation>>(`${this.apiUrl}/changeStatus/${reservationId}`, status, { headers }).pipe(
+      map(response => {
+        if (response.success) return response.data; // Extract the Product array from the ApiResponse
+        else throw new Error(response.message || 'Failed to fetch products');
+      }),
+      tap(updatedReservation => {
+        // Update the cache if it exists, or initialize it if null
         if (!this.adminReservationsCache) {
           this.adminReservationsCache = this.loadCacheFromSessionStorage();
         }
         const index = this.adminReservationsCache.findIndex(r => r.reservationId === reservationId);
         if (index > -1) {
           this.adminReservationsCache[index].status = status;
+          this.saveCacheToSessionStorage(this.adminReservationsCache);
         }
       })
     );

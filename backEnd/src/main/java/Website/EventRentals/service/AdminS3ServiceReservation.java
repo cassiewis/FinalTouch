@@ -2,7 +2,6 @@ package Website.EventRentals.service;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Objects;
-// import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -106,7 +105,6 @@ public class AdminS3ServiceReservation {
     // Converts JSON string to reservation object
     public Reservation mapToReservation(String reservationJson) {
         try {
-            System.out.println("JSON to be deserialized: " + reservationJson); // Debugging log
             return objectMapper.readValue(reservationJson, Reservation.class);
         } catch (Exception e) {
             System.err.println("Error converting JSON to Reservation: " + e.getMessage());

@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, timer } from 'rxjs';
+import { BehaviorSubject, Observable, map } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { Product } from '../models/product.model';
-import { tap, switchMap } from 'rxjs/operators';
+import { tap } from 'rxjs/operators';
+import { ApiResponse } from '../models/ApiResponse.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -26,7 +27,11 @@ export class ProductService {
    * Fetch products from the backend and update the cache and observable.
    */
   fetchProducts(): Observable<Product[]> {
-    return this.http.get<Product[]>(this.apiUrl).pipe(
+    return this.http.get<ApiResponse<Product[]>>(this.apiUrl).pipe(
+      map(response => {
+        if (response.success) return response.data; // Extract the Product array from the ApiResponse
+        else throw new Error(response.message || 'Failed to fetch products');
+      }),
       tap(products => {
         this.productsCache = products;
         this.saveCacheToSessionStorage(products); // Save to localStorage
@@ -73,7 +78,12 @@ export class ProductService {
         subscriber.complete();
       });
     }
-    return this.http.get<Product>(`${this.apiUrl}/${productId}`);
+    return this.http.get<ApiResponse<Product>>(`${this.apiUrl}/${productId}`).pipe(
+      map(response => {
+        if (response.success) return response.data; // Extract the Product array from the ApiResponse
+        else throw new Error(response.message || 'Failed to fetch products');
+      })  
+    );
   }
 
   /**

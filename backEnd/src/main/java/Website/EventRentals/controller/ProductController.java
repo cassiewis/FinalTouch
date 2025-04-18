@@ -3,6 +3,7 @@ package Website.EventRentals.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import Website.EventRentals.model.ApiResponse;
 import Website.EventRentals.model.Product;
 import Website.EventRentals.service.S3ServiceProduct;
 
@@ -29,23 +31,31 @@ public class ProductController {
 
     // Endpoint for fetching a single product by ID
     @GetMapping("/{productId}")
-    public ResponseEntity<?> getActiveProduct(@PathVariable String productId) {
+    public ResponseEntity<ApiResponse<Product>> getActiveProduct(@PathVariable String productId) {
         try {
             Product product = s3ServiceProduct.getActiveProduct(productId);
-            return ResponseEntity.ok(product);
-        } catch (RuntimeException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
+            return ResponseEntity.ok(new ApiResponse<>(true, product, "Product retrieved successfully"));
+        } catch (IllegalArgumentException e) { // Client-side error (e.g., invalid status or ID)
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(new ApiResponse<>(false, null, e.getMessage()));
+        } catch (Exception e) { // Server-side error (e.g., unexpected exception)
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(new ApiResponse<>(false, null, "An unexpected error occurred: " + e.getMessage()));
         }
     }
 
     // Endpoint for fetching all customer facing products
     @GetMapping
-    public ResponseEntity<List<Product>> getActiveProducts() {
+    public ResponseEntity<ApiResponse<List<Product>>> getActiveProducts() {
         try {
             List<Product> products = s3ServiceProduct.getActiveProducts();
-            return ResponseEntity.ok(products);
-        } catch (RuntimeException e) {
-            return ResponseEntity.badRequest().body(null);
+            return ResponseEntity.ok(new ApiResponse<>(true, products, "Active products fetched successfully"));
+        } catch (IllegalArgumentException e) { // Client-side error (e.g., invalid status or ID)
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(new ApiResponse<>(false, null, e.getMessage()));
+        } catch (Exception e) { // Server-side error (e.g., unexpected exception)
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(new ApiResponse<>(false, null, "An unexpected error occurred: " + e.getMessage()));
         }
     }
 

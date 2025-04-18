@@ -2,8 +2,9 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Product } from '../models/product.model';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { tap, switchMap } from 'rxjs/operators';
+import { tap, switchMap, map } from 'rxjs/operators';
 import { AuthService } from './auth.service';
+import { ApiResponse } from '../models/ApiResponse.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -27,10 +28,12 @@ export class AdminProductService {
         'Authorization': 'Bearer ' + this.getAdminToken() // Use a token or other method to authenticate as admin
       });
 
-      console.log("Products token: ", this.getAdminToken());
-
-      return this.http.get<Product[]>(this.apiUrl, { headers }).pipe(
-      tap(products => {
+      return this.http.get<ApiResponse<Product[]>>(this.apiUrl, { headers }).pipe(
+        map(response => {
+          if (response.success) return response.data; // Extract the Product array from the ApiResponse
+          else throw new Error(response.message || 'Failed to fetch products');
+        }),
+        tap(products => {
           console.log('Fetched admin products:', products);
           this.adminProductsCache = products; // All products for admin
           this.saveCacheToSessionStorage(products);
@@ -65,7 +68,11 @@ export class AdminProductService {
       'Authorization': 'Bearer ' + this.getAdminToken() // Use a token or other method to authenticate as admin
     });
 
-    return this.http.post<Product>(this.apiUrl, product, { headers }).pipe(
+    return this.http.post<ApiResponse<Product>>(this.apiUrl, product, { headers }).pipe(
+      map(response => {
+        if (response.success) return response.data; // Extract the Product array from the ApiResponse
+        else throw new Error(response.message || 'Failed to fetch products');
+      }),
       tap(newProduct => {
         console.log('Added product as admin:', newProduct);
         this.adminProductsCache = []; // Clear the cache so it retrieve items from the backend
@@ -82,8 +89,11 @@ export class AdminProductService {
       'Authorization': 'Bearer ' + this.getAdminToken() // Use a token or other method to authenticate as admin
     });
 
-    const url = `${this.apiUrl}/${product.productId}`;
-    return this.http.put<Product>(url, product, { headers }).pipe(
+    return this.http.put<ApiResponse<Product>>(`${this.apiUrl}/${product.productId}`, product, { headers }).pipe(
+      map(response => {
+        if (response.success) return response.data; // Extract the Product array from the ApiResponse
+        else throw new Error(response.message || 'Failed to fetch products');
+      }),
       tap(updatedProduct => {
         console.log('Updated product as admin:', updatedProduct);
         const index = this.adminProductsCache.findIndex(p => p.productId === updatedProduct.productId);
@@ -103,7 +113,10 @@ export class AdminProductService {
       'Authorization': 'Bearer ' + this.getAdminToken() // Use a token or other method to authenticate as admin
     });
 
-    return this.http.delete<void>(`${this.apiUrl}/${productId}`, { headers }).pipe(
+    return this.http.delete<ApiResponse<String>>(`${this.apiUrl}/${productId}`, { headers }).pipe(
+      map(response => {
+        if (!response.success) throw new Error(response.message || 'Failed to delete product');
+      }),
       tap(() => {
         this.adminProductsCache = this.adminProductsCache.filter(p => p.productId !== productId);
         this.adminProductsSubject.next([...this.adminProductsCache]);

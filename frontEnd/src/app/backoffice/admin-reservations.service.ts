@@ -29,9 +29,7 @@ export class AdminReservationsService {
       const headers = new HttpHeaders({
         'Authorization': 'Bearer ' + this.getAdminToken() // Use a token or other method to authenticate as admin
       });
-
-      console.log("Reservations token: ", this.getAdminToken());
-
+      
       return this.http.get<Reservation[]>(this.apiUrl, { headers }).pipe(
         tap(reservations => {
           console.log('Fetched reservations from backend:', reservations);
