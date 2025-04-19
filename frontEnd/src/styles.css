@@ -102,13 +102,19 @@ body { margin: 0; font-family: "Philosopher", sans-serif; font-weight: normal; }
 .secondary-font {
   /* Chau Philomene One */
   font-family: 'Chau Philomene One', sans-serif;
-  font-weight: bold;
 }
 .page-title {
-  padding: 40px 0 40px 10%;
+  display: flex;
+  justify-content: left;
+  padding-left: 380px;
+  align-items: center;
   font-size: 2rem;
-  font-weight: normal;
-  margin: 0;
+  height: 165px;
+  width: 100%;
+  color: white;
+  margin-top: 0px;
+  background-image: url('/images/banner.jpg');
+  background-size: cover;
 }
 
 .button-theme {

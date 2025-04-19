@@ -3,6 +3,7 @@ export interface Product {
     type: string;
     productId: string;
     active: boolean;
+    custom: boolean;
     count: number;
     name: string;
     price: number;
@@ -10,4 +11,6 @@ export interface Product {
     description: string;
     imageUrl: string;
     datesReserved: Date[];
+    tags: string[];
+    material: string;
 }

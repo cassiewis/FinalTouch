@@ -1,9 +1,11 @@
 package Website.EventRentals.model;
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.List;
 
 public class Product {
     private String productId;
+    private boolean custom;
     private boolean active;
     private String name;
     private double price;
@@ -11,6 +13,9 @@ public class Product {
     private String description;
     private String imageUrl; // Store the S3 URL for the image
     private final List<LocalDate> datesReserved = null;
+    private List<String> tags;
+    private String material;
+
 
     public String getProductId() {
         return productId;
@@ -26,6 +31,14 @@ public class Product {
 
     public void setActive(Boolean active) {
         this.active = active;
+    }
+
+    public boolean isCustom() {
+        return custom;
+    }
+
+    public void setCustom(boolean custom) {
+        this.custom = true;
     }
 
     public String getName() {
@@ -67,4 +80,21 @@ public class Product {
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
     }
+
+    public List<String> getTags() {
+        return tags;
+    }
+    
+    public void setTags(List<String> tags) {
+        this.tags = tags;
+    }
+
+    public String getMaterial() {
+        return material;
+    }
+
+    public void setMaterial(String material) {
+        this.material = material;
+    }
+
 }

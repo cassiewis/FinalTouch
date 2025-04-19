@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { Product } from '../../models/product.model';
 import { ProductService } from '../../services/product.service';
@@ -15,17 +15,13 @@ import { LoadingIconComponent } from '../../shared/loading-icon/loading-icon.com
   styleUrls: ['./product-list.component.css'], // corrected from styleUrl to styleUrls
 })
 export class ProductListComponent implements OnInit {
-  products: Product[] = [];
-  loading: boolean = false;
+  @Input() products: Product[] = [];
+  @Input() loading: boolean = false;
   private imagesLoadedCount: number = 0;
 
   constructor(private productService: ProductService) {}
 
   ngOnInit(): void {
-
-    this.productService.getProducts().subscribe(products => {
-      this.products = products;
-    });
     
     // Wait for all images to load
     this.checkImages();

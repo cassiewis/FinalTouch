@@ -1,16 +1,12 @@
-<!-- Product-box -->
-
 <div class="product-item">
     <div class="image-placeholder">
       <div class="image-container">
-        <div class="custom-hover-container">
-
-          <!-- only display custom image if product.id contains custom in the name -->
-          <img *ngIf="product.productId.toLowerCase().includes('custom')" class="custom-icon" src="/images/custom-icon.png" alt="Custom Icon">
-          <span class="tooltip-text"><b>Custom Item</b><br>This item is customizable, read description for more details.</span>
-        </div>
-        <!-- <img class="custom-icon" src="/images/custom-icon.png" alt="Custom Icon"> -->
-        <img [src]="product.imageUrl" alt="{{ product.name }}" class="product-image" (load)="onImageLoad($event)">
+        <!-- <div class="custom-hover-container"> -->
+          <p *ngIf="product.custom" class="custom-text white-font secondary-font" alt="Custom Icon">CUSTOM</p>
+          <!-- <span class="tooltip-text"><b>Custom Item</b><br>This item is customizable, read description for more details.</span> -->
+        <!-- </div> -->
+        <img src="/images/stock_photo.png" alt="{{ product.name }}" class="product-image" (load)="onImageLoad($event)"> <!-- todo remove this and call product image -->        
+        <!-- <img [src]="product.imageUrl" alt="{{ product.name }}" class="product-image" (load)="onImageLoad($event)"> -->
       </div>
     </div>
     <div class="item-info black-font">

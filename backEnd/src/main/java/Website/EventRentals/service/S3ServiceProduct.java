@@ -35,7 +35,6 @@ public class S3ServiceProduct {
 
     // Fetch all products from S3
     public List<Product> getActiveProducts() {
-        System.out.println("getActiveProducts: " + bucketName);
         try {
             ListObjectsV2Request listObjectsV2Request = ListObjectsV2Request.builder()
                     .bucket(bucketName)

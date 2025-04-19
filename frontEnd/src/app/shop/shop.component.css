@@ -1,17 +1,228 @@
 body {
-    min-height: 100vh;
-}
-
-.product-list-container {
     display: flex;
-    flex-direction: column;
+    flex-direction: column; 
     align-items: center;
     justify-content: center;
-    width: 100%;
+}
+
+/* Container for the shop page */
+.shop-container {
+    display: flex;
+    flex-direction: row;
+    width: clamp(600px, 80%, 1200px); 
+    gap: 30px;
+    padding-top: 50px;
+}
+
+.filter-container {
+    width: 20%;
+    border: 1px solid #ccc;
+    height: auto;
+    align-self: flex-start;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+    border-radius: 5px; /* Rounded corners */
+    margin-bottom: 40px;
+}
+
+.filter-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    border-bottom: 1px solid #ccc;
+    margin: 5px 15px;
+    font-weight: bold;
+}
+
+.clear-filters {
+    font-weight: bold;
+    text-decoration: underline;
+    border: none;
+    cursor: pointer;
+    font-size: 12px;
+    color: rgb(244, 65, 65);
+}
+
+.clear-filters:hover {
+    color:rgb(216, 45, 45);
+}
+
+.filters {
+    min-height: 25px;
+    color: gray;
+    font-size: 0.9rem;
+}
+
+.remove-button {
+    text-decoration: none;
+    border: none;
+    color: #ccc;
+    cursor: pointer;
+    font-size: 0.7rem;
+}
+
+.selected-filter {
+    margin: 0;
+}
+
+.filter-section {
+    margin: 5px 15px;
+    border-bottom: 1px solid #ccc;
+}
+
+.filter-box {
+    max-height: 150px;
+    overflow-y: auto;
+}
+
+.filter-box::-webkit-scrollbar {
+width: 4px; /* Width of the scrollbar */
+}
+
+.filter-box::-webkit-scrollbar-thumb {
+    background-color: rgb(220, 220, 220); /* Color of the scrollbar thumb */
+    border-radius: 4px; /* Rounded corners for the scrollbar thumb */
+}
+
+.filter-box::-webkit-scrollbar-thumb:hover {
+background-color: #c7c7a9; /* Darker color on hover */
+}
+
+.filter-box::-webkit-scrollbar-track {
+background-color: #f8f7f2; /* Background color of the scrollbar track */
 }
 
 
-.product-list {
-    /* border: 1px solid red; */
-    width: 80%;
+.last-section {
+    border-bottom: none;
 }
+
+.filter-title {
+    display: flex;
+    justify-content: space-between;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+
+.filter-title:hover {
+    .arrow {
+        color: grey;
+    }
+}
+
+.filter-box { 
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 10px;
+}
+
+.filter-section.collapsed {
+    margin-bottom: 0;
+}
+
+.checkbox {
+    accent-color: #f8f7f2; /* Changes the checkbox's background and border color */
+    cursor: pointer; 
+    border-radius: 0px;
+}
+
+
+.checkbox:checked {
+    accent-color: #cccccc; /* Changes the color when checked */
+}
+
+.color-label {
+    display: flex;
+    position: relative;
+    align-items: center;
+    gap: 10px; /* Space between the checkbox and the label text */
+    cursor: pointer;
+}
+
+/* Hide the default checkbox */
+.color-checkbox {
+    appearance: none; /* Remove default checkbox styling */
+    width: 0;
+    height: 0;
+    margin: 0;
+    padding: 0;
+}
+
+/* Custom round checkbox */
+.color-circle {
+    width: 13px;
+    height: 13px;
+    border-radius: 50%;
+    border: 0.5px solid #ccc;
+    display: inline-block;
+    transition: all 0.2s ease-in-out;
+    opacity: 0.7;
+    position: relative;
+}
+
+/* Change the border when the checkbox is checked */
+.color-checkbox:checked + .color-circle::after {
+    content: '•'; 
+    font-size: 20px;
+    opacity: 1;
+    color: black;
+    border-radius: 50%; 
+    position: absolute;
+    top: 50%; 
+    left: 50%; 
+    transform: translate(-50%, -50%); 
+}
+
+/* Product list styling */
+.product-list-container {
+    width: 85%; /* Takes up the remaining 85% of the page width */
+}
+
+.product-list-header {
+    margin: 10px;
+    display: flex;
+    justify-content: right;
+    align-items: center;
+    gap: 40px;
+}
+
+.num-products {
+    opacity: 0.8;
+}
+
+.search-bar {
+    position: relative;
+  }
+  
+  .search-bar input.search {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 8px 12px;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.3s, box-shadow 0.3s;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
+  }
+  
+  .search-bar input.search:focus {
+    border-color: #aaa;
+  }
+  
+  .clear-search-button {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    border: none;
+    background: transparent;
+    font-size: 18px;
+    cursor: pointer;
+    color: #999;
+    padding: 0;
+    line-height: 1;
+  }
+  
+  .clear-search-button:hover {
+    color: #333;
+  }
+  

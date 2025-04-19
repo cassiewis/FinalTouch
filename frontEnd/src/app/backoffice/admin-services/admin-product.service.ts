@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Product } from '../../models/product.model';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { tap, switchMap } from 'rxjs/operators';
+import { BehaviorSubject, Observable, map } from 'rxjs';
+import { tap } from 'rxjs/operators';
 import { AuthService } from '../auth.service';
+import { ApiResponse } from '../../models/ApiResponse.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -31,12 +32,16 @@ export class AdminProductService {
     const headers = new HttpHeaders({
       'Authorization': 'Bearer ' + this.getAdminToken() // Use a token or other method to authenticate as admin
     });
-    return this.http.get<Product[]>(this.apiUrl, { headers }).pipe(
-    tap(products => {
-        console.log('Fetched admin products:', products);
-        this.adminProductsCache = products; // All products for admin
-        this.saveCacheToSessionStorage(products);
-    })
+    return this.http.get<ApiResponse<Product[]>>(this.apiUrl, { headers }).pipe(
+      map(response => {
+        if (response.success) return response.data;
+        else throw new Error(response.message || 'Failed to fetch products');
+      }),
+      tap(products => {
+          console.log('Fetched admin products:', products);
+          this.adminProductsCache = products; // All products for admin
+          this.saveCacheToSessionStorage(products);
+      })
     );
   }
 
@@ -63,7 +68,11 @@ export class AdminProductService {
     const headers = new HttpHeaders({
       'Authorization': 'Bearer ' + this.getAdminToken() // Use a token or other method to authenticate as admin
     });
-    return this.http.post<Product>(this.apiUrl, product, { headers }).pipe(
+    return this.http.post<ApiResponse<Product>>(this.apiUrl, product, { headers }).pipe(
+      map(response => {
+        if (response.success) return response.data;
+        else throw new Error(response.message || 'Failed to add product');
+      }),
       tap(newProduct => {
         console.log('Added product as admin:', newProduct);
         // update cache
@@ -82,12 +91,14 @@ export class AdminProductService {
   updateProduct(product: Product): Observable<Product> {
     const headers = new HttpHeaders({
       'Authorization': 'Bearer ' + this.getAdminToken() // Use a token or other method to authenticate as admin
-    });
+    }); 
 
-    const url = `${this.apiUrl}/${product.productId}`;
-    return this.http.put<Product>(url, product, { headers }).pipe(
+    return this.http.put<ApiResponse<Product>>(`${this.apiUrl}/${product.productId}`, product, { headers }).pipe(
+      map(response => {
+        if (response.success) return response.data;
+        else throw new Error(response.message || 'Failed to update product');
+      }),
       tap(updatedProduct => {
-        console.log('Updated product as admin:', updatedProduct);
         if (!this.adminProductsCache) {
           this.adminProductsCache = this.loadCacheFromSessionStorage();
         }
@@ -109,7 +120,11 @@ export class AdminProductService {
       'Authorization': 'Bearer ' + this.getAdminToken() // Use a token or other method to authenticate as admin
     });
 
-    return this.http.delete<void>(`${this.apiUrl}/${productId}`, { headers }).pipe(
+    return this.http.delete<ApiResponse<String>>(`${this.apiUrl}/${productId}`, { headers }).pipe(
+      map(response => {
+        if (response.success) return;
+        else throw new Error(response.message || 'Failed to delete product');
+      }),
       tap(() => {
         if (!this.adminProductsCache) {
           this.adminProductsCache = this.loadCacheFromSessionStorage();

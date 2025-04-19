@@ -4,8 +4,7 @@ header {
     display: flex;
     justify-content: space-between; /* Space the left and right links */
     align-items: center;
-    padding: 0px 20px; /* Added horizontal padding for better spacing */
-    padding: 35px;
+    padding: 25px;
     border-bottom: 1px solid #E0E0E0; /* Subtle border for separation */
 }
 
@@ -55,7 +54,7 @@ nav {
     position: absolute; /* Position the title absolutely */
     left: 50%; /* Center it horizontally */
     transform: translateX(-50%); /* Offset by half its width to ensure true centering */
-    font-size: 3rem;
+    font-size: 2rem;
     font-weight: normal;
     text-align: center;
     text-decoration: none;

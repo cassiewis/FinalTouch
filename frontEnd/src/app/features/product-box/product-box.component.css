@@ -8,9 +8,9 @@
     padding: 10px 0;
 }
 
-
 .product-item:hover {
-    transform: scale(1.03); /* Adds a hover effect */
+    transform: scale(1.02); /* Adds a hover effect */
+    cursor: pointer;
 }
 
 .image-placeholder {
@@ -38,52 +38,27 @@
 }
 
 .product-name {
-    font-size: 1.5rem;
-    font-weight: normal;
+    font-size: 1.1rem;
+    font-weight: bold;
     margin: 0;
     padding: 0;
 }
 
 .info-price {
     font-size: 1rem;
+    opacity: 0.5;
     margin: 0;
     padding: 2px 0 0 0;
 }
   
-.custom-hover-container {
-    position: absolute; /* Allows the icon to be positioned relative to the image-container */
-    bottom: -10px; /* Adjusts the distance from the top */
-    right: -10px; /* Adjusts the distance from the right */
-    width: 50px; /* Adjust the size of the icon */
-    height: auto; /* Maintain aspect ratio */
-    z-index: 10; /* Ensures the icon appears above the main image */
-    display: block; /* Ensures the icon is visible */
-}
-
-.custom-icon {
-    width: 100%;
-    height: auto;
-}
-
-.tooltip-text {
-    font-size: .75rem;
-    visibility: hidden;
-    width: 180px;
-    background-color: #333;
-    color: #fff;
-    text-align: center;
-    border-radius: 5px;
-    padding: 8px;
+.custom-text {
     position: absolute;
-    bottom: 125%; /* Position the tooltip above the icon */
-    left: -125%;
-    transform: translateX(-50%);
-    opacity: 0.5;
-    transition: opacity 0.3s;
-    z-index: 1;
-}
-
-.custom-hover-container:hover .tooltip-text {
-    visibility: visible;
-    opacity: 1;
+    top: 0px; 
+    left: 0px;
+    padding: 5px;
+    margin: 0px;
+    z-index: 10; 
+    display: block;
+    font-size: 0.75rem;
+    background-color: rgb(168, 192, 224);
 }

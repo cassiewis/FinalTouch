@@ -19,6 +19,7 @@ export class AdminProductBoxComponent {
   @Input() product!: Product;
   @Input() numReservations!: number;
 
+  tagsInput: string = '';
   editMode: boolean = false;
   editableProduct!: Product;
   showCalendar: boolean = false;
@@ -66,9 +67,19 @@ export class AdminProductBoxComponent {
   openProductEditor() {
     this.editableProduct = { ...this.product }; // Create a copy of the product
     this.editMode = true;
+    this.tagsInput = this.editableProduct.tags?.join(', ') || ''; // Convert tags to a comma-separated string
   }
 
   saveProduct() {
+
+    this.editableProduct.tags = this.tagsInput
+    .split(',')
+    .map(tag => tag.trim())
+    .filter(tag => tag); // Remove empty tags
+
+    console.log('saving tags:', this.editableProduct.tags);
+
+    
     // Update the product with edited values
     this.product = { ...this.editableProduct };
 
@@ -88,6 +99,7 @@ export class AdminProductBoxComponent {
 
   closeProductEditor() {
     this.editMode = false;
+    this.tagsInput = '';
   }
 
   deleteProduct() {

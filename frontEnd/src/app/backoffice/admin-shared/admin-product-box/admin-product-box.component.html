@@ -49,7 +49,7 @@
 </div>
 
 <!-- Edit Popup -->
-<div *ngIf="editMode" class="edit-popup">
+<div *ngIf="editMode" class="edit-popup form-class">
     <div class="popup-content">
         <h2>Edit Product</h2>
         <div class="form-group">
@@ -80,6 +80,14 @@
                 <option value="true">Active</option>
                 <option value="false">Inactive</option>
             </select>
+        </div>
+        <div class="form-group">
+            <label>Tags (comma-separated):</label>
+            <input [(ngModel)]="tagsInput" type="text" placeholder="e.g., signage, custom, rustic" />
+        </div>
+        <div class="form-group">
+            <label>Material:</label>
+            <input [(ngModel)]="editableProduct.material" type="text" />
         </div>
         <div class="form-group">
             <label>Image URL:</label>

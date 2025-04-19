@@ -1,9 +1,113 @@
-
 <body class="white-background">
-    <p class="inventory-title page-title">INVENTORY</p>
-    <div class="product-list-container">
-        <div class="product-list">
-            <app-product-list></app-product-list>
+    <p class="inventory-title page-title">Inventory</p>
+    <div class="shop-container">
+
+        <!-- Filter Section -->
+        <div class="filter-container">
+            <div class="filter-header">
+                <p>REFINE</p>
+                <button class="clear-filters white-background" (click)="clearAllFilters()">Clear All</button>
+            </div>
+            <div class="filter-section filters">
+                <div class="selected-filters" *ngIf="selectedFilters.length > 0">
+                    <div class="selected-filter" *ngFor="let filter of selectedFilters">
+                        <button class="remove-button white-background" (click)="removeFilter(filter)">X</button>
+                        {{ filter }}
+                    </div>
+                </div>
+            </div>
+
+            <div class="filter-section">
+                <p class="filter-title" (click)="toggleSection('type')">
+                    TYPE
+                    <span class="arrow">{{ openSections['type'] ? '▲' : '▼' }}</span>
+                </p>
+                <div class="filter-box" *ngIf="openSections['type']">
+                    <div class="types" *ngFor="let type of typeCategory">
+                        <label>
+                            <input class="checkbox" type="checkbox" [value]="type" (change)="toggleFilter($event)"> {{ type }}
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="filter-section">
+                <p class="filter-title" (click)="toggleSection('custom')">
+                    CUSTOM
+                    <span class="arrow">{{ openSections['custom'] ? '▲' : '▼' }}</span>
+                </p>
+                <div class="filter-box" *ngIf="openSections['custom']">
+                    <div class="customs" *ngFor="let custom of customCategory">
+                        <label>
+                            <input class="checkbox" type="checkbox" [value]="custom" (change)="toggleFilter($event)"> {{ custom }}
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="filter-section">
+                <p class="filter-title" (click)="toggleSection('color')">
+                    COLOR
+                    <span class="arrow">{{ openSections['color'] ? '▲' : '▼' }}</span>
+                </p>
+                <div class="filter-box" *ngIf="openSections['color']">
+                    <div class="types" *ngFor="let color of colorCategory">
+                        <label class="color-label">
+                            <input class="color-checkbox" type="checkbox" [value]="color" (change)="toggleFilter($event)">
+                            <span class="color-circle" [ngStyle]="{'background-color': color.toLowerCase()}"></span>
+                            {{ color }}
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="filter-section last-section">
+                <p class="filter-title" (click)="toggleSection('event')">
+                    <span>EVENT</span>
+                    <span class="arrow">{{ openSections['event'] ? '▲' : '▼' }}</span>
+                </p>
+                <div class="filter-box" *ngIf="openSections['event']">
+                    <div class="types" *ngFor="let event of eventCategory">
+                        <label>
+                            <input class="checkbox" type="checkbox" [value]="event" (change)="toggleFilter($event)"> {{ event }}
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <!-- <div class="filter-section">
+                <p class="filter-title" (click)="toggleSection('priceFilter')">Price Filter</p>
+                <div class="filter-box" *ngIf="openSections['color']">
+                    <label for="price-filter">Price Range</label>
+                    <input type="number" id="min-price" placeholder="Min Price" [(ngModel)]="minPrice">
+                    <input type="number" id="max-price" placeholder="Max Price" [(ngModel)]="maxPrice">
+                    <button (click)="applyPriceFilter()">Apply</button>
+                </div>
+            </div> -->
+        </div>
+
+
+        <!-- Product List Section -->
+        <div class="product-list-container">
+            <div class="product-list-header">
+                <div class="num-products">Showing {{ filteredProducts.length }} of {{ products.length }} results</div>
+                <!-- Add Search Bar -->
+                <div class="search-bar">
+                    <input
+                      type="text"
+                      placeholder="Search products..."
+                      [(ngModel)]="searchQuery"
+                      (ngModelChange)="applyAllFilters()"
+                      class="search"
+                    />
+                    <button
+                      *ngIf="searchQuery"
+                      class="clear-search-button"
+                      (click)="clearSearch()"
+                    >
+                      ×
+                    </button>
+                  </div>
+            </div>
+            <div class="product-list">
+              <app-product-list [products]="filteredProducts" [loading]="loading"></app-product-list>
+            </div>
         </div>
     </div>
 </body>

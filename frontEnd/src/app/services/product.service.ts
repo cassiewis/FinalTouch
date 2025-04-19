@@ -33,6 +33,7 @@ export class ProductService {
         else throw new Error(response.message || 'Failed to fetch products');
       }),
       tap(products => {
+        console.log('Fetched products from backend:', products);
         this.productsCache = products;
         this.saveCacheToSessionStorage(products); // Save to localStorage
         this.productsSubject.next(products); // Notify subscribers
