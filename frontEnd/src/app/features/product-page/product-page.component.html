@@ -3,37 +3,77 @@
     <app-loading-icon></app-loading-icon>
   </div>
 
-  <div *ngIf="!loading">
-    <div class="path-container">
-      <p (click)="goBack()" class="path page-title">INVENTORY ></p>
-      <p class="subpage">{{ product.name }}</p>
-    </div>
+  <div class="body" *ngIf="!loading">
     <div class="product-body">
       <div class="product-image-box">
-        <img [src]="product.imageUrl" alt="product-image" class="product-image" (load)="loading=false">
+        <img src="/images/stock_photo.png" alt="product-image" class="product-image" (load)="loading=false">
+        <!-- <img [src]="product.imageUrl" alt="product-image" class="product-image" (load)="loading=false"> -->
       </div>
       <div class="product-description-container">
-        <div class="product-descriptions">
-          <p class="product-name">{{ product.name }}</p>
-          <p class="product-description">{{ product.description }}</p>
-          <div class="price-container">
-            <p>${{ product.price }}</p>
+        <div class="top-container">
+          <div class="path"><a (click)="goBack()">INVENTORY</a> / {{ product.name }}</div>
+          <p class="product-name pink-font">{{ product.name }}</p>
+          <p class="product-price">${{ product.price }}</p>
+          <!-- <p class="product-description">{{ product.description }}</p> -->
+          <p class="product-description"><br>
+            Size: 20 × 30 inches<br>
+            Common Uses: Bar Menu, Gifts & Cards Sign<br>
+            Display easle not included<br>
+            Customizable lettering
+          </p>
+        </div> <!-- top-container -->
+
+        <div class="bottom-container">
+          <div class="reserve-container">
+            <app-reserve></app-reserve>
           </div>
-        </div>
-        <div class="reserve-container">
-          <app-reserve></app-reserve>
+          <div class="email">A deposit of ${{ product.deposit }} will be added, refunded upon return of items in original condition<br>Message <a class="pink-font">finaltouchco.info&#64;gmail.com</a> for any questions.</div>
+          <div class="dropdown-box" (click)="toggleReturnPolicy()">
+            <div class="box-header">
+              <span>Pickup & Return</span>
+              <span class="arrow" [class.open]="isPolicyOpen">&#9660;</span>
+            </div>
+            <div class="box-content" *ngIf="isPolicyOpen">
+              <p>
+                All rentals must be picked up and returned in downtown Boise. 
+                Delivery requests may be considered on a case-by-case basis and 
+                are subject to availability. Please note that late returns may 
+                result in additional fees.
+              </p>
+            </div>
+          </div>
+          <div *ngIf="product.custom" class="dropdown-box" (click)="toggleCustomBox()">
+            <div class="box-header">
+              <span>Custom Item - designed for you</span>
+              <span class="arrow" [class.open]="isCustomOpen">&#9660;</span>
+            </div>
+            <div class="box-content" *ngIf="isCustomOpen">
+              <p>
+                Upon booking, we will connect with you to discuss your design preferences 
+                and ensure the final piece aligns with your overall aesthetic. Our team will 
+                provide guidance to keep the design both functional and cohesive. A final 
+                mockup will be provided for your review and approval prior to production.
+              </p>
+            </div>
+          </div>
         </div>
       </div>
     </div>
 
     <!-- <div class="footer-container"> -->
-    <div class="deposit-container">
+    <!-- <div class="deposit-container">
       <img class="deposit-line" src="images/deposit-line.png">
       <p class="deposit-text blue-background">
         <b>A deposit of ${{ product.deposit }} will be added to your total.</b><br> 
         This is refundable upon return of items within the agreed upon time, with no damages.
       </p>
       <img class="deposit-line" src="images/deposit-line-bow.png">
-    </div>
+    </div> -->
   </div>
+  <!-- border line -->
+  <hr *ngIf="!loading" class="border-line">
+  <div *ngIf="!loading" class="similar-items-container">
+    similar items
+  </div>
+
 </body>

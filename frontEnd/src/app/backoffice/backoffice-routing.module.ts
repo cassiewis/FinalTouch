@@ -2,20 +2,20 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
 import { AdminProductsComponent } from './admin-products/admin-products.component';
-import { AuthGuard } from '../backoffice/auth.guard'; // Ensure you have an AuthGuard to protect routes
+import { AdminReservationsComponent } from './admin-reservations/admin-reservations.component';
 import { LoginComponent } from './login/login.component';
+import { AuthGuard } from './auth.guard';
 
 const routes: Routes = [
+  { path: 'login', component: LoginComponent },
   {
     path: '',
     component: AdminDashboardComponent,
-    canActivate: [AuthGuard], // Protect the route with AuthGuard
+    canActivate: [AuthGuard],
     children: [
-      { path: 'login', component: LoginComponent },
-      { path: 'admin', component: AdminDashboardComponent, canActivate: [AuthGuard] },
-      { path: '', redirectTo: '/login', pathMatch: 'full' }
-
-      // Add more admin routes here
+      { path: 'products', component: AdminProductsComponent },
+      { path: 'reservations', component: AdminReservationsComponent },
+      { path: '', redirectTo: 'products', pathMatch: 'full' },
     ]
   }
 ];
@@ -24,4 +24,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class BackofficeRoutingModule { }
+export class BackofficeRoutingModule {}

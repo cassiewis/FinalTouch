@@ -21,7 +21,8 @@ export class ProductPageComponent implements OnInit {
   product!: Product; // Assert that Product will always be defined
   productId: string | null = null; // Hold the current productId
   loading: boolean = true; // Add loading state
-
+  isPolicyOpen = false;
+  isCustomOpen = false;
 
   constructor(
     private route: ActivatedRoute, 
@@ -72,5 +73,13 @@ export class ProductPageComponent implements OnInit {
 
   goBack(): void {
     this.location.back(); 
+  }
+
+  toggleReturnPolicy() {
+    this.isPolicyOpen = !this.isPolicyOpen;
+  }
+
+  toggleCustomBox() {
+    this.isCustomOpen = !this.isCustomOpen;
   }
 }

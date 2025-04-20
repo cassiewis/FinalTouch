@@ -1,5 +1,5 @@
 import { Component, Inject } from '@angular/core';
-import { MAT_SNACK_BAR_DATA } from '@angular/material/snack-bar';
+import { MAT_SNACK_BAR_DATA, MatSnackBarRef } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-custom-snackbar',
@@ -9,5 +9,12 @@ import { MAT_SNACK_BAR_DATA } from '@angular/material/snack-bar';
   styleUrl: './custom-snackbar.component.css',
 })
 export class CustomSnackbarComponent {
-  constructor(@Inject(MAT_SNACK_BAR_DATA) public data: any) {}
+  constructor(
+    @Inject(MAT_SNACK_BAR_DATA) public data: any,
+    private snackBarRef: MatSnackBarRef<CustomSnackbarComponent>
+  ) {}
+
+  close() {
+    this.snackBarRef.dismiss();
+  }
 }

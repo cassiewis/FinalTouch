@@ -13,7 +13,7 @@ import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angul
 import { CartService } from '../../../cart/cart-service.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { CustomSnackbarComponent } from '../../../shared/custom-snackbar/custom-snackbar.component';
-import { ReservedDatesService, ReservedDate } from '../../../services/reserved-dates.service';
+import { ReservedDatesService } from '../../../services/reserved-dates.service';
 @Component({
   selector: 'app-reserve',
   standalone: true,
@@ -193,7 +193,7 @@ dateFilter = (date: Date | null): boolean => {
       this.snackBar.openFromComponent(CustomSnackbarComponent, {
         data: {
           message: `Please select a valid date range.<br>5 days max.`,
-          action: () => this.router.navigate(['/cart']),
+          action: () => {}, // No action needed
           actionLabel: 'Close'
         },
         duration: 5000,

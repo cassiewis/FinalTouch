@@ -3,7 +3,12 @@
     <div class="shop-container">
 
         <!-- Filter Section -->
-        <div class="filter-container">
+        <div class="mobile-filter-toggle" *ngIf="isSmallScreen">
+            <button class="mobile-filter-button" (click)="toggleMobileFilter()">
+              {{ showMobileFilter ? 'Hide Filters' : 'Show Filters' }}
+            </button>
+        </div>
+        <div class="filter-container" [ngClass]="{ 'active': showMobileFilter || !isSmallScreen }">
             <div class="filter-header">
                 <p>REFINE</p>
                 <button class="clear-filters white-background" (click)="clearAllFilters()">Clear All</button>

@@ -9,7 +9,7 @@ body {
 .shop-container {
     display: flex;
     flex-direction: row;
-    width: clamp(600px, 80%, 1200px); 
+    width: clamp(600px, 80%, 1200px);
     gap: 30px;
     padding-top: 50px;
 }
@@ -22,6 +22,7 @@ body {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
     border-radius: 5px; /* Rounded corners */
     margin-bottom: 40px;
+    min-width: 165px;
 }
 
 .filter-header {
@@ -224,5 +225,48 @@ background-color: #f8f7f2; /* Background color of the scrollbar track */
   
   .clear-search-button:hover {
     color: #333;
+  }
+  
+
+  @media (max-width: 630px) {
+    .shop-container {
+      flex-direction: column;
+      width: 90%;
+      align-items: center;
+      position: relative;
+      padding: 0;
+      gap: 0;
+    }
+  
+    .filter-container {
+      width: 175;
+      display: none; /* hide sidebar by default */
+      align-self: flex-end;
+      position: absolute;
+      z-index: 10;
+      background-color: white;
+      top: 90px;
+    }
+  
+    .filter-container.active {
+      display: block;
+    }
+  
+    .product-list-container {
+      width: 100%;
+    }
+  
+    .mobile-filter-toggle {
+      align-self: flex-end;
+    }
+  
+    .mobile-filter-button {
+      background-color: #f8f7f2;
+      border: 1px solid #ccc;
+      padding: 8px 16px;
+      border-radius: 5px;
+      cursor: pointer;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
   }
   

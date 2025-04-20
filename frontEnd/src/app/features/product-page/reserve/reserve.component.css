@@ -7,39 +7,26 @@
 .availability-checker {
     display: flex;
     flex-direction: row;
-    margin: 20px;
-    gap: 10px; /* Add gap between the date picker and button */
+    gap: 8px; 
 }
 
 mat-hint {
     font-size: 0.6rem;
+    line-height: 1;
+}
+
+.label, .input {
+    font-size: 14px;
+    color: gray;
 }
 
 .reserve-button {
-    height: 50px;
+    height: 55px;
+    width: 55px;
     color: rgb(60, 60, 60);
+    font-size: 0.8rem;
  }
 
-
-@media (max-width: 500px) {
-
-    .input-box {
-        width: 200px;
-        margin: 0;
-    }
-
-    .reserve-button {
-        width: 100%;
-        font-size: 0.75rem;
-    }
-
-    mat-label {
-        font-size: 0.75rem;
-    }
-
-    mat-hint {
-        padding: 0;
-        margin: 0 -115px 0 -15px;
-    }
-    
-}
+ .reserve-button:hover {
+    cursor: pointer;
+ }

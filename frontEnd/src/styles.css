@@ -62,7 +62,7 @@ body { margin: 0; font-family: "Philosopher", sans-serif; font-weight: normal; }
   background-color: #9b9b72;
 }
 .pink-background {
-  background-color: #dfa1a3;
+  background-color: #cb8385;
 }
 .light-pink-background {
   background-color: #f1d8d9;
@@ -84,7 +84,7 @@ body { margin: 0; font-family: "Philosopher", sans-serif; font-weight: normal; }
   color: #9b9b72;
 }
 .pink-font {
-  color: #dfa1a3;
+  color: #cb8385;
 }
 .light-pink-font {
   color: #f1d8d9;
@@ -135,6 +135,19 @@ body { margin: 0; font-family: "Philosopher", sans-serif; font-weight: normal; }
   opacity: 0.8;  
 }
 
+.form-field {
+  width: 230px !important;
+}
+
+.form-field input.mat-input-element {
+  width: 100% !important;
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+.form-field mat-label {
+  font-size: 10px;
+}
 
 
 .create-button-form {

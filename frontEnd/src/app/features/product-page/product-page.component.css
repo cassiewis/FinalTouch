@@ -1,213 +1,159 @@
 /* src/app/product-page/product-page.component.css */
+.body {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
 
 .product-body {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr); /* Create 2 equal columns for desktop */
-  margin: 0 0 5% 0;
-  height: 100%;
-}
-
-.path-container {
   display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between; 
+  width: clamp(600px, 75%, 95%);
+  align-items: flex-start;
+  margin: 3% 0;
 }
 
-.path { 
-  cursor: pointer;
+.path {
+  font-size: 0.9rem;
+  color: rgb(100, 100, 100)
 }
 
 .path :hover {
-  color: rgb(100, 100, 100); 
-}
-
-.subpage {
-  color: rgb(165, 165, 165);
-  padding: 40px 0 40px 10px;
-  font-size: 1.5rem;
-  font-weight: normal;
-  margin: 0;
-  display: flex;
-  align-items: center;
+  color: rgb(176, 176, 176); 
+  cursor: pointer;
 }
   
 .product-image-box {
-  display: flex;
-  justify-content: right;
-  align-items: flex-start;
-  height: 100%;
-}
-
-.product-description-container {
-  margin: 0 15% 0 5%;
-  padding: 5% 0;
-  display: flex;
-  flex-direction: column; /* Stacks children vertically */
-  justify-content: space-between; /* Pushes reserve-container to the bottom */
-  align-items: flex-start; /* Aligns content to the left */
-  position: relative; /* Establishes a positioning context */
-}
-
-.product-descriptions {
-  flex: 1; /* Allows this section to take up remaining space */
-  width: 100%; /* Ensures it spans the full width */
-  margin-bottom: 1rem; /* Adds spacing between the descriptions and the reserve-container */
+  aspect-ratio: 3 / 4;
+  width: 47%; 
+  overflow: hidden;
+  position: relative;
+  flex-shrink: 0;
 }
 
 .product-image {
-  aspect-ratio: 4/5;
-  width: 80%;
-  max-width: 450px;
+  width: 100%;
+  height: 100%;
   object-fit: cover;
-  padding-right: 5%;
+  display: block;
 }
 
 
+.product-description-container {
+  aspect-ratio: 3 / 4;
+  width: 47%; 
+  position: relative;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.top-container {
+  padding-top: 10px;
+}
+
 .product-name {
-  font-size: 1.5rem;
+  font-size: 1.75rem;
   font-weight: normal;
+}
+
+.product-price {
+  font-size: 1.25rem;
 }
 
 .product-description {
   font-weight: normal;
-  margin: 5% 10% 10% 5%;
   font-size: 1rem;
+  line-height: 1.75;
 }
 
-.price-container {
-  background-image: url('/images/priceBackground.png');
-  background-size: contain;
-  background-position: right;
-  background-repeat: no-repeat;
-  font-size: 1.25rem;
-  width: 150px;
-  height: auto;
-  float: right; 
-  margin-top: -30px;
-  margin-right: 10%;
-  text-align: center;
+.dropdown-box {
+  position: relative;
+  background-color: #f2f2f2;
+  border-radius: 5px;
+  padding: 12px;
+  cursor: pointer;
+  transition: box-shadow 0.2s ease-in-out;
+}
+
+.box-header {
+  display: flex;
+  justify-content: space-between;
+  font-weight: 500;
+  font-size: 1rem;
+  color: #444;
+}
+
+.arrow {
+  transition: transform 0.3s ease;
+}
+
+.arrow.open {
+  transform: rotate(180deg);
+}
+
+.box-content {
+  margin-top: 12px;
+  font-size: 0.9rem;
+  background-color: #f2f2f2;
+  padding: 12px;
+  color: #666;
+  line-height: 1.5;
+  position: absolute;
+  z-index: 10;
+}
+
+.bottom-container {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
 }
 
 .reserve-container {
-  display: flex;
-  justify-content: center; /* Centers the reserve component horizontally */
-  align-items: center; /* Centers the reserve component vertically */
-  width: 100%; /* Ensures it spans the full width */
-  position: relative; /* Ensures it stays within the parent container */
-  margin-top: auto; /* Pushes the reserve-container to the bottom */
+  margin-bottom: 15px;
 }
 
-.footer-container {
-  display: flex;
+.email, .deposit{
+  font-size: 0.9rem;
 }
 
-.deposit-container {
-  display: flex; /* Aligns the images and text in a row */
-  justify-content: center; /* Centers the content horizontally */
-  align-items: center; /* Aligns the content vertically */
-  margin-bottom: 50px;
-  text-align: center;
-  font-style: italic;
-  overflow: hidden; /* Ensures the images crop when the container shrinks */
+.border-line {
+  margin: 5%;
+  color: #f1f1f1;
 }
 
-.deposit-text {
-  padding: 20px;
-  border-radius: 8px;
-  flex-shrink: 0; /* Prevents the text box from shrinking */
-  width: 350px;
-  max-width: 90%; /* Sets a maximum width for the text box */
+.similar-items-container {
+  height: 500px;
 }
 
-.deposit-line {
-  object-fit: cover; /* Ensures the images crop instead of distorting */
-  width: 100%; /* Makes the images responsive */
-  height: auto; /* Maintains the aspect ratio */
-  flex-shrink: 1; /* Allows the images to shrink when the container shrinks */
-}
-
-
-@media (max-width: 1000px) {
-
+@media (max-width: 750px) {
   .product-body {
-    gap: 3vw;
-    margin-left: 3%;
-    margin-right: 3%;
+    margin: 5%;
   }
 
-}
-
-@media (max-width: 850px) {
-  .footer-container {
-    flex-direction: column;
+  .product-name {
+    font-size: 1.5rem;
   }
 
-  .product-body {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  .product-price {
+    font-size: 1.25rem;
   }
 
-  .product-description-container {
-    height: auto;
-    max-width: 500px;
-    width: 80%;
-    margin-top: -50px;
+  .product-description {
+    font-size: 0.9rem;
+    line-height: 1.5;
   }
-
-  .product-image {
-    width: 80%;
-  }
-
-  .product-image-box {
-    justify-content: center;
-    height: auto;
-  }
+  
 }
 
 @media (max-width: 500px) {
 
-  .path {
-    font-size: 1.2rem;
-  }
-
-  .subpage {
-    font-size: 1rem;
-  }
-
-  .product-image-box {
-    padding-bottom: 15px;
-  }
-
-  .product-descriptions {
-    width: 100%;
-  }
-
-  .product-description {
-    font-weight: normal;
-    margin: 5%;
-    font-size: 0.9rem;
-  }
-
+  .product-image-box,
   .product-description-container {
-    margin: 0;
-    padding: 0;
-  }
-
-  .product-body {
-    padding: 0;
-    margin: 0;
-  }
-
-  .price-container {
-
-    font-size: 1.2rem;
-    width: 120px;
-    margin-top: 0;
-  }
-
-  .deposit-text {
-    flex-shrink: 0; /* Prevents the text box from shrinking */
-    font-size: 0.8rem;
-    width: 80%;
+    width: 100%;
   }
 
 }

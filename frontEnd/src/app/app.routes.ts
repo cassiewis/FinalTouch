@@ -16,16 +16,12 @@ export const routes: Routes = [
     { path: '', component: HomepageComponent }, // Default route for homepage
     { path: 'home', component: HomepageComponent },
     { path: 'shop', component: ShopComponent },
-    { path: 'inspo', component: InspoComponent },
-    { path: 'cart', component: CartComponent },
+    { path: 'inspo', loadComponent: () => import('./inspo/inspo.component').then((m) => m.InspoComponent),},
+    { path: 'cart', loadComponent: () => import('./cart/cart-page/cart-page.component').then((m) => m.CartComponent),},
     { path: 'notFound', component: NotFoundComponent },
     { path: 'product/:productId', component: ProductPageComponent },
     { path: 'login', component: LoginComponent }, // Add the login route
-    { path: 'admin', component: AdminDashboardComponent, canActivate: [AuthGuard], children: [
-      { path: 'products', component: AdminProductsComponent, canActivate: [AuthGuard] },
-      { path: 'reservations', component: AdminReservationsComponent, canActivate: [AuthGuard] },
-      // Add more admin routes here
-    ]},
+    { path: 'admin', loadChildren: () =>import('./backoffice/backoffice.module').then(m => m.BackofficeModule)},
     { path: '**', component: HomepageComponent }, // Redirect any incorrect URLs to home
 ];
 

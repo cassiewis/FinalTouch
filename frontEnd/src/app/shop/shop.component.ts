@@ -23,6 +23,10 @@ export class ShopComponent implements AfterViewInit {
   maxPrice: number | null = null;
   loading: boolean = true;
 
+  showMobileFilter: boolean = false;
+  isSmallScreen: boolean = false;
+
+
   typeCategory: string[] = ['Signage', 'Table Numbers', 'Florals', 'Lighting', 'Tableware'];
   colorCategory: string[] = ['White', 'Black', 'Gold', 'Silver', 'Clear', 'Brown', 'Blue', 'Green', 'Pink', 'Purple', 'Red', 'Yellow', 'Orange'];
   eventCategory: string[] = ['Wedding', 'Baby Shower', 'Engagement', 'Bridal Shower', 'Birthday'];
@@ -54,6 +58,10 @@ export class ShopComponent implements AfterViewInit {
       this.applyAllFilters();
       this.loading = false;
     });
+
+    this.checkScreenSize();
+    window.addEventListener('resize', this.checkScreenSize.bind(this));
+
   }
 
   ngAfterViewInit() {
@@ -66,6 +74,18 @@ export class ShopComponent implements AfterViewInit {
         checkbox.checked = true;
       }
     });
+  }
+
+
+  toggleMobileFilter() {
+    this.showMobileFilter = !this.showMobileFilter;
+  }
+
+  checkScreenSize() {
+    this.isSmallScreen = window.innerWidth <= 630;
+    if (!this.isSmallScreen) {
+      this.showMobileFilter = false;
+    }
   }
 
   toggleSection(section: string): void {

@@ -1,4 +1,4 @@
-<div>
-    <span [innerHTML]="data.message"></span>
-</div>
-<button mat-button (click)="data.action()">{{ data.actionLabel }}</button>
+<div class="snackbar-content" [innerHTML]="data.message"></div>
+<button (click)="data.action(); close()" class="snackbar-button">
+  {{ data.actionLabel }}
+</button>
