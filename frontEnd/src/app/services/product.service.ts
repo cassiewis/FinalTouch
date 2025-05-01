@@ -117,5 +117,44 @@ export class ProductService {
     }
     return [];
   }
+  
+  getSimilarProducts(currentProduct: Product, count: number = 4): Product[] {
+    if (!this.productsCache || this.productsCache.length === 0) {
+      this.productsCache = this.loadCacheFromSessionStorage();
+    }
+  
+    const similar = this.productsCache
+      .filter(p => p.productId !== currentProduct.productId)
+      .map(p => {
+        const tags = currentProduct.tags || [];
+        const pTags = p.tags || [];
+  
+        // Count matching tags
+        const tagMatchScore = tags.filter(tag => pTags.includes(tag)).length;
+  
+        // Optionally: add name similarity score (basic)
+        const nameSimilarity =
+          p.name.toLowerCase().includes(currentProduct.name.toLowerCase()) ? 1 : 0;
+  
+        return { product: p, score: tagMatchScore + nameSimilarity };
+      })
+      .sort((a, b) => b.score - a.score)
+      .map(p => p.product)
+      .slice(0, count);
+  
+    // If we didn’t get enough, fill in with random ones
+    const needed = count - similar.length;
+    if (needed > 0) {
+      const fallback = this.productsCache
+        .filter(p => !similar.includes(p) && p.productId !== currentProduct.productId);
+      while (similar.length < count && fallback.length) {
+        const randomIndex = Math.floor(Math.random() * fallback.length);
+        similar.push(fallback.splice(randomIndex, 1)[0]);
+      }
+    }
+  
+    return similar;
+  }
+  
 
 }

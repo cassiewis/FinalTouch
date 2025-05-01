@@ -1,16 +1,10 @@
-<body>
-    <div *ngIf="loading">
-      <p>Loading Products...</p>
-    </div>
-  
+
+<body>  
     <ng-container *ngIf="!loading">
-      <div *ngIf="products.length > 0; else noProducts" class="products-grid">
+      <div class="products-grid">
         <div *ngFor="let product of products" class="product-item">
           <app-product-box [product]="product"></app-product-box>
         </div>
       </div>
-      <ng-template #noProducts>
-        <p>No products found.<br><br>We're always growing our inventory, check back again soon!</p>
-      </ng-template>
     </ng-container>
   </body>

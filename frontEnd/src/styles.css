@@ -1,5 +1,6 @@
 /* You can add global styles to this file, and also import other style files */
 @import '../node_modules/@angular/material/prebuilt-themes/indigo-pink.css';
+
 html, body {
   margin: 0;
   padding: 0;
@@ -8,36 +9,6 @@ html, body {
   font-weight: normal;
   color: rgb(50, 50, 50);
 }
-
-.philosopher-regular {
-  font-family: "Philosopher", sans-serif;
-  font-weight: 400;
-  font-style: normal;
-}
-
-.philosopher-bold {
-  font-family: "Philosopher", sans-serif;
-  font-weight: 700;
-  font-style: normal;
-}
-
-.philosopher-regular-italic {
-  font-family: "Philosopher", sans-serif;
-  font-weight: 400;
-  font-style: italic;
-}
-
-.philosopher-bold-italic {
-  font-family: "Philosopher", sans-serif;
-  font-weight: 700;
-  font-style: italic;
-}
-
-.qwigley-regular {
-    font-family: "Qwigley", cursive;
-    font-weight: 400;
-    font-style: normal;
-  }
 
 
 body {
@@ -50,48 +21,52 @@ body {
 html, body { height: 100%; }
 body { margin: 0; font-family: "Philosopher", sans-serif; font-weight: normal; }
 
-
-
 /*
  * Custom styles for the app 
  */
- .white-background {
-  background-color: #f8f7f2;
+ .tan-background {
+  background-color: #faf3eb;
 }
+
+.red-background {
+  background-color: #c49386;
+}
+
 .green-background {
-  background-color: #9b9b72;
-}
-.pink-background {
-  background-color: #cb8385;
+  background-color: #bbbda3;
 }
 .light-pink-background {
-  background-color: #f1d8d9;
+  background-color: #f1e1d5;
 }
-.blue-background {
-  background-color: #c6ced6;
+.pink-background {
+  background-color: #e9bca6;
 }
+
 .yellow-background {
   background-color: #efe6b9;
 }
+
 /* font colors: */
-.white-font {
-  color: #f8f7f2;
+.tan-font {
+  color: #faf3eb;
+}
+.red-font {
+  color: #c49386;
 }
 .black-font {
   color: #323232;
 }
 .green-font {
-  color: #9b9b72;
-}
-.pink-font {
-  color: #cb8385;
+  color: #bbbda3;
 }
 .light-pink-font {
-  color: #f1d8d9;
+  color: #f1e1d5;
 }
-.blue-font {
-  color: #c6ced6;
+
+.pink-font {
+  color: #e9bca6;
 }
+
 .yellow-font {
   color: #efe6b9;
 }
@@ -103,40 +78,36 @@ body { margin: 0; font-family: "Philosopher", sans-serif; font-weight: normal; }
   /* Chau Philomene One */
   font-family: 'Chau Philomene One', sans-serif;
 }
-.page-title {
-  display: flex;
-  justify-content: left;
-  padding-left: 380px;
-  align-items: center;
-  font-size: 2rem;
-  height: 165px;
-  width: 100%;
-  color: white;
-  margin-top: 0px;
-  background-image: url('/images/banner.jpg');
-  background-size: cover;
+.cursive-font {
+  /* Petemoss */
+  font-family: 'Petemoss', cursive;
+  font-weight: normal;
 }
+
+.title-font {
+  font-family: 'Hello Paris', sans-serif;
+}
+
 
 .button-theme {
   border: none;
-  color: black;
   padding: 8px 10px;
   text-align: center;
   text-decoration: none;
-  font-style: italic;
-  border-radius: 6px;
+  border-radius: 2px;
   font-size: 14px;
   margin: 4px 2px;
   cursor: pointer;
-  width: 100px;
+  width: 110px;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
 }
 
 .button-theme:hover {
-  opacity: 0.8;  
+  opacity: 0.9;  
 }
 
 .form-field {
-  width: 230px !important;
+  width: 100% !important;
 }
 
 .form-field input.mat-input-element {

@@ -1,46 +1,60 @@
 <div class="cart-page white-background">
-  <div class="title">
-    <p class="page-title">Your Cart</p>
-  </div>
 
   <div class="cart-empty" *ngIf="cartItems.length === 0">
+    <div class="title">
+      <p class="cart-title black-font">YOUR CART</p>
+    </div>
     <p>No items in you cart... yet!</p>
     <button (click)="goShop()" class="shop-button button-theme light-pink-background">shop now</button>
   </div>
 
   <div class="cart-full" *ngIf="cartItems.length > 0">
-    <div class="cart-items-list">
-      <div class="grid-header secondary-font">
-        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PRODUCT</p>
-        <p></p>
-        <p>PRICE</p>
-        <p>DATES</p>
-        <p></p>
+    <div class="left-cart">
+      <div class="title">
+        <p class="cart-title black-font">YOUR CART</p>
+        <p class="num-items">{{ cartItems.length }} items</p>
       </div>
-      <div class="cart-item" *ngFor="let item of cartItems">
-        <app-cart-item [item]="item" (updateCart)="updateCart()"></app-cart-item>
+      <div class="cart-items-list">
+        <div class="grid-header">
+          <p>ITEM</p>
+          <p></p>
+          <p>PRICE</p>
+          <p>DATES</p>
+          <p></p>
+        </div>
+        <div class="cart-item" *ngFor="let item of cartItems">
+          <app-cart-item [item]="item" (updateCart)="updateCart()"></app-cart-item>
+        </div>
       </div>
     </div>
-    <div class="cart-total-list">
+    <div class="right-cart">
       <div class="cart-pricing">
-        <h1>Order Summary</h1>
-        <hr>
+        <p class="price-h1">Summary</p>
         <div class="price-info">
-          <p>Subtotal: ${{ totalCost }}</p>
-          <div class="deposit-container">
-            <p>Refundable Deposit: ${{ totalDeposit }}</p>
-            <div class="info-hover-container">
-              <span class="info-icon">i</span>
-              <span class="tooltip-text">Refunded open return if items are in acceptable condition</span>
+          <div class="subtotal-section">
+            <p class="total-name">Subtotal:</p>
+            <b class="total">${{ totalCost }}</b>
+          </div>
+          <div class="deposit-section">
+            <div class="deposit-container">
+              <p class="total-name">Refundable Deposit:</p>
+              <p class="info-hover-container">
+                <span class="info-icon">i</span>
+                <span class="tooltip-text">Refunded open return if items are in acceptable condition</span>
+              </p>
             </div>
+            <b class="total">${{ totalDeposit }}</b>
           </div>
         </div>
-        <hr>
-        <h2>Total: ${{ totalCost + totalDeposit }}</h2>
-        <!-- <i>Due 6 months before reservation date</i> todo figure out when its due and write here -->
       </div>
-      <form></form>
-      <button class="checkout-button white-font green-background" (click)="showPopup()">Checkout</button>
+      <div class="checkout-container">
+        <div class="total-price-container">
+          <p class="price-h1">Total:</p>
+          <b class="price-h1">${{ totalCost + totalDeposit }}</b>
+        </div>
+        <form></form>
+        <button class="checkout-button white-font green-background button-theme" (click)="showPopup()">Checkout</button>
+      </div>
     </div>
   </div>
   <app-checkout-popup></app-checkout-popup>

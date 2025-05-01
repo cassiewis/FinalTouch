@@ -1,39 +1,236 @@
 body {
     display: flex;
     justify-content: center;
-    align-items: center; 
     flex-direction: column;
     height: 100%;
 }
 
-.inspo-header {
-  margin: 20px;
-  width: 90%;
+.header-container {
+  position: relative;
+  width: 100%;
+  height: 500px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem 3rem;
+  box-sizing: border-box;
+
 }
 
-.grid-container {
-  columns: 4 200px; /* Change this to 5 in the future when I have a TON of photos*/
-  column-gap: 1rem;
-  width: 80%;
+.header-image-container {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  height: 90%;
+  min-width: 400px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-image: url('/images/inspo-header-background.jpg');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
   margin: 0 auto;
+  z-index: 1;
+
+}
+
+.side-text {
+  position: relative;
+  max-width: 250px;
+  z-index: 2;
+  word-wrap: break-word;
+  text-align: center;
+  background-color: #faf3eb;
+}
+
+.left-text {
+  align-self: flex-start;
+  margin: 5% auto 0 5%;
+}
+
+.right-text {
+  margin: 0 5% 5% auto;
+  align-self: flex-end;
+  border: 1px solid black;
+  padding: 20px 20px;
+  border-radius: 999px;
+  display: inline-block;
+  white-space: nowrap;
+}
+
+.right-text:hover {
+  cursor: pointer;
+  background-color: rgba(166, 166, 166, 0.1);
+}
+
+.title {
+  max-height: 250px;
+}
+
+.inspo-grid-container {
+  padding: 3rem;
+  columns: 5 200px;
+  column-gap: 1rem;
+  margin: 0 auto;
+  overflow: hidden;
+
   div {
-    width: 150px;
-    margin: 0 1.5rem 1.5rem 0;
+    max-width: 100%;
+    margin: 0 0 1rem 0;
     display: inline-block;
     width: 100%;
+  
     img {
       width: 100%;
-      border-radius: 5px;
+      height: auto;
+      border-radius: 2px;
+      object-fit: cover;
+    
     }
 
   }
 }
 
-@media (max-width: 600px) {
-  .grid-container {
-    columns: 2 150px;
-    width: 95%;
-    column-gap: 0.75rem;
+.reviews-container {
+  width: 80%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+}
 
+.review {
+  width: 100%;
+  max-width: 1000px;
+  min-height: 200px;
+  padding: 15px;
+  border-bottom: 1px solid rgb(184, 184, 184);
+}
+
+.review-text {
+  text-align: center;
+  white-space: normal;
+  word-wrap: break-word;
+  font-size: 1rem;
+  overflow: hidden;
+}
+
+.stars {
+  font-size: 1.5rem;
+  display: flex;
+  justify-content: center;
+  gap: 5px;
+}
+
+.star {
+  font-size: inherit;
+}
+
+.review-footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 50px;
+  bottom: 0;
+}
+
+@media (max-width: 950px) {
+
+  .title {
+    height: 200px;
+  }
+
+
+  .header-container {
+    padding: 15px;
+  }
+
+  .left-text {
+    margin-left: 0;
+  }
+  
+  .right-text {
+    margin-right: 0;
+}
+
+  .side-text {
+    max-width: 200px;
+  }
+}
+
+@media (max-width: 760px) {
+
+  .title {
+    height: 150px;
+  }
+  .header-image-container {
+    height: 80%;
+    /* min-width: 300px; */
+    width: 300px;
+  }
+
+  .inspo-grid-container {
+    padding: 2rem;
+    columns: 3 150px;
+    column-gap: 0.75rem;
+  }
+}
+
+@media (max-width: 715px) {
+
+  .header-container {
+    display: flex;
+    flex-direction: column; /* Stack items vertically */
+    align-items: center; /* Center items horizontally */
+    justify-content: center; /* Center items vertically */
+    padding: 1rem; /* Add padding for spacing */
+    box-sizing: border-box;
+  }
+
+  .header-image-container {
+    padding: 2rem;
+    width: 90%; /* Make the image container take full width */
+    /* height: auto; Maintain aspect ratio */
+    margin: 1rem 0; /* Add spacing between the image and text */
+  }
+
+  .side-text {
+    max-width: 90%; /* Ensure the text doesn't exceed the container width */
+    /* text-align: center; Center-align the text */
+    margin: 1rem 0; /* Add spacing around the text */
+  }
+
+  .left-text {
+    margin: 0 0 auto 0;
+    padding-bottom: 10px;
+    align-self: center;
+  }
+  
+} 
+
+@media (max-width: 600px) {
+  .inspo-grid-container {
+    padding: 1rem;
+    columns: 2 100px; /* Always 2 items per row */
+    column-gap: 0.5rem; /* Adjust spacing between columns */
+    margin: 0 auto; /* Center the grid */
+  }
+
+  .inspo-grid-container div img {
+    width: 100%; /* Ensure images scale to fit their container */
+    height: auto; /* Maintain aspect ratio */
+  }
+
+
+}
+
+@media (max-width: 350px) {
+  .header-image-container {
+    height: 65%; /* Make the image container take full width */
+  }
+  .title {
+    height: 130px;
   }
 }

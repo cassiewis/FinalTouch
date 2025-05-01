@@ -38,7 +38,7 @@ public class Product {
     }
 
     public void setCustom(boolean custom) {
-        this.custom = true;
+        this.custom = custom;
     }
 
     public String getName() {

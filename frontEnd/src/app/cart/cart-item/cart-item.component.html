@@ -1,5 +1,6 @@
 <div class="cart-item-details">
-    <img (click)="routeToProduct()" [src]="this.item.imageUrl" alt="{{ this.item.name }}" class="cart-item-image">
+  <!-- <img (click)="routeToProduct()" [src]="this.item.imageUrl" alt="{{ this.item.name }}" class="cart-item-image"> -->
+    <img (click)="routeToProduct()" src="/images/stock_photo.png" alt="{{ this.item.name }}" class="cart-item-image">
     <div class="product-title" (click)="routeToProduct()">{{ item.name }}
       <div *ngIf="hasDateErrors" class="info-hover-container price-error">
         <span class="info-icon">!</span>

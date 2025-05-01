@@ -1,10 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ProductService } from '../../../services/product.service';
-import { Product } from '../../../models/product.model';
 import { RouterModule } from '@angular/router';
-
-
 @Component({
   selector: 'app-quick-view',
   standalone: true,
@@ -16,7 +13,4 @@ export class QuickViewComponent {
 
   constructor(private productService: ProductService){}
 
-  ngOnInit(): void {
-  
-  }
 }

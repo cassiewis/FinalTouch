@@ -1,17 +1,20 @@
-import { Component, AfterViewInit } from '@angular/core';
+import { Component, AfterViewInit, ElementRef, HostListener, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ProductService } from '../services/product.service';
 import { Product } from '../models/product.model';
 import { ActivatedRoute, RouterModule, Router } from '@angular/router';
 import { ProductListComponent } from './product-list/product-list.component';
+import { NgxSliderModule } from '@angular-slider/ngx-slider';
+import { Options } from '@angular-slider/ngx-slider';
+import {MatSliderModule} from '@angular/material/slider';
 
 @Component({
   selector: 'app-shop',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule, ProductListComponent],
+  imports: [NgxSliderModule, MatSliderModule, CommonModule, FormsModule, RouterModule, ProductListComponent],
   templateUrl: './shop.component.html',
-  styleUrls: ['./shop.component.css']
+  styleUrls: ['./shop.component.scss']
 })
 export class ShopComponent implements AfterViewInit {
   products: Product[] = [];
@@ -19,26 +22,40 @@ export class ShopComponent implements AfterViewInit {
 
   selectedFilters: string[] = [];
   searchQuery: string = '';
-  minPrice: number | null = null;
-  maxPrice: number | null = null;
+  minPrice: number = 0;
+  maxPrice: number = 100;
+
   loading: boolean = true;
 
   showMobileFilter: boolean = false;
   isSmallScreen: boolean = false;
-
-
+  productsPerPage: number = 12;
+  currentPage: number = 0;
+  
   typeCategory: string[] = ['Signage', 'Table Numbers', 'Florals', 'Lighting', 'Tableware'];
   colorCategory: string[] = ['White', 'Black', 'Gold', 'Silver', 'Clear', 'Brown', 'Blue', 'Green', 'Pink', 'Purple', 'Red', 'Yellow', 'Orange'];
   eventCategory: string[] = ['Wedding', 'Baby Shower', 'Engagement', 'Bridal Shower', 'Birthday'];
-  customCategory: string[] = ['Custom'];
+  customSelection = 'Any';
 
   openSections: { [key: string]: boolean } = {
     type: true,
     color: false,
-    price: true,
-    event: true,
-    custom: true
+    price: false,
+    event: false,
+    custom: false
   };
+
+  priceSliderOptions: Options = {
+    floor: 0,
+    ceil: 100,
+    step: 1,
+    animate: true,
+    showTicks: false,
+    showTicksValues: false,
+    translate: () => ''  // This hides the labels above the slider handles
+  };
+
+  @ViewChild('filterBox') filterBox!: ElementRef;
 
   constructor(
     private productService: ProductService,
@@ -76,9 +93,56 @@ export class ShopComponent implements AfterViewInit {
     });
   }
 
+  get pagedProducts(): Product[] {
+    const start = this.currentPage * this.productsPerPage;
+    return this.filteredProducts.slice(start, start + this.productsPerPage);
+  }
+  
+  setPage(page: number) {
+    if (page >= 0 && page < this.totalPages()) {
+      this.currentPage = page;
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  }
+  
+  totalPages(): number {
+    return Math.ceil(this.filteredProducts.length / this.productsPerPage);
+  }
+  
+  totalPagesArray(): number[] {
+    return Array(this.totalPages()).fill(0).map((_, i) => i);
+  }
+
+  get totalProducts(): number {
+    return this.filteredProducts.length;
+  }
+  
+  get startIndex(): number {
+    return this.currentPage * this.productsPerPage + 1;
+  }
+  
+  get endIndex(): number {
+    const end = this.startIndex + this.pagedProducts.length - 1;
+    return end > this.totalProducts ? this.totalProducts : end;
+  }
 
   toggleMobileFilter() {
     this.showMobileFilter = !this.showMobileFilter;
+  }
+
+  closeFilter() {
+    this.showMobileFilter = false;
+  }
+
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: MouseEvent) {
+    if (
+      this.showMobileFilter &&
+      this.filterBox &&
+      !this.filterBox.nativeElement.contains(event.target)
+    ) {
+      this.closeFilter();
+    }
   }
 
   checkScreenSize() {
@@ -106,6 +170,12 @@ export class ShopComponent implements AfterViewInit {
     this.applyAllFilters();
   }
 
+  updateCustom(custom: string) {
+    this.customSelection = custom;
+    this.updateURLFilters();
+    this.applyAllFilters();
+  }
+
   updateURLFilters(): void {
     this.router.navigate([], {
       relativeTo: this.route,
@@ -121,9 +191,10 @@ export class ShopComponent implements AfterViewInit {
     const groupedFilters: { [key: string]: string[] } = {
       type: [],
       color: [],
-      event: [],
-      custom: []
+      event: []
     };
+
+    this.currentPage = 0;
 
     this.selectedFilters.forEach(filter => {
       const lcFilter = filter.toLowerCase();
@@ -133,8 +204,6 @@ export class ShopComponent implements AfterViewInit {
         groupedFilters['color'].push(lcFilter);
       } else if (this.eventCategory.map(f => f.toLowerCase()).includes(lcFilter)) {
         groupedFilters['event'].push(lcFilter);
-      } else if (this.customCategory.map(f => f.toLowerCase()).includes(lcFilter)) {
-        groupedFilters['custom'].push(lcFilter);
       }
     });
 
@@ -144,8 +213,15 @@ export class ShopComponent implements AfterViewInit {
       const matchesType = groupedFilters['type'].length === 0 || groupedFilters['type'].some(f => tags.includes(f));
       const matchesColor = groupedFilters['color'].length === 0 || groupedFilters['color'].some(f => tags.includes(f));
       const matchesEvent = groupedFilters['event'].length === 0 || groupedFilters['event'].some(f => tags.includes(f));
-      const matchesCustom = groupedFilters['custom'].length === 0 || groupedFilters['custom'].some(f => tags.includes(f));
+      
+      console.log("customSelection = " + this.customSelection);
+      const matchesCustom =
+        this.customSelection === 'Any' ||
+        (this.customSelection === 'Custom' && product.custom === true) ||
+        (this.customSelection === 'Not Custom' && product.custom !== true);  
+      
       const matchesSearch = !search || product.name.toLowerCase().includes(search);
+      
       const matchesPrice =
         (this.minPrice === null || product.price >= this.minPrice) &&
         (this.maxPrice === null || product.price <= this.maxPrice);
@@ -169,8 +245,8 @@ export class ShopComponent implements AfterViewInit {
 
   clearAllFilters(): void {
     this.selectedFilters = [];
-    this.minPrice = null;
-    this.maxPrice = null;
+    this.minPrice = 0;
+    this.maxPrice = 100;
     // this.searchQuery = '';
 
     const checkboxes = document.querySelectorAll('input[type="checkbox"]') as NodeListOf<HTMLInputElement>;
@@ -179,6 +255,7 @@ export class ShopComponent implements AfterViewInit {
     this.updateURLFilters();
     this.applyAllFilters();
   }
+
 
   removeFilter(filter: string): void {
     this.selectedFilters = this.selectedFilters.filter(f => f !== filter);

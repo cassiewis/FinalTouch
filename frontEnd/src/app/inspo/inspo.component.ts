@@ -2,24 +2,27 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { OnInit } from '@angular/core';
 import { ImageService } from '../services/image.service';
-import { HeaderComponent } from '../shared/header/header.component';
-import { FooterComponent } from '../shared/footer/footer.component';
-import { TestimonialsComponent } from '../home/homepage/testimonials/testimonials.component';
+import { Review } from '../models/review.model';
+import { DetailsService } from '../services/details.service';
 @Component({
   selector: 'app-inspo',
   standalone: true,
-  imports: [CommonModule, HeaderComponent, FooterComponent, TestimonialsComponent],
+  imports: [CommonModule],
   templateUrl: './inspo.component.html',
   styleUrl: './inspo.component.css'
 })
 export class InspoComponent implements OnInit {
 
-  public inspoPhotos: string[] = [];
+  inspoOpen = true;
+  inspoPhotos: string[] = [];
+  reviews: Review[] = [];
 
-  constructor(private imageService: ImageService) { }
+  constructor(private imageService: ImageService, private detailsService: DetailsService) {
+    
+  }
 
   // on load, fetch inspo photos from the backend
-  ngOnInit() {  
+  ngOnInit() {
     console.log("InspoComponent: fetching inspirations");
     this.fetchInspoPhotos();
   }
@@ -35,5 +38,22 @@ export class InspoComponent implements OnInit {
       }
     );
   }
+
+  fetchReviews() {
+    this.detailsService.getAllReviews().subscribe(reviews => {
+      this.reviews = reviews;
+    });
+    console.log("fetched reviews: ", this.reviews);
+  }
+
+  togglePage() {
+    this.inspoOpen = !this.inspoOpen;
+    console.log("InspoComponent: toggling page");
+
+    if (!this.inspoOpen && this.reviews.length === 0) {
+      this.fetchReviews();
+    }
+  }
+
 
 }

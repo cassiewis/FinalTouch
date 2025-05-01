@@ -93,6 +93,13 @@
             <label>Image URL:</label>
             <input [(ngModel)]="editableProduct.imageUrl" type="text" />
         </div>
+        <div class="form-group custom-checkbox-group">
+            <label class="custom-checkbox-label">
+                <input type="checkbox" [(ngModel)]="editableProduct.custom" name="isCustom" />
+                <span class="custom-checkbox-box"></span>
+                Custom Item
+            </label>
+        </div>
         <div class="edit-button-container">
             <button (click)="saveProduct()">Save</button>
             <button (click)="closeProductEditor()">Cancel</button>

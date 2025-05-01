@@ -16,7 +16,9 @@ export class ProductBoxComponent {
   constructor(private router: Router) {}
 
   goToProductPage(): void {
-    this.router.navigate(['/product', this.product.productId]); // Navigate to product detail page
+    this.router.navigate(['/product', this.product.productId]).then(() => {
+      document.body.scrollTo({ top: 0, behavior: 'smooth' });
+    });
   }
 
   onImageLoad(event: Event) {

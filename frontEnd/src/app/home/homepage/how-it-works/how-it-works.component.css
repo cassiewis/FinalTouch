@@ -3,30 +3,25 @@
   }
 
   body {
-    padding: 0px;
+    padding: 6rem 0;
     margin: 0px;
 }
 
-.title {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
+.page-title {
     font-size: 2rem;
-    height: 100px;
-    margin: 0px;
-    font-weight: normal;
-}
-.title-hearts {
-    width: 120px;
-    padding: 30px;
-    opacity: 0.3;
+    text-align: center;
+    margin: 40px 0;
 }
 
 .step-image {
-    height: 100px;
+    height: 50px;
     width: auto;
+}
+
+.step-title {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-bottom: 10px;
 }
 
 .steps-container {
@@ -35,7 +30,6 @@
     justify-content: center;
     align-items: center;
     margin: 50px;
-    min-height: 50vh;
 }
 
 .step, .step-description {
@@ -47,11 +41,11 @@
 .step-description {
     font-size: 1rem;
     text-align: center;
-    padding: 0px 80px;
+    padding: 0px 20%;
 }
 
 
-@media (max-width: 915px) {
+@media (max-width: 700px) {
 
     .steps-container {
         display: flex;
@@ -63,30 +57,17 @@
         font-size: 1.5rem;
     }
 
-    .title-hearts {
-        width: 100px;
-        padding: 15px;
-    }
 
     .step-description {
-        padding: 0px 100px;
+        padding: 0px 5%;
     }
     
 }
 
 @media (max-width: 500px) {
 
-    .title {
-        font-size: 1.4rem;
-    }
-
-    .title-hearts {
-        /* width: 100px; */
-        padding: 15px;
-    }
-
-    .step-description {
-        padding: 0px 50px;
+    body {
+        padding: 2rem 0;
     }
 
 }

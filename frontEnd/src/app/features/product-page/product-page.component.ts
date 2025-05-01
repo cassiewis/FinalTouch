@@ -9,77 +9,81 @@ import { ReserveComponent } from './reserve/reserve.component';
 import { LoadingIconComponent } from '../../shared/loading-icon/loading-icon.component';
 import { catchError } from 'rxjs/operators';
 import { of } from 'rxjs';
+import { ProductBoxComponent } from '../product-box/product-box.component';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-product-page',
   templateUrl: './product-page.component.html',
   styleUrls: ['./product-page.component.css'],
   standalone: true,
-  imports: [ReserveComponent, CommonModule, LoadingIconComponent],
+  imports: [FormsModule, ReserveComponent, CommonModule, ProductBoxComponent, LoadingIconComponent],
 })
 export class ProductPageComponent implements OnInit {
   product!: Product; // Assert that Product will always be defined
   productId: string | null = null; // Hold the current productId
   loading: boolean = true; // Add loading state
-  isPolicyOpen = false;
-  isCustomOpen = false;
+  activeTab: string = 'details';
+  quantity: number = 1;
+  quantities: number[] = Array.from({ length: 10 }, (_, i) => i + 1);
+  
+  similarProducts: Product[] = [];
 
   constructor(
-    private route: ActivatedRoute, 
+    private route: ActivatedRoute,
     private productService: ProductService,
     private location: Location,
     private router: Router,
     private cartService: CartService
-  ) {
-  }
+  ) {}
 
   ngOnInit(): void {
+    console.log('Product page initialized');
+    // Listen for changes in the productId paramMap (route parameters)
+    this.route.paramMap.subscribe(paramMap => {
+      const newProductId = paramMap.get('productId');
 
-    // Get the productId from the current URL
-    this.productId = this.route.snapshot.paramMap.get('productId');
+      if (!newProductId) {
+        console.log("Cannot find ProductId");
+        this.router.navigate(['/notFound']);
+        return;
+      }
 
-    // Subscribe to the observable
-    if (this.productId) {
-      console.log("Checking if product exists...");
-      this.productService.getProduct(this.productId).pipe(
-        catchError(error => {
-          console.log('Error fetching product. Rerouting to 404');
-          this.router.navigate(['/notFound']); // Navigate to the notFound page
-          return of(null); // Return an empty observable to complete the stream
-        })
-      ).subscribe(
-        (product: Product | null) => {
+      // If the productId has changed, update the component
+      if (newProductId !== this.productId) {
+        console.log("Product ID changed. Fetching new product...");
+        this.productId = newProductId;
+        this.loading = true;
+        window.scrollTo(0, 0); // Scroll to top when the product changes
+
+        this.productService.getProduct(this.productId).pipe(
+          catchError(error => {
+            console.log('Error fetching product. Rerouting to 404');
+            this.router.navigate(['/notFound']);
+            return of(null);
+          })
+        ).subscribe((product: Product | null) => {
           if (product) {
             this.product = product;
+            this.similarProducts = this.productService.getSimilarProducts(product);
             this.loading = false;
           }
-        }
-      );
-    } else {
-      console.log("Cannot find ProductId");
-      this.router.navigate(['/notFound']);
-    }
-
-
-    // Scroll to the top on page load
-    this.router.events.subscribe(event => {
-      if (event instanceof NavigationEnd) {
-        window.scrollTo(0, 0);
+        });
       }
     });
-    
-    console.log('productpage loaded');
+
+    console.log('Product page loaded');
   }
 
-  goBack(): void {
-    this.location.back(); 
+  goToShop(): void {
+    this.router.navigate(['/shop']);
   }
 
-  toggleReturnPolicy() {
-    this.isPolicyOpen = !this.isPolicyOpen;
+  setActiveTab(tabId: string) {
+    this.activeTab = tabId;
   }
 
-  toggleCustomBox() {
-    this.isCustomOpen = !this.isCustomOpen;
+  isActiveTab(tabId: string): boolean {
+    return this.activeTab === tabId;
   }
 }

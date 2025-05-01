@@ -1,14 +1,40 @@
 <body class="white-background">
-
-    <div class="inspo-header">
-        <h1 class="title">Inspo</h1>
-        <p class="description">Event Inspiration Gallery: Discover how our custom creations and rentals can transform any occasion. Browse through our past designs and get inspired for your next event!</p>
-
-    </div>
-    <div class="grid-container">
-        <div *ngFor="let photo of inspoPhotos" class="inspo-photo">
-            <img [src]="photo" alt="Inspiration Photo">
+    <section *ngIf="inspoOpen" class="open-section">
+        <div class="header-container tan-background">
+            <p class="side-text left-text">Take a look at how our clients brought magic and personality to their events through our handpicked collection of beautiful rentals.</p>
+            <div class="header-image-container">
+                <img class="title" src="images/inspo-title.png" alt="Inspiration Title">
+            </div>
+            <p class="side-text right-text" (click)="togglePage()">See Customer Reviews</p>
         </div>
-    </div>
+        <div class="inspo-grid-container">
+            <div *ngFor="let photo of inspoPhotos" class="inspo-photo">
+                <img [src]="photo" alt="Inspiration Photo">
+            </div>
+        </div>
+    </section>
+
+    <section *ngIf="!inspoOpen" class="open-section">
+        <div class="header-container tan-background">
+            <p class="side-text left-text">Real feedback from real events — see why customers love working with us.</p>
+            <div class="header-image-container">
+                <img class="title" src="images/testimonials-title.png" alt="Inspiration Title">
+            </div>
+            <p class="side-text right-text" (click)="togglePage()">See Inspo Photos</p>
+        </div>
+        <div class="reviews-container">
+            <div *ngFor="let review of reviews" class="review">
+                <p class="stars">
+                    <span class ="yellow-font" *ngFor="let star of [].constructor(review.rating)">★</span>
+                </p>
+                <p class="review-text">{{ review.content }}</p>
+                <div class="review-footer">
+                    <p class="review-author green-font">{{ review.author }}</p>
+                    <p class="review-date green-font">{{ review.date }}</p>
+                    <p class="review-event-type green-font">{{ review.event }}</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
 </body>
-<app-testimonials></app-testimonials>

@@ -13,8 +13,8 @@
 $frontEnd-theme: mat.define-theme((
   color: (
     theme-type: light,
-    primary: mat.$azure-palette,
-    tertiary: mat.$blue-palette,
+    primary: mat.$chartreuse-palette,
+    tertiary: mat.$red-palette,
   ),
   density: (
     scale: 0,
@@ -25,6 +25,7 @@ $frontEnd-theme: mat.define-theme((
 // Alternatively, you can import and @include the theme mixins for each component
 // that you are using.
 :root {
+
   @include mat.all-component-themes($frontEnd-theme);
 }
 

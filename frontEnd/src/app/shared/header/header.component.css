@@ -1,11 +1,11 @@
-/* Basic styling for the header */
+/* Basic styling for the header
 header {
     position: relative;
     display: flex;
-    justify-content: space-between; /* Space the left and right links */
+    justify-content: space-between; 
     align-items: center;
-    padding: 25px;
-    border-bottom: 1px solid #E0E0E0; /* Subtle border for separation */
+    padding: 0 25px;
+    height: 100px;
 }
 
 nav {
@@ -14,50 +14,41 @@ nav {
     width: 100%;
 }
 
-/* Styling the navigation links */
 .nav-links {
     list-style: none;
     display: flex;
-    padding: 0; /* Remove default padding */
-    margin: 0; /* Remove default margin */
+    padding: 0;
+    margin: 0; 
 }
 
-/* Left and right links styling */
 .left-links {
-    display: flex; /* Keep them aligned */
+    display: flex;
 }
 
 .right-links {
-    display: flex; /* Keep them aligned */
+    display: flex;
     margin-left: auto;
 }
 
-/* General link styles */
 .links {
     color: black;
 
     text-decoration: none;
     transition: color 0.3s;
-    margin: 0 30px; /* Equal margins on left and right for each link */
+    margin: 0 30px; 
 }
 
-/* Change link color on hover */
 .links:hover {
     color: #606060;
     cursor: pointer;
 }
 
-/* Title styling */
-.title {
-    color: black; /* change this */
-
-    position: absolute; /* Position the title absolutely */
-    left: 50%; /* Center it horizontally */
-    transform: translateX(-50%); /* Offset by half its width to ensure true centering */
-    font-size: 2rem;
-    font-weight: normal;
-    text-align: center;
-    text-decoration: none;
+.logo {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    height: 60%;
+    max-height: 70px;
 }
 
 .cart-link-container {
@@ -66,21 +57,20 @@ nav {
 
 .cart-notification {
     display: inline-block;
-    background-color: #dc7c81; /* Red background for visibility */
+    background-color: #dc7c81;
     color: white;
     border-radius: 12px;
-    padding: 2px 6px; /* Padding around the text */
+    padding: 2px 6px;
     font-size: 1rem;
     position: absolute;
     top: -8px;
     right: 5px;
 }
 
-/* Responsive Design for smaller screens */
 @media (max-width: 915px) {
     header {
-        flex-direction: column; /* Stack items vertically */
-        align-items: center; /* Center items horizontally */
+        flex-direction: column;
+        align-items: center;
         padding: 20px;
     }
 
@@ -91,14 +81,11 @@ nav {
     }
 
     .left-links, .right-links {
-        /* order: 2; Change order for smaller screens */
-        margin: 5px 0; /* Optional margin */
+        margin: 5px 0;
     }
 
-    .title {
-        /* order: 1; Make title the first item */
-        margin-bottom: 10px; /* Space below the title */
-        width: 100%; /* No width restriction */
+    .logo {
+        margin-bottom: 10px;
         position: relative;
         text-align: center;
     }
@@ -106,10 +93,117 @@ nav {
 
 @media (max-width: 500px) {
     .links {
-        font-size: 0.9rem; /* Responsive font size */
+        font-size: 0.9rem;
     }
 
-    .title {
-        font-size: 2.25rem; /* Responsive font size for title */
+    .logo {
+        font-size: 2.25rem;
     }
+
+    .nav {
+        width: 80%;
+
+    }
+} */
+
+
+header {
+    height: 70px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px 30px;
+}
+
+.logo-container {
+    height: 90%;
+}
+
+.logo {
+    height: 100%;
+    max-height: 75px;
+}
+
+.logo:hover {
+    cursor: pointer;
+}
+
+.nav-links {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    list-style: none;
+}
+
+.links {
+    color: black;
+    text-decoration: none;
+    transition: color 0.3s;
+    margin: 0 30px; 
+}
+
+.links:hover {
+    color: #717171;
+    cursor: pointer;
+}
+
+.cart-link-container {
+    position: relative;
+}
+
+.cart-notification {
+    display: inline-block;
+    background-color: #dc7c81;
+    color: white;
+    border-radius: 12px;
+    padding: 2px 6px;
+    font-size: 0.75rem;
+    position: absolute;
+    top: -8px;
+    right: 10px;
+}
+
+
+@media (max-width: 730px) {
+    header {
+        flex-direction: column;
+        align-items: center;
+        padding: 20px;
+        height: auto;
+    }
+
+    .nav-links {
+        margin-left: -15px;
+    }
+
+    
+    .cart-notification {
+        top: -5px;
+    }
+}
+
+@media (max-width: 500px) {
+
+    .logo {
+        height: 50px;
+    }
+
+    .nav-links {
+        width: 95%;
+    }
+
+    .links {
+        margin: 0 15px; 
+    }
+
+    .nav-links {
+        margin-left: 0;
+    }
+
+    .cart-notification {
+        top: -10px;
+        right: 0px;
+    }
+
 }

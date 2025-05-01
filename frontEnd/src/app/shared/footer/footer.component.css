@@ -4,39 +4,71 @@ main {
     flex: 1; /* Allows main content to expand and push footer to the bottom */
 }
 
+footer {
+    padding: 30px 50px 10px 50px;
+    color: white;
+
+}
+
 .footer-container {
-    position: relative; /* Establishes a positioning context for the pseudo-element */
-    padding: 20px;
-    overflow: hidden; /* Ensures the pseudo-element doesn't overflow the container */
+    display: flex;
+    border-bottom: 1px solid white;
+    justify-content: space-between;
+}
+
+.left-container {
+    font-size: 0.9rem;
     display: flex;
 }
 
-.footer-container::before {
-    content: ''; /* Required for the pseudo-element */
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    background-image: url('/favicon.ico'); /* Adds the icon as a background image */
-    background-repeat: no-repeat; /* Prevents the image from repeating */
-    background-position: right bottom; /* Positions the image to the right */
-    background-size: auto 90%; /* Adjusts the size of the image */
-    filter: invert(1) opacity(0.1); /* Inverts the colors and adds opacity */
+.links-container {
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    gap: 5px;
+    padding: 0 30px 30px 0;
 }
 
+.links-container p {
+    padding-bottom: 15px;
+}
 
-.left-container {
-    width: 30%;
-    font-size: 0.9rem;
+.link {
+    text-decoration: none;
+    color: white;
+}
+
+.link:hover {
+    text-decoration: underline;
+    cursor: pointer;
 }
 
 .right-container {
-    width: 70%;
+    width: 300px;
     display: flex;
-    justify-content: flex-end;
+    flex-direction: column;
+    justify-content: space-between;
     align-items: flex-end;
 }
+
+.icons {
+    display: flex;
+    gap: 10px;
+    padding: 20px 0;
+}
+
+.logo {
+    width: 40px;
+}
+
+.bottom-section {
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
 
 .title-container {
     display: flex;
@@ -61,59 +93,50 @@ main {
 }
 
 button {
-    opacity: 0.5;
-    
+    opacity: 0.5; 
 }
 
-.icon-links {
-    display: flex;
-    gap: 10px;
-    padding: 0;
-    margin: 0;
-    gap: 20px;
-}
 
-.icon {
-    font-size: 1.25rem;
-    /* padding: 10px; */
-}
-
-.icon a {
-    position: relative;
-    pointer-events: auto; /* Ensures the links are clickable */
-    z-index: 1; /* Ensures the links are above other elements */
-    color: black;
-    opacity: 0.8;
-
-}
-
-.icon a:hover {
-    opacity: 1;
-}
-
-@media (max-width: 915px) {
+@media (max-width: 700px) {
 
     .footer-container {
-        flex-direction: column; /* Stack the left and right containers vertically */
-        align-items: center; /* Center the items horizontally */
-        gap: 40px;
+        display: flex;
+        flex-direction: column;
     }
 
-    .left-container, .right-container {
+    .right-container {
         width: 100%;
+        flex-direction: row;
     }
-
-    .left-container {
-        font-size: 0.7rem;
-        /* make line space smaller */
-        line-height: 0.9rem; /* Adjust line height for better readability */
-    }
+    
 
 }
 
-@media (max-width: 500px) {
+@media (max-width: 550px) {
 
-    .footer-container::before {
-        background-size: 30% auto; /* Adjusts the size of the image */
+    footer {
+        padding: 30px 20px 10px 20px;
+
+    }
+    .logo {
+        width: 25px;
+    }
+
+    .title {
+        font-size: 1.75rem;
+    }
+    
+    .subtitle {
+        font-size: 1rem;
+        margin: 0px 25px 0 0;
+
+    }
+
+    .bottom-section p {
+        font-size: 0.8rem;
+    }
+
+    .right-container {
+        align-items: center;
     }
 }

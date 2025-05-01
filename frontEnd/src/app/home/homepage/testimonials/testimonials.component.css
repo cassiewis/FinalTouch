@@ -4,19 +4,19 @@
 
 body {
     margin: 0px;
-    padding: 50px 0px;
+    padding: 40px 0px;
     display: flex;
 }
 
 .title-side {
-  width: 45%;
-  height: 100%; /* Change to 100% to use full height from the parent */
-  display: flex; /* Enable Flexbox for vertical centering */
-  justify-content: right; /* Center content vertically */
+  width: 40%;
+  height: 100%; 
+  display: flex;
+  justify-content: right;
 }
 
 .title-container {
-  width: 60%;
+  width: 80%;
   align-items: right;
   text-align: left;
   padding: 30px;
@@ -28,11 +28,15 @@ body {
 }
 
 .title {
-  font-size: 2.5rem;
+  font-size: 2rem;
+}
+
+.read-success-stories {
+  font-size: 2.75rem;
 }
 
 .reviews-side {
-  width: 55%;
+  width: 60%;
   display: flex; /* Aligns child elements in a row */
   overflow-x: auto; /* Enables horizontal scrolling */
   white-space: nowrap; /* Prevents wrapping of child elements */
@@ -43,12 +47,12 @@ body {
 
 .review {
   flex: 0 0 auto; /* Prevents the review boxes from shrinking or growing */
-  background-color: white;
-  border-radius: 10px;
-  width: 190px; /* Ensures each review box has a consistent width */
+  /* background-color: white; */
+  border-radius: 4px;
+  width: 200px; /* Ensures each review box has a consistent width */
   height: 290px; /* Sets a fixed height for the review box */
   text-align: center;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Adds a subtle shadow for better visuals */
+  /* box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); Adds a subtle shadow for better visuals */
   overflow: hidden; /* Ensures content stays within the box */
   padding: 15px;
 }

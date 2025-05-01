@@ -3,14 +3,8 @@ import { NgModule } from '@angular/core';
 import { HomepageComponent } from './home/homepage/homepage.component';
 import { ShopComponent } from './shop/shop.component';
 import { ProductPageComponent } from './features/product-page/product-page.component';
-import { CartComponent } from './cart/cart-page/cart-page.component';
 import { NotFoundComponent } from './features/not-found/not-found.component';
 import { LoginComponent } from './backoffice/login/login.component';
-import { InspoComponent } from './inspo/inspo.component';
-import { AuthGuard } from './backoffice/auth.guard';
-import { AdminDashboardComponent } from './backoffice/admin-dashboard/admin-dashboard.component';
-import { AdminProductsComponent } from './backoffice/admin-products/admin-products.component';
-import { AdminReservationsComponent } from './backoffice/admin-reservations/admin-reservations.component';
 
 export const routes: Routes = [
     { path: '', component: HomepageComponent }, // Default route for homepage

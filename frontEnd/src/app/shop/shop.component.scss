@@ -7,76 +7,132 @@ body {
 
 /* Container for the shop page */
 .shop-container {
-    display: flex;
-    flex-direction: row;
-    width: clamp(600px, 80%, 1200px);
+    width: clamp(600px, 90%, 1400px);
     gap: 30px;
-    padding-top: 50px;
+    min-height: 500px;
 }
 
-.filter-container {
-    width: 20%;
-    border: 1px solid #ccc;
-    height: auto;
-    align-self: flex-start;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
-    border-radius: 5px; /* Rounded corners */
-    margin-bottom: 40px;
-    min-width: 165px;
-}
+.shop-image-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 450px;
+    width: 100%;
+    color: white;
+    padding: 15px 0;
+    background: linear-gradient(to bottom, #faf3eb 0%, #faf3eb 50%, white 50%, white 100%);
+    overflow: hidden; /* Hide the overflowing parts of the image */
+  }
+
+  .shop-image {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 90%;
+    height: 100%;
+    object-fit: cover; /* Crop the sides while keeping the image centered */
+
+
+  }
+
+  .shop-title {
+    font-size: 5rem;
+
+  }
+
+  .products-list-banner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .filter-container {
+    position: relative;
+    width: 225px;
+  }
+
+  .filter-container.active {
+    border: 1px solid lightgray;
+  }
+
+  .filter-flyout-wrapper {
+    position: relative; 
+  }
+
+  .filter-flyout {
+    position: absolute;
+    width: 225px;
+    background: #f8f7f2;
+    z-index: 1000;
+    border: 1px solid lightgray;
+    left: -1px;
+  }
 
 .filter-header {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    border-bottom: 1px solid #ccc;
     margin: 5px 15px;
     font-weight: bold;
 }
 
-.clear-filters {
-    font-weight: bold;
-    text-decoration: underline;
-    border: none;
-    cursor: pointer;
-    font-size: 12px;
-    color: rgb(244, 65, 65);
-}
-
-.clear-filters:hover {
-    color:rgb(216, 45, 45);
-}
-
-.filters {
-    min-height: 25px;
+.filter-header a {
     color: gray;
     font-size: 0.9rem;
 }
 
-.remove-button {
-    text-decoration: none;
-    border: none;
-    color: #ccc;
-    cursor: pointer;
-    font-size: 0.7rem;
+.left-filter, .right-filter {
+    display: flex;
 }
 
-.selected-filter {
-    margin: 0;
+.num-filters {
+    color: lightgrey;
+    font-size: 0.9rem;
 }
+
+.filter-toggle-header {
+    cursor: pointer;
+    border-bottom: 2px solid #ccc;
+    padding: 0.75rem 1rem;
+    font-size: 1.1rem;
+    font-weight: bold;
+    position: relative;
+    z-index: 10;
+    background-color: white;
+  }
+  
+  .filters-label {
+    margin: 0;
+    display: flex;
+  }
+  
+  .x {
+    color: rgb(153, 153, 153);
+  }
+
+  .x:hover {
+    cursor: pointer;
+    color: #ccc;
+  }
+
+  .arrow:hover {
+    color: #ccc;
+    cursor: pointer;
+  }
+
+  .filter-icon {
+    margin-left: 5px;
+  }
+  
 
 .filter-section {
     margin: 5px 15px;
     border-bottom: 1px solid #ccc;
 }
 
-.filter-box {
-    max-height: 150px;
-    overflow-y: auto;
-}
-
 .filter-box::-webkit-scrollbar {
-width: 4px; /* Width of the scrollbar */
+    width: 4px; /* Width of the scrollbar */
 }
 
 .filter-box::-webkit-scrollbar-thumb {
@@ -92,10 +148,6 @@ background-color: #c7c7a9; /* Darker color on hover */
 background-color: #f8f7f2; /* Background color of the scrollbar track */
 }
 
-
-.last-section {
-    border-bottom: none;
-}
 
 .filter-title {
     display: flex;
@@ -115,6 +167,20 @@ background-color: #f8f7f2; /* Background color of the scrollbar track */
     display: flex;
     flex-direction: column;
     margin-bottom: 10px;
+    max-height: 150px;
+    overflow-y: auto;
+}
+
+.clear-filters {
+    font-size: 0.9rem;
+    color: red;
+    text-decoration: underline;
+    padding: 15px;
+}
+
+.clear-filters:hover {
+    color: rgb(249, 90, 90);
+    cursor: pointer;
 }
 
 .filter-section.collapsed {
@@ -127,10 +193,50 @@ background-color: #f8f7f2; /* Background color of the scrollbar track */
     border-radius: 0px;
 }
 
-
 .checkbox:checked {
     accent-color: #cccccc; /* Changes the color when checked */
 }
+
+.price-filter {
+    overflow: hidden;
+    align-items: center;
+}
+
+.price-values {
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+    color: #333;
+    width: 100%;
+  }
+  
+ngx-slider {
+    width: 95%;
+}
+
+::ng-deep ngx-slider .ngx-slider-pointer {
+    width: 13px !important;
+    height: 13px !important;
+    background-color: #323232 !important;
+    border: none !important;
+    box-shadow: none !important;
+    top: -5px !important;
+}
+
+::ng-deep ngx-slider .ngx-slider-pointer::after {
+    display: none !important;
+}
+
+::ng-deep ngx-slider .ngx-slider-bar {
+    height: 3px !important;
+    background-color: lightgray !important;
+}
+
+::ng-deep ngx-slider .ngx-slider-selection {
+    background-color: #323232 !important;
+}
+  
+  
 
 .color-label {
     display: flex;
@@ -174,11 +280,6 @@ background-color: #f8f7f2; /* Background color of the scrollbar track */
     transform: translate(-50%, -50%); 
 }
 
-/* Product list styling */
-.product-list-container {
-    width: 85%; /* Takes up the remaining 85% of the page width */
-}
-
 .product-list-header {
     margin: 10px;
     display: flex;
@@ -195,7 +296,7 @@ background-color: #f8f7f2; /* Background color of the scrollbar track */
     position: relative;
   }
   
-  .search-bar input.search {
+.search-bar input.search {
     border: 1px solid #ccc;
     border-radius: 5px;
     padding: 8px 12px;
@@ -203,13 +304,13 @@ background-color: #f8f7f2; /* Background color of the scrollbar track */
     outline: none;
     transition: border-color 0.3s, box-shadow 0.3s;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
-  }
-  
-  .search-bar input.search:focus {
+}
+
+.search-bar input.search:focus {
     border-color: #aaa;
-  }
+}
   
-  .clear-search-button {
+.clear-search-button {
     position: absolute;
     right: 10px;
     top: 50%;
@@ -226,9 +327,42 @@ background-color: #f8f7f2; /* Background color of the scrollbar track */
   .clear-search-button:hover {
     color: #333;
   }
+
+  .pagination-controls {
+    display: flex;
+    justify-content: center;
+    gap: 0.75rem;
+    margin: 2rem 0 4rem 0;
+    flex-wrap: wrap;
+    font-family: inherit;
+    font-size: 1rem;
+  }
+  
+  .page-link {
+    cursor: pointer;
+    color: #787878;
+    transition: color 0.2s;
+  }
+
+  
+  .page-link.active {
+    color: black;
+    font-weight: bold;
+  }
+  
+  .page-link.disabled {
+    color: #f8f7f2;
+    pointer-events: none;
+  }
+  
   
 
   @media (max-width: 630px) {
+
+    .shop-image-container {
+      height: 300px;
+    }
+
     .shop-container {
       flex-direction: column;
       width: 90%;
@@ -237,8 +371,14 @@ background-color: #f8f7f2; /* Background color of the scrollbar track */
       padding: 0;
       gap: 0;
     }
+
+    .shop-title {
+        font-size: 2rem;
+        letter-spacing: 0.75rem;
+      }
   
     .filter-container {
+      position: relative;
       width: 175;
       display: none; /* hide sidebar by default */
       align-self: flex-end;
@@ -246,6 +386,7 @@ background-color: #f8f7f2; /* Background color of the scrollbar track */
       z-index: 10;
       background-color: white;
       top: 90px;
+      border: 1px solid red;
     }
   
     .filter-container.active {
@@ -267,6 +408,19 @@ background-color: #f8f7f2; /* Background color of the scrollbar track */
       border-radius: 5px;
       cursor: pointer;
       box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .filter-flyout {
+        position: static;
+        box-shadow: none;
+        border: none;
+      }
+  }
+
+  @media (max-width: 400px) {
+
+    .shop-image-container {
+      height: 250px;
     }
   }
   

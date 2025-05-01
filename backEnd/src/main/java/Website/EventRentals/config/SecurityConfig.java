@@ -1,6 +1,7 @@
 package Website.EventRentals.config;
 
-import Website.EventRentals.filter.JwtAuthenticationFilter;
+import java.util.Arrays;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -20,7 +21,7 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import java.util.Arrays;
+import Website.EventRentals.filter.JwtAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -29,27 +30,29 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http, JwtAuthenticationFilter jwtAuthenticationFilter) throws Exception {
 
-        http
-            .csrf().disable() // Disable CSRF for simplicity
-            .authorizeHttpRequests()
-                .requestMatchers("/api/auth/login").permitAll() // Allow access to login endpoint
-                .requestMatchers("/api/reservations", "/api/reservations/**").permitAll() // Allow access to reservation APIs
-                .requestMatchers("/api/products", "/api/products/**").permitAll() // Allow access to product APIs
-                .requestMatchers("/api/images", "/api/images/**").permitAll() // Allow access to image APIs
-                .requestMatchers("/api/reservedDates", "/api/reservedDates/**").permitAll() // Require authentication for admin reserved date APIs
-                .requestMatchers("/api/admin/**").authenticated() // Require authentication for admin APIs
-                .anyRequest().authenticated() // Require authentication for other requests
-            .and()
-            .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) // Make session stateless
-            .and()
+        http.csrf(csrf -> csrf.disable()) // Disable CSRF
+            .authorizeHttpRequests(auth -> auth
+                .requestMatchers("/api/auth/login").permitAll()
+                .requestMatchers("/api/reservations", "/api/reservations/**").permitAll()
+                .requestMatchers("/api/products", "/api/products/**").permitAll()
+                .requestMatchers("/api/images", "/api/images/**").permitAll()
+                .requestMatchers("/api/details", "/api/details/**").permitAll()
+                .requestMatchers("/api/reservedDates", "/api/reservedDates/**").permitAll()
+                .requestMatchers("/api/admin/**").authenticated()
+                .anyRequest().authenticated()
+            )
+            .sessionManagement(session -> session
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS) // Set session management to stateless
+            )
             .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class) // Add JWT filter
-            .formLogin().disable() // Disable default form login
-            .logout().permitAll(); // Enable logout
+            .formLogin(form -> form.disable()) // Disable default form login
+            .logout(logout -> logout.permitAll()); // Enable logout
 
-        http.cors().configurationSource(corsConfigurationSource()); // Apply CORS configuration
+        http.cors(cors -> cors.configurationSource(corsConfigurationSource())); // Apply CORS configuration
 
         return http.build();
     }
+
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
