@@ -10,7 +10,7 @@
     <div class="reviews-side">
       <div class="review tan-background" *ngFor="let review of reviews">
         <p class="stars">
-          <span class ="yellow-font" *ngFor="let star of [].constructor(review.stars)">★</span>
+          <span class ="yellow-font" *ngFor="let star of [].constructor(review.rating)">★</span>
         </p>
         <p class="review-text">{{ review.content }}</p>
         <p class="review-author green-font">- {{ review.author }}</p>

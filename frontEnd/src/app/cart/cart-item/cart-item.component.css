@@ -1,13 +1,35 @@
 
-  
+  .cart-item {
+    display: flex;
+    align-items: center;
+    height: 180px;
+    width: 100%;
+  }
+
   .cart-item-image {
-    width: 100%; /* Image spans full width of its cell */
+    height: 100%;
     object-fit: cover;
     aspect-ratio: 3/4;
   }
 
+  .cart-item-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+  }
+
+  .cart-item-box {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .cart-item-box p {
+    margin: 10px 20px;
+  }
+
   .product-title {
-    font-size: 1rem;
+    font-size: 1.15rem;
     font-weight: bold;
   }
 
@@ -15,17 +37,6 @@
     cursor: pointer;
   }
     
-  .cart-item-details {
-    display: grid;
-    grid-template-columns:  1fr 3fr 1fr 2fr 1fr; /* Each item will take at least 200px and can stretch */
-    gap: 16px; /* Space between grid items */
-    width: calc(100% - 30px);
-    height: calc(100% - 30px); 
-    margin: 15px; 
-    flex-direction: row;
-    align-items: center;
-  }
-  
   .cart-item-details h2 {
     font-weight: 100px;
   }
@@ -33,7 +44,8 @@
   .remove-button {
     border: none;
     font-family: "Philosopher", sans-serif;
-    font-size: 18px;
+    font-size: 0.9rem;
+    text-decoration: underline;
     cursor: pointer;
   }
   
@@ -89,29 +101,29 @@
 
 
 
-@media (max-width: 500px) {
+@media (max-width: 550px) {
 
-  .cart-item-details {
-    position: relative; /* Establishes a positioning context for the remove button */
-    grid-template-columns:  1fr 3fr 1fr 2fr; /* Each item will take at least 200px and can stretch */
+  .cart-item-info {
+    flex-direction: column;
+    align-items: start;
+    position: relative;
   }
 
-    /* position the remove button so it sits on the bottom right of the container, not affected by other elements */
-  .remove-button {
-    position: absolute; /* Take it out of the normal flow */
-    top: 0; /* Adjust as needed */
-    right: 0px; /* Adjust as needed */
-    font-size: 16px; /* Make sure it's not too large for the small screen */
-    height: 2.5vw; /* Adjust height for smaller screens */
-    width: auto; /* Let width adjust based on content */
-   
+  .cart-item {
+    height: 125px;
   }
+
   .product-title {
-    font-size: 1.15rem;
+    font-size: 1rem;
   }
 
-  .item-info {
-    font-size: 0.9rem;
+  .delete-button-container {
+    display: flex;
+    justify-content: flex-end;
+    bottom: 0;
+    z-index: 1;
+    position: absolute;
+    width: 100%;
   }
 
 }

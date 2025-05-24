@@ -1,61 +1,72 @@
-<div class="cart-page white-background">
+<div class="cart-page tan-background">
+
+  <div class="cart-title-container">
+    <!-- <img class="corner-title" src="/favicon.ico"> -->
+    <a href="/shop" class="back-to-shop">Continue Shopping</a>
+    <img src="/images/shopping-cart.png" alt="Shopping Cart" class="title">
+  </div>
 
   <div class="cart-empty" *ngIf="cartItems.length === 0">
-    <div class="title">
-      <p class="cart-title black-font">YOUR CART</p>
-    </div>
-    <p>No items in you cart... yet!</p>
-    <button (click)="goShop()" class="shop-button button-theme light-pink-background">shop now</button>
+    <p>There are no items in you cart... yet!</p>
   </div>
 
   <div class="cart-full" *ngIf="cartItems.length > 0">
-    <div class="left-cart">
-      <div class="title">
-        <p class="cart-title black-font">YOUR CART</p>
-        <p class="num-items">{{ cartItems.length }} items</p>
-      </div>
-      <div class="cart-items-list">
-        <div class="grid-header">
-          <p>ITEM</p>
-          <p></p>
-          <p>PRICE</p>
-          <p>DATES</p>
-          <p></p>
-        </div>
-        <div class="cart-item" *ngFor="let item of cartItems">
-          <app-cart-item [item]="item" (updateCart)="updateCart()"></app-cart-item>
-        </div>
-      </div>
-    </div>
-    <div class="right-cart">
-      <div class="cart-pricing">
-        <p class="price-h1">Summary</p>
-        <div class="price-info">
-          <div class="subtotal-section">
-            <p class="total-name">Subtotal:</p>
-            <b class="total">${{ totalCost }}</b>
+    <div class="cart-body">
+      <div class="left-cart">
+
+        <div class="cart-reservation" *ngFor="let groupKey of getGroupedKeys()">
+          <h3>Reservation: {{ formatDateRange(groupKey) }}</h3>
+          <div class="cart-item" *ngFor="let item of groupedItems.get(groupKey)">
+            <app-cart-item [item]="item" (updateCart)="updateCart()"></app-cart-item>
           </div>
-          <div class="deposit-section">
-            <div class="deposit-container">
-              <p class="total-name">Refundable Deposit:</p>
-              <p class="info-hover-container">
-                <span class="info-icon">i</span>
-                <span class="tooltip-text">Refunded open return if items are in acceptable condition</span>
-              </p>
+        </div>
+      </div>
+      <div class="right-cart">
+        <div class="checkout-breakdown light-pink-background">
+          <p class="order-summary price-header">Order Summary</p>
+
+            <div class="cart-reservation-total" *ngFor="let groupKey of getGroupedKeys(); let i = index">
+              <div class="reservation-group">
+                <div class="bold-title">
+                  <p class="reservation-header reservation-header-item">RESERVATION {{ i + 1 }}</p>
+                  <p class="reservation-header-item">{{ formatDateRange(groupKey) }}</p>
+                </div>
+                <div class="subtotal-container spanned">
+                  <p class="price subtotal">Subtotal:</p>
+                  <p class="price">{{ calculateGroupTotal(groupedItems.get(groupKey)!) | currency }}</p>
+                </div>
+                <div class="tax-container spanned">
+                  <p class="price tax">Idaho Sales Tax:</p>
+                  <p class="price">{{ calculateTax(groupedItems.get(groupKey)!) | currency }}</p>
+                </div>
+
+                <!-- <div class="hold-container spanned">
+                  <div class="price hold"><i>Security Hold: </i>
+                    <div class="info-hover-container">
+                      <span class="info-icon">?</span>
+                      <span class="tooltip-text">This amount with be held on your card 1 day before pickup and until items are returned in good condition. See terms at checkout for more details.</span>
+                    </div>
+                  </div>
+                  <p class="price"><i>${{ calculateGroupDeposit(groupedItems.get(groupKey)!) }}</i></p>
+                </div> -->
+
+                <div class="total-container spanned">
+                  <p class="price total">Total:</p>
+                  <p class="price">{{ (calculateGroupTotal(groupedItems.get(groupKey)!) + calculateTax(groupedItems.get(groupKey)!)) | currency }}</p>
+                </div>
+              </div>
             </div>
-            <b class="total">${{ totalDeposit }}</b>
-          </div>
         </div>
-      </div>
-      <div class="checkout-container">
-        <div class="total-price-container">
-          <p class="price-h1">Total:</p>
-          <b class="price-h1">${{ totalCost + totalDeposit }}</b>
+        <div class="checkout-total">
+          <p class="precursor"><b>Heads up: You won't be charged today.</b><br>Each rental will be charged 30 days before its start date.</p>
+          <button
+            class="checkout-button button-theme green-background"
+            (click)="goToCheckout()"
+            >Checkout
+          </button>
         </div>
-        <form></form>
-        <button class="checkout-button white-font green-background button-theme" (click)="showPopup()">Checkout</button>
       </div>
     </div>
+    <app-checkout></app-checkout>
   </div>
-  <app-checkout-popup></app-checkout-popup>
 </div>

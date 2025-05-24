@@ -1,8 +1,8 @@
 import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
-import { CartItem } from '../cart-service.service';
+import { CartItem } from '../../services/cart-service.service';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { CartService } from '../cart-service.service';
+import { CartService } from '../../services/cart-service.service';
 import { CartComponent } from '../cart-page/cart-page.component';
 import { ProductService } from '../../services/product.service';
 import { Product } from '../../models/product.model';

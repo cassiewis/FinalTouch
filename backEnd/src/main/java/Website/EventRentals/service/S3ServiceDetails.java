@@ -11,6 +11,7 @@ import software.amazon.awssdk.services.s3.model.GetObjectRequest;
 import java.io.InputStream;
 import java.util.List;
 import Website.EventRentals.model.Review;
+import Website.EventRentals.model.AddOnItem;
 
 @Service
 public class S3ServiceDetails {
@@ -35,4 +36,19 @@ public class S3ServiceDetails {
         ObjectMapper objectMapper = new ObjectMapper();
         return objectMapper.readValue(inputStream, new TypeReference<List<Review>>() {});
     }
+
+    public AddOnItem getAddonById(String id) throws Exception {
+        // Fetch the JSON file for the specific add-on from S3
+        GetObjectRequest getObjectRequest = GetObjectRequest.builder()
+                .bucket(detailsBucketName)
+                .key(id + ".json") // Assuming each add-on is stored as a separate JSON file
+                .build();
+
+        InputStream inputStream = s3Client.getObject(getObjectRequest);
+
+        // Parse the JSON file into an AddOnItem object
+        ObjectMapper objectMapper = new ObjectMapper();
+        return objectMapper.readValue(inputStream, AddOnItem.class);
+    }
+
 }

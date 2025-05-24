@@ -1,7 +1,8 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
-
+import { Review } from '../../../models/review.model';
+import { DetailsService } from '../../../services/details.service';
 @Component({
   selector: 'app-testimonials',
   standalone: true,
@@ -10,23 +11,22 @@ import { Router } from '@angular/router';
   styleUrl: './testimonials.component.css'
 })
 export class TestimonialsComponent implements OnInit, OnDestroy {
-    reviews: Review[] = [
-      new Review('John Doe', 'This service was amazing! Highly recommend going with final touch for your next event. She delivered in a timely fashion and always love seeing someone so dedicated to weddings!! Love love love!', 5),
-      new Review('Jane Smith', 'Absolutely loved the experience!', 4),
-      new Review('Alice Johnson', 'Will definitely use this service again.', 5),
-      new Review('Bob Brown', 'Not what I expected, but still okay.', 3),
-      new Review('Jane Smith', 'Absolutely loved the experience!', 4),
-      new Review('Alice Johnson', 'Will definitely use this service again.', 5)
-    ];
+    reviews: Review[] = [];
     currentIndex: number = 0;
     private intervalId!: any;
 
     // constructor
-    constructor(private router: Router){};
+    constructor(private router: Router, private detailsService: DetailsService){};
   
     ngOnInit(): void {
       // Start the automatic carousel
       this.startCarousel();
+
+      this.detailsService.getAllReviews().subscribe(reviews => {
+        this.reviews = reviews;
+        console.log("fetched reviews: ", this.reviews);
+      });
+
     }
   
     ngOnDestroy(): void {
@@ -55,16 +55,4 @@ export class TestimonialsComponent implements OnInit, OnDestroy {
     routeToInspo() {
       this.router.navigate(['/inspo']);
     }
-}
-
-class Review {
-  author: string;
-  content: string;
-  stars: number;
-
-  constructor(author: string, content: string, stars: number) {
-    this.author = author;
-    this.content = content;
-    this.stars = stars;
-  }
 }

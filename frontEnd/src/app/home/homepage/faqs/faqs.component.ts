@@ -22,7 +22,7 @@ export class FaqsComponent {
     },
     {
       question: 'What should I do if I need to change my reservation?',
-      answer: 'We’re happy to accommodate changes whenever possible! Just send us a message with the updates you would like to make, and we will do our best to adjust your reservation.',
+      answer: 'We’re happy to accommodate changes whenever possible! Just send us a message - finaltouchco.info@gmail.com - with the updates you would like to make, and we will do our best to adjust your reservation.',
       open: false
     }
   ];

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { RouterOutlet, Router } from '@angular/router';
+import { RouterOutlet, Router, NavigationEnd } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { ProductService } from './services/product.service';
@@ -22,7 +22,16 @@ import { FooterComponent } from './shared/footer/footer.component';
 })
 export class AppComponent {
 
-  constructor(private router: Router) {}
+  showHeader: boolean = true;
+
+  constructor(private router: Router) {
+    this.router.events.subscribe((event) => {
+      if (event instanceof NavigationEnd) {
+        const hiddenRoutes = ['/cart', '/checkout'];
+        this.showHeader = !hiddenRoutes.includes(event.urlAfterRedirects);
+      }
+    });
+  }
 
   isBackOfficeRoute(): boolean {
     // Check if the current route is your back office route

@@ -42,7 +42,7 @@ export class ShopComponent implements AfterViewInit {
     color: false,
     price: false,
     event: false,
-    custom: false
+    custom: true
   };
 
   priceSliderOptions: Options = {
@@ -65,9 +65,11 @@ export class ShopComponent implements AfterViewInit {
 
   ngOnInit() {
     this.route.queryParams.subscribe(params => {
-      if (params['filters']) {
-        this.selectedFilters = params['filters'].split(',');
-      }
+      this.selectedFilters = params['filters'] ? params['filters'].split(',') : [];
+      this.customSelection = params['custom'] || 'Any';
+      this.updateCheckboxes();
+      this.updateCustomRadios();
+      this.applyAllFilters();
     });
 
     this.productService.fetchProducts().subscribe(products => {
@@ -75,27 +77,41 @@ export class ShopComponent implements AfterViewInit {
       this.applyAllFilters();
       this.loading = false;
     });
-
+  
     this.checkScreenSize();
     window.addEventListener('resize', this.checkScreenSize.bind(this));
-
   }
 
   ngAfterViewInit() {
-    this.selectedFilters.forEach(filter => {
-      const checkbox = Array.from(document.querySelectorAll('input[type="checkbox"]')).find(
-        input => (input as HTMLInputElement).value.toLowerCase().trim() === filter.toLowerCase().trim()
-      ) as HTMLInputElement;
+    this.updateCheckboxes();
+    this.updateCustomRadios();
+  }
 
-      if (checkbox) {
-        checkbox.checked = true;
-      }
+  private updateCheckboxes() {
+    const checkboxes = document.querySelectorAll('input[type="checkbox"]') as NodeListOf<HTMLInputElement>;
+    checkboxes.forEach(cb => {
+      cb.checked = this.selectedFilters.includes(cb.value);
+    });
+  }
+
+  private updateCustomRadios() {
+    const radios = document.querySelectorAll('input[type="radio"][name="custom"]') as NodeListOf<HTMLInputElement>;
+    radios.forEach(radio => {
+      radio.checked = radio.value === this.customSelection;
     });
   }
 
   get pagedProducts(): Product[] {
     const start = this.currentPage * this.productsPerPage;
     return this.filteredProducts.slice(start, start + this.productsPerPage);
+  }
+
+  getFilterLength(): number {
+    let customAdded = 1;
+    if (this.customSelection === 'Any') {
+      customAdded = 0;
+    }
+    return this.selectedFilters.length + customAdded;
   }
   
   setPage(page: number) {
@@ -168,19 +184,22 @@ export class ShopComponent implements AfterViewInit {
 
     this.updateURLFilters();
     this.applyAllFilters();
+    this.updateCheckboxes();
   }
 
   updateCustom(custom: string) {
     this.customSelection = custom;
     this.updateURLFilters();
     this.applyAllFilters();
+    this.updateCustomRadios();
   }
 
   updateURLFilters(): void {
     this.router.navigate([], {
       relativeTo: this.route,
       queryParams: {
-        filters: this.selectedFilters.join(',')
+        filters: this.selectedFilters.join(','),
+        custom: this.customSelection
       },
       queryParamsHandling: 'merge'
     });
@@ -214,7 +233,6 @@ export class ShopComponent implements AfterViewInit {
       const matchesColor = groupedFilters['color'].length === 0 || groupedFilters['color'].some(f => tags.includes(f));
       const matchesEvent = groupedFilters['event'].length === 0 || groupedFilters['event'].some(f => tags.includes(f));
       
-      console.log("customSelection = " + this.customSelection);
       const matchesCustom =
         this.customSelection === 'Any' ||
         (this.customSelection === 'Custom' && product.custom === true) ||
@@ -247,23 +265,19 @@ export class ShopComponent implements AfterViewInit {
     this.selectedFilters = [];
     this.minPrice = 0;
     this.maxPrice = 100;
-    // this.searchQuery = '';
+    this.customSelection = 'Any';
 
-    const checkboxes = document.querySelectorAll('input[type="checkbox"]') as NodeListOf<HTMLInputElement>;
-    checkboxes.forEach(cb => cb.checked = false);
+    this.updateCheckboxes();
+    this.updateCustomRadios();
 
     this.updateURLFilters();
     this.applyAllFilters();
   }
 
-
   removeFilter(filter: string): void {
     this.selectedFilters = this.selectedFilters.filter(f => f !== filter);
 
-    const checkbox = document.querySelector(`input[type="checkbox"][value="${filter}"]`) as HTMLInputElement;
-    if (checkbox) {
-      checkbox.checked = false;
-    }
+    this.updateCheckboxes();
 
     this.updateURLFilters();
     this.applyAllFilters();

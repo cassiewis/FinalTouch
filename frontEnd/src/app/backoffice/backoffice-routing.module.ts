@@ -4,6 +4,7 @@ import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.compo
 import { AdminProductsComponent } from './admin-products/admin-products.component';
 import { AdminReservationsComponent } from './admin-reservations/admin-reservations.component';
 import { LoginComponent } from './login/login.component';
+import { AdminReviewsComponent } from './admin-reviews/admin-reviews.component';
 import { AuthGuard } from './auth.guard';
 
 const routes: Routes = [
@@ -15,6 +16,8 @@ const routes: Routes = [
     children: [
       { path: 'products', component: AdminProductsComponent },
       { path: 'reservations', component: AdminReservationsComponent },
+      { path: 'reviews', component:AdminReviewsComponent },
+
       { path: '', redirectTo: 'products', pathMatch: 'full' },
     ]
   }

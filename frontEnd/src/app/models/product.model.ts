@@ -1,4 +1,3 @@
-
 export interface Product {
     type: string;
     productId: string;
@@ -7,10 +6,11 @@ export interface Product {
     count: number;
     name: string;
     price: number;
-    deposit: number,
+    deposit: number;
     description: string;
     imageUrl: string;
     datesReserved: Date[];
     tags: string[];
     material: string;
+    addons?: string[];
 }

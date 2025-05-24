@@ -1,6 +1,6 @@
 <div class="app-container">
     <!-- todo only show header if not on admin page -->
-    <app-header></app-header>
+    <app-header *ngIf="showHeader"></app-header>
     <main>
         <router-outlet></router-outlet>
     </main>

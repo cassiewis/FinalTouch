@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { CartService } from '../../cart/cart-service.service';
+import { CartService } from '../../services/cart-service.service';
 import { Subscription } from 'rxjs';
 
 

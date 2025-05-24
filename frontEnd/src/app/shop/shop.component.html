@@ -1,6 +1,6 @@
 <body class="white-background">
     <div class="shop-image-container">
-        <img class="shop-image" src="images/shop.png">
+        <img class="shop-image" src="/images/shop.png">
     </div>
     <div class="shop-container">
 
@@ -10,7 +10,7 @@
                     <div class="left-filter">
                         <i class="fa-solid fa-filter filter-icon"></i>
                         <p class="filters-label" [class.active]="showMobileFilter">&nbsp;Filters</p>
-                        <span *ngIf="selectedFilters.length > 0" class="num-filters">&nbsp;&nbsp;( {{ selectedFilters.length }} )</span>
+                        <span *ngIf="getFilterLength() > 0" class="num-filters">&nbsp;&nbsp;( {{ getFilterLength() }} )</span>
                     </div>
                     <div class="right-filter">
                         <span *ngIf="showMobileFilter" class="x">X</span>
@@ -26,7 +26,13 @@
                         <div class="filter-box" *ngIf="openSections['type']">
                             <div class="types" *ngFor="let type of typeCategory">
                                 <label>
-                                    <input class="checkbox" type="checkbox" [value]="type" (change)="toggleFilter($event)"> {{ type }}
+                                    <input 
+                                    class="checkbox" 
+                                    type="checkbox" 
+                                    [value]="type"
+                                    [checked]="selectedFilters.includes(type)"
+                                    (change)="toggleFilter($event)"> 
+                                    {{ type }}
                                 </label>
                             </div>
                         </div>
@@ -59,7 +65,13 @@
                         <div class="filter-box" *ngIf="openSections['event']">
                             <div class="types" *ngFor="let event of eventCategory">
                                 <label>
-                                    <input class="checkbox" type="checkbox" [value]="event" (change)="toggleFilter($event)"> {{ event }}
+                                    <input 
+                                    class="checkbox"
+                                    type="checkbox"
+                                    [value]="event"
+                                    [checked]="selectedFilters.includes(event)"
+                                    (change)="toggleFilter($event)"> 
+                                    {{ event }}
                                 </label>
                             </div>
                         </div>
@@ -67,17 +79,37 @@
                     <div class="filter-section">
                         <p class="filter-title" (click)="toggleSection('custom')">
                             Custom
-                            <!-- <span class="arrow">{{ openSections['color'] ? '▲' : '▼' }}</span> -->
                         </p>
                         <div class="filter-box" *ngIf="openSections['custom']">
                         <label>
-                            <input type="radio" name="custom" value="Any" (change)="updateCustom('Any')" /> Any
+                            <input 
+                                type="radio" 
+                                name="custom" 
+                                value="Any" 
+                                [checked]="customSelection === 'Any'" 
+                                (change)="updateCustom('Any')" 
+                            /> 
+                            Any
                         </label>
                         <label>
-                            <input type="radio" name="custom" value="Custom" (change)="updateCustom('Custom')" /> Custom
+                            <input 
+                                type="radio" 
+                                name="custom" 
+                                value="Custom" 
+                                [checked]="customSelection === 'Custom'" 
+                                (change)="updateCustom('Custom')" 
+                                /> 
+                            Custom
                         </label>
                         <label>
-                            <input type="radio" name="custom" value="Not Custom" (change)="updateCustom('Not Custom')" /> Not Custom
+                            <input 
+                                type="radio" 
+                                name="custom" 
+                                value="Not Custom" 
+                                [checked]="customSelection === 'Not Custom'" 
+                                (change)="updateCustom('Not Custom')" 
+                            /> 
+                            Not Custom
                         </label>
                         </div>
                     </div>
@@ -85,12 +117,16 @@
                     <div class="filter-section">
                         <p class="filter-title" (click)="toggleSection('color')">
                             Color
-                            <!-- <span class="arrow">{{ openSections['color'] ? '▲' : '▼' }}</span> -->
                         </p>
                         <div class="filter-box" *ngIf="openSections['color']">
                             <div class="types" *ngFor="let color of colorCategory">
                                 <label class="color-label">
-                                    <input class="color-checkbox" type="checkbox" [value]="color" (change)="toggleFilter($event)">
+                                    <input 
+                                    class="color-checkbox"
+                                    type="checkbox"
+                                    [value]="color"
+                                    [checked]="selectedFilters.includes(color)"
+                                    (change)="toggleFilter($event)">
                                     <span class="color-circle" [ngStyle]="{'background-color': color.toLowerCase()}"></span>
                                     {{ color }}
                                 </label>

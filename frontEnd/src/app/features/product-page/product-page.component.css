@@ -168,6 +168,19 @@
   margin: 20px 0;
 }
 
+.section-heading {
+  font-size: 1.2rem;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+}
+
+.addons-grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+}
+
+
 .border-line {
   margin: 0 5%;
   color: #f1f1f1;
@@ -177,90 +190,88 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  /* border: 1px solid red; */
   margin: 2rem;
 }
 
 .similar-products p {
-  font-size: 1.75rem;;
+  font-size: 1.75rem;
+  margin-bottom: 1rem;
 }
 
 .similar-scroll-wrapper {
-  overflow: hidden;
+  overflow-x: auto; /* Enable horizontal scrolling */
+  overflow-y: hidden; /* Prevent vertical scrolling */
+  -webkit-overflow-scrolling: touch; /* Smooth scrolling for touch devices */
+  scrollbar-width: thin; /* Thin scrollbar for Firefox */
+  /* overflow: hidden; */
   display: flex;
   justify-content: center;
-  align-items: center;
+  width: 100%;
+  /* align-items: center; */
 }
 
 .similar-scroll-container {
   display: flex;
-  align-items: start;
-  justify-content: space-between;
-  flex-wrap: nowrap;
-  gap: 1.5rem;
-  width: clamp(600px, 90%, 1200px);
+  justify-content: center; /* Align items to the left */
+  width: max-content; /* Ensure the container's width adjusts to its content */
+  gap: 1.5rem; /* Add spacing between items */
 }
 
 .similar-product-box {
   flex: 1 1 25%; /* roughly 4 per row, spaced */
-  max-width: 30%;
+  max-width: 250px;
+  min-width: 175px;
+}
+
+.similar-scroll-wrapper::-webkit-scrollbar {
+  height: 6px; /* Adjust scrollbar height */
+  background-color: #f0f0f0; /* Background color of the scrollbar */
+}
+
+.similar-scroll-wrapper::-webkit-scrollbar-thumb {
+  background-color: #ccc; /* Color of the scrollbar thumb */
+  border-radius: 4px; /* Rounded scrollbar thumb */
+}
+
+@media (max-width: 850px){
+  .similar-scroll-wrapper {
+    justify-content: flex-start;
+    /* align-items: center; */
+  }
 }
 
 
 @media (max-width: 750px) {
+
   .product-body {
     margin: 5%;
+    flex-direction: column; /* Stack product image and description vertically */
+    align-items: center;
   }
 
-  .product-name {
-    font-size: 1.5rem;
+  .product-image-box,
+  .product-description-container {
+    width: 100%; /* Full width for smaller screens */
   }
 
-  .product-description-details {
-    font-size: 0.9rem;
-    line-height: 1.5;
-  }
-
-  .similar-products{
-    display: flex;
-    flex-direction: column;
+  .similar-products {
     margin: 1rem;
-    margin-bottom: 2rem;
-  }
-
-  .similar-products h3 {
-    align-self: center;
   }
 
   .similar-scroll-wrapper {
-    overflow-x: scroll;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: auto; 
+    overflow-x: scroll; /* Ensure horizontal scrolling */
+    -webkit-overflow-scrolling: touch; /* Smooth scrolling for touch devices */
   }
 
   .similar-scroll-container {
     justify-content: flex-start;
-    width: max-content;
-    min-width: 100%;
+    width: max-content; /* Ensure the container's width adjusts to its content */
   }
 
-  .similar-products {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    /* max-width: 200px; */
-    /* min-width: 150px; */
+  .similar-product-box {
+    width: 45%; /* Adjust product box width for smaller screens */
   }
 
-  .similar-scroll-wrapper::-webkit-scrollbar {
-    height: 4px;
-    background-color: #f0f0f0;
-  }
-  
-  .similar-scroll-wrapper::-webkit-scrollbar-thumb {
-    background-color: #ccc;
-    border-radius: 4px;
-  }
   
 }
 
@@ -268,7 +279,15 @@
 
   .product-image-box,
   .product-description-container {
-    width: 100%;
+    width: 100%; /* Full width for very small screens */
+  }
+
+  .similar-products p {
+    font-size: 1.5rem; /* Adjust font size for smaller screens */
+  }
+
+  .similar-product-box {
+    width: 90%; /* Make product boxes larger for very small screens */
   }
 
 }

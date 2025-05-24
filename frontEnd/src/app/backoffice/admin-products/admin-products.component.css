@@ -37,7 +37,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 0; /* Reset margins if necessary */
+    margin: 0;
 }
 
 .stats {

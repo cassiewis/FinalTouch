@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { CartService, CartItem } from '../../cart-service.service';
+import { CartService, CartItem } from '../../../services/cart-service.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Reservation } from '../../../models/reservation.model';

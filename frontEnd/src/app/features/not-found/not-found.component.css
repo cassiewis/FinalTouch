@@ -1,59 +1,69 @@
 body {
+    min-height: 90vh;
     display: flex;
+    flex-direction: column;
+    justify-content: center;
     align-items: center;
     text-align: center;
-    background-color: #FAFAF5;
-    height: 100%;
-    flex: 1;
-    min-height: 80vh;
-    padding: 0 2vh;
+
+    background-image: url('/images/tulips.png');
+    background-repeat: no-repeat;
+    background-position: top 40px right 40px;
+    background-size: 300px auto; /* Adjust size as needed */
 }
 
-.image-side { 
-    width: 45%;
-
-}
-.image img {
-    max-width: 100%; /* Ensure the image doesn't exceed the container width */
-    max-height: 100%; /* Ensure the image doesn't exceed the container height */
+.container {
+    width: 90%;
 }
 
-.text-side {
-    text-align: center;
-    width: 65%;
-    height: 100%;
-}
-
-.oops {
-    font-size: 3.5vw;
+.number {
+    font-size: 6rem;
+    /* font-weight: bold; */
     margin: 0;
-    font-weight: 100;
 }
 
-.not-found {
-    font-size: 13vw;
+.notfound {
+    font-size: 2rem;
     margin: 0;
-    font-weight: bold;
 }
 
-.not-found.text { 
-    font-size: 1.5vw;
-    margin: 0;
-
+.text {
+    font-size: 1.25rem;
+    margin-top: 1rem;
+    padding: 40px 0 20px 0;
 }
 
+@media (max-width: 1000px) {
 
-@media (max-width: 850px) {
+    body {
+        background-position: top 20px right 20px;
+        background-size: 225px auto; /* Adjust size as needed */
+    }
+}
 
-    .image-side {
-        display: none;
+@media (max-width: 650px) {
+
+    body {
+        background-position: top 10px right 10px;
+        background-size: 200px auto; /* Adjust size as needed */
+    }
+}
+
+@media (max-width: 550px) {
+
+    body {
+        background-image: none;
+    }
+    
+    .number {
+        font-size: 4rem;
     }
 
-    .text-side {
-        text-align: center;
-        width: 100%;
-        height: 100%;
-        /* margin: 10%; */
+    .notfound {
+        font-size: 1.5rem;
     }
 
+    .text {
+        font-size: 1rem;
+    }
 }

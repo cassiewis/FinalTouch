@@ -3,11 +3,11 @@
     <app-loading-icon></app-loading-icon>
   </div>
 
-  <div class="body" *ngIf="!loading">
+  <div class="tan-background body" *ngIf="!loading">
     <div class="product-body">
       <div class="product-image-box">
-        <img src="/images/stock_photo.png" alt="product-image" class="product-image" (load)="loading=false">
-        <!-- <img [src]="product.imageUrl" alt="product-image" class="product-image" (load)="loading=false"> -->
+        <!-- <img src="/images/stock_photo.png" alt="product-image" class="product-image" (load)="loading=false"> -->
+        <img [src]="product.imageUrl" alt="product-image" class="product-image" (load)="loading=false">
       </div>
       <div class="product-description-container">
         <p class="path"><a (click)="goToShop()">INVENTORY</a> / {{ product.name }}</p>
@@ -22,6 +22,7 @@
         </div>
 
         <div class="reserve-container">
+          <p *ngIf="product.custom">⭐ This item is eligible for customization</p>
           <app-reserve></app-reserve>
         </div>
         <div class="product-description-details">
@@ -51,8 +52,21 @@
       </div>
     </div>
   </div>
+
+  <!-- <div *ngIf="product.addons && product.addons.length > 0" class="addons-body">
+    <h3 class="section-heading">Optional Add-Ons</h3>
+    <div class="addons-grid">
+      <app-addon-box
+        *ngFor="let addon of addons"
+        [addon]="addon"
+        [isSelected]="selectedAddons.includes(addon.itemId)"
+        [isAvailable]="isAddonAvailable(addon)"
+        (toggle)="onToggleAddon(addon)"
+      ></app-addon-box>
+    </div>
+  </div> -->
   
-  <hr *ngIf="!loading" class="border-line"> <!-- border line -->
+  <!-- <hr *ngIf="!loading" class="border-line"> border line -->
 
   <div class="similar-products" *ngIf="similarProducts.length > 0">
     <p>You Might Also Like:</p>

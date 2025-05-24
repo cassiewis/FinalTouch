@@ -10,10 +10,11 @@ import { ProductService } from '../../../services/product.service';
 import { MatDialog } from '@angular/material/dialog';
 import { MatDialogModule } from '@angular/material/dialog';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { CartService } from '../../../cart/cart-service.service';
+import { CartService } from '../../../services/cart-service.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { CustomSnackbarComponent } from '../../../shared/custom-snackbar/custom-snackbar.component';
 import { ReservedDatesService } from '../../../services/reserved-dates.service';
+import { ConfirmNewReservationDialogComponent } from '../../../shared/confirm-new-reservation-dialog/confirm-new-reservation-dialog.component';
 @Component({
   selector: 'app-reserve',
   standalone: true,
@@ -85,11 +86,11 @@ dateFilter = (date: Date | null): boolean => {
     return true; // Enable if the date is null
   }
 
-  const bufferDays = 4; // Number of buffer days around each reserved date
+  const bufferDays = 3; // Number of buffer days around each reserved date
 
   // // Check if the current date is within the buffer range of any reserved date
   const isDateDisabled = this.reservedDates.some((reservedDate) => {
-    // Calculate start and end of buffer period
+    // Calculate start and encd of buffer period
     const reserved = new Date(reservedDate).getTime();
     const bufferStart = new Date(reservedDate);
     const bufferEnd = new Date(reservedDate);
@@ -120,7 +121,7 @@ dateFilter = (date: Date | null): boolean => {
     return false;
   }
 
-  onCartClick() {
+  async onCartClick() {
     if (this.range.invalid) {
       // Create snackbar with error message
       this.snackBar.openFromComponent(CustomSnackbarComponent, {
@@ -147,6 +148,33 @@ dateFilter = (date: Date | null): boolean => {
           currentDatesReserved.push(new Date(currentDate));
           currentDate.setDate(currentDate.getDate() + 1);
         }
+
+        for (const group of this.cartService.getReservationMap().values()) {
+          const isDuplicate = group.some(cartItem => cartItem.productId === this.product.productId);
+          if (isDuplicate) {
+            // Create snackbar with item details
+            const message = 'Item already in cart.<br>If you want to reserve this item for separate dates,<br>please submit a separate reservation.';
+            
+            this.snackBar.openFromComponent(CustomSnackbarComponent, {
+              data: {
+                message: message,
+                action: () => {}, // No action needed
+                actionLabel: 'Close'
+              },
+              duration: 5000,
+              panelClass: 'custom-snackbar'
+            });
+            return false;
+          }
+        }
+
+        const hasMatch = this.cartService.hasMatchingReservationDates(currentDatesReserved);
+        if (!hasMatch && this.cartService.getReservationCount() > 0) {
+          const dialogRef = this.dialog.open(ConfirmNewReservationDialogComponent);
+          const result = await dialogRef.afterClosed().toPromise();
+
+          if (!result) return; // User canceled
+        }
   
         const cartItem = {
           productId: this.product.productId,
@@ -156,12 +184,7 @@ dateFilter = (date: Date | null): boolean => {
           datesReserved: currentDatesReserved,
           imageUrl: this.product.imageUrl
         };
-  
-        const existingItems = this.cartService.getItems();
-        const isItemInCart = existingItems.some(item => item.productId === cartItem.productId);
-  
-        if (!isItemInCart) {
-          this.cartService.addToCart(cartItem);
+            this.cartService.addToCart(cartItem);
   
           // Create snackbar with item details
           this.snackBar.openFromComponent(CustomSnackbarComponent, {
@@ -173,20 +196,6 @@ dateFilter = (date: Date | null): boolean => {
             duration: 5000,
             panelClass: 'custom-snackbar'
           });
-        } else {
-          // Create snackbar with item details
-          const message = 'Item already in cart.<br>If you want to reserve this item for separate dates,<br>please submit a separate reservation.';
-          
-          this.snackBar.openFromComponent(CustomSnackbarComponent, {
-            data: {
-              message: message,
-              action: () => {}, // No action needed
-              actionLabel: 'Close'
-            },
-            duration: 5000,
-            panelClass: 'custom-snackbar'
-          });
-        }
       }
     } else {
       // Create snackbar with item details
@@ -200,6 +209,7 @@ dateFilter = (date: Date | null): boolean => {
         panelClass: 'custom-snackbar'
       });
     }
+    return true;
   }
   
 }

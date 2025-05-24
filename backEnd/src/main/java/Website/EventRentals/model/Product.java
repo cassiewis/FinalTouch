@@ -1,6 +1,5 @@
 package Website.EventRentals.model;
 import java.time.LocalDate;
-import java.util.Arrays;
 import java.util.List;
 
 public class Product {
@@ -15,6 +14,7 @@ public class Product {
     private final List<LocalDate> datesReserved = null;
     private List<String> tags;
     private String material;
+    private List<String> addons;
 
 
     public String getProductId() {
@@ -95,6 +95,14 @@ public class Product {
 
     public void setMaterial(String material) {
         this.material = material;
+    }
+
+    public List<String> getAddons() {
+        return addons;
+    }
+
+    public void setAddons(List<String> addons) {
+        this.addons = addons;
     }
 
 }
