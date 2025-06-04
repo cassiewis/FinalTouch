@@ -9,6 +9,7 @@ export interface CartItem {
   deposit: number;
   datesReserved: Date[];
   imageUrl: string;
+  count: number;
 }
 
 @Injectable({
@@ -59,6 +60,7 @@ export class CartService {
     }
     this.saveCartItems();
     this.updateCartCount();
+    console.log(`Removed item with productId: ${productId} from cart.`);
   }
 
   getItems(): CartItem[] {

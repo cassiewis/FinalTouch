@@ -1,4 +1,4 @@
-import { Component, ViewChild, ViewChildren, QueryList, OnInit } from '@angular/core';
+import { Component, ViewChild, ViewChildren, QueryList, OnInit, ElementRef } from '@angular/core';
 import { CartService, CartItem } from '../../services/cart-service.service';
 import { RouterModule, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
@@ -6,6 +6,7 @@ import { ProductService } from '../../services/product.service';
 import { CartItemComponent } from '../cart-item/cart-item.component';
 import { ReservationService } from '../../services/reservation.service';
 import { CheckoutComponent } from '../checkout/checkout.component';
+import { BUFFER_DAYS } from '../../shared/constants';
 @Component({
   selector: 'app-cart',
   templateUrl: './cart-page.component.html',
@@ -14,6 +15,9 @@ import { CheckoutComponent } from '../checkout/checkout.component';
   imports: [CommonModule, RouterModule, CartItemComponent, CheckoutComponent]
 })
 export class CartComponent implements OnInit {
+   @ViewChild('sectionRef') sectionRef!: ElementRef;
+
+
   cartItems: CartItem[] = [];
   groupedItems: Map<string, CartItem[]> = new Map();
   totalCost: number = 0;
@@ -42,11 +46,12 @@ export class CartComponent implements OnInit {
     this.refreshCart();
   }
 
-  private refreshCart() {
+  refreshCart() {
     this.cartItems = this.cartService.getItems();
     this.totalCost = this.cartService.getTotalCost();
     this.totalDeposit = this.cartService.getTotalDeposit();
     this.groupItemsByReservation();
+    this.groupedItems = this.cartService.getReservationMap();
   }
 
   private generateGroupKey(dates: Date[]): string {
@@ -84,6 +89,16 @@ export class CartComponent implements OnInit {
     return `${start.toLocaleDateString(undefined, { month: 'short', day: 'numeric' })} – ${end.toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}`;
   }
 
+  public formatDateRangeFromItems(items: CartItem[]): string {
+    if (!items || items.length === 0) return '';
+    const dates = items[0].datesReserved;
+    if (!dates || dates.length === 0) return '';
+    const start = new Date(dates[0]);
+    const end = new Date(dates[dates.length - 1]);
+    if (isNaN(start.getTime()) || isNaN(end.getTime())) return '';
+    return `${start.toLocaleDateString(undefined, { month: 'short', day: 'numeric' })} – ${end.toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}`;
+  }
+
   calculateGroupTotal(items: CartItem[]): number {
     return items.reduce((total, item) => total + item.price, 0);
   }
@@ -103,16 +118,17 @@ export class CartComponent implements OnInit {
   }
 
   checkValidDatesForItems() {
-    const bufferDates = 4;
     this.cartItemComponents.forEach(itemComponent => {
-      itemComponent.checkValidDates(bufferDates);
+      itemComponent.checkValidDates(BUFFER_DAYS);
     });
   }
 
-  goToCheckout() {
-    // todo first check again if products are avaliable
-    this.router.navigate(['/checkout']);
+  scrollToCheckout() {
+    if (this.sectionRef?.nativeElement) {
+      this.sectionRef.nativeElement.scrollIntoView({ behavior: 'smooth' });
+    } else {
+      console.warn('Scroll target not found');
+    }
   }
 
-  
 }

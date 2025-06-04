@@ -21,7 +21,6 @@
                     <div class="filter-section">
                         <p class="filter-title" (click)="toggleSection('type')">
                             Category
-                            <!-- <span class="arrow">{{ openSections['type'] ? '▲' : '▼' }}</span> -->
                         </p>
                         <div class="filter-box" *ngIf="openSections['type']">
                             <div class="types" *ngFor="let type of typeCategory">

@@ -7,9 +7,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import Website.EventRentals.model.Reservation;
-import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.services.s3.S3Client;
+import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
+
 
 @Service
 public class S3ServiceReservation {
@@ -23,7 +24,7 @@ public class S3ServiceReservation {
         this.s3Client = generalS3Client;
     }
 
-    // Add a reservation to S3
+    // Add a reservation request to S3
     public Reservation addReservation(Reservation reservation) {
         String key = reservation.getReservationId() + ".json";
         String reservationJson = reservationToJson(reservation);

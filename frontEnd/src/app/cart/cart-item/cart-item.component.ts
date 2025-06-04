@@ -6,6 +6,8 @@ import { CartService } from '../../services/cart-service.service';
 import { CartComponent } from '../cart-page/cart-page.component';
 import { ProductService } from '../../services/product.service';
 import { Product } from '../../models/product.model';
+import { BUFFER_DAYS } from '../../shared/constants';
+import { ReservedDatesService } from '../../services/reserved-dates.service';
 
 @Component({
   selector: 'app-cart-item',
@@ -18,22 +20,27 @@ export class CartItemComponent implements OnInit {
   @Input() item!: CartItem; // Accept product data as input
   hasDateErrors: boolean;
   currentProduct!: Product;
+  reservedDates: Date[] = [];
   
   @Output("updateCart") updateCart: EventEmitter<any> = new EventEmitter(); // EventEmitter to notify CartComponent
 
-  constructor(private router: Router, private cartService: CartService, private productService: ProductService){
+  constructor(
+    private router: Router, 
+    private cartService: CartService, 
+    private productService: ProductService,
+    private reservedDatesService: ReservedDatesService
+  ){
     this.hasDateErrors = false;
   }
 
   ngOnInit() {
    // Subscribe to the observable
     this.productService.getProduct(this.item.productId).subscribe(
-      (product: Product) => {
-        this.currentProduct = product;
-      },
-      error => console.error('Error fetching product:', error)
-    );
-    
+          (product: Product) => {
+            this.currentProduct = product;
+          },
+          error => console.error('Error fetching product:', error)
+        );
   }
 
   routeToProduct() {
@@ -41,37 +48,50 @@ export class CartItemComponent implements OnInit {
   }
 
   checkValidDates(bufferDates: number) {
-    
-    if (this.currentProduct) {
-      this.hasDateErrors = false;
-  
-      // for (const dateReserved of this.item.datesReserved) {
-      //   const isDateRestricted = this.currentProduct.datesReserved.some(reservedDate => {
-      //     const reservedTimestamp = new Date(reservedDate).getTime();
-      //     const dateReservedTimestamp = new Date(dateReserved).getTime();
-      //     const buffer = 5 * 24 * 60 * 60 * 1000;
-  
-      //     return (
-      //       dateReservedTimestamp >= reservedTimestamp - buffer &&
-      //       dateReservedTimestamp <= reservedTimestamp + buffer
-      //     );
-      //   });
-  
-        // if (isDateRestricted) {
-        //   setTimeout(() => {
-        //     this.hasDateErrors = true;
-        //     console.log(`Date ${dateReserved} is within the restricted range for product ${this.item.productId}`);
-        //   });
-        //   break; // Exit the loop if a conflict is found
-        // } else {
-        //   console.log(`Date ${dateReserved} is available for product ${this.item.productId}`);
-        // }
-      // }
-    } else {
-      console.log(`Product not found.`);
-    }
+    this.productService.getProduct(this.item.productId).subscribe(
+      (product: Product) => {
+        this.currentProduct = product;
+        this.hasDateErrors = false;
+
+        this.reservedDatesService.getReservedDatesByProductId(product.productId).subscribe(
+          (data: Date[]) => {
+            this.reservedDates = data;
+          },
+          (error) => {
+            console.error('Error fetching reserved dates:', error);
+          }
+        );
+
+        for (const dateReserved of this.reservedDates) {
+          const isDateRestricted = this.reservedDates.some(reservedDate => {
+            const reservedTimestamp = new Date(reservedDate).getTime();
+            const dateReservedTimestamp = new Date(dateReserved).getTime();
+
+            return (
+              dateReservedTimestamp >= reservedTimestamp - bufferDates * 24 * 60 * 60 * 1000 &&
+              dateReservedTimestamp <= reservedTimestamp + bufferDates * 24 * 60 * 60 * 1000
+            );
+          });
+
+          if (isDateRestricted) {
+            setTimeout(() => {
+              this.hasDateErrors = true;
+              console.log(`Date ${dateReserved} is within the restricted range for product ${this.item.productId}`);
+            });
+            break;
+          } else {
+            console.log(`Date ${dateReserved} is available for product ${this.item.productId}`);
+          }
+        }
+      },
+      error => {
+        console.log(`Product not found for item with ID: ${this.item.productId}`);
+        // todo remove from cart
+        this.cartService.removeFromCart(this.item.productId);
+      }
+    );
   }
-  
+        
   formatDateRange(datesReserved: Date[]): string {
     if (datesReserved.length === 0) {
       console.log("No dates reserved for cart item");

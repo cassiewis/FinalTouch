@@ -119,6 +119,80 @@ textarea {
   font-size: 1rem;
 }
 
+/* .error-message, .success-message {
+  padding: 0.75rem;
+  max-width: 800px;
+} */
+
+/* Overlay for popup */
+.error-popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(30, 30, 30, 0.55);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Popup content */
+.error-popup-content {
+  border-radius: 16px;
+  box-shadow: 0 4px 32px rgba(0,0,0,0.18);
+  padding: 2rem 2.5rem;
+  margin: 15px;
+  max-width: 600px;
+  text-align: center;
+  position: relative;
+}
+
+.error-popup-content h3 {
+  color: #c46464;
+  margin-bottom: 1rem;
+  font-size: 1.75rem;
+  font-weight: normal;
+}
+
+.error-popup-content p {
+  color: #333;
+  margin-bottom: 1.5rem;
+  font-size: 1.1rem;
+  word-break: break-word;
+}
+
+.error-popup-content button {
+  background: #c46464;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 0.6rem 1.5rem;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.error-popup-content button:hover {
+  background: #af5656;
+}
+
+.error-icon {
+  width: 40px;
+  height: 40px;
+  border: 2px solid #c57b75; /* muted rose color */
+  border-radius: 50%;
+  /* color: #c57b75; */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 24px;
+  margin: 0 auto; /* center horizontally */
+}
+
+
 button {
   padding: 0.75rem;
   background-color: #4f46e5;
@@ -131,20 +205,6 @@ button {
 button:disabled {
   opacity: 0.5;
   cursor: not-allowed;
-}
-
-.card-element {
-  padding: 0.75rem;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  background: white;
-  margin-top: 0.5rem;
-}
-
-.card-errors {
-  color: red;
-  margin-top: 0.5rem;
-  font-size: 0.875rem;
 }
 
 
