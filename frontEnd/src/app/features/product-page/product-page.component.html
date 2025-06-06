@@ -23,7 +23,7 @@
 
         <div class="reserve-container">
           <p *ngIf="product.custom">⭐ This item is eligible for customization</p>
-          <app-reserve [product]="product"></app-reserve>
+          <app-reserve></app-reserve>
         </div>
         <div class="product-description-details">
         
@@ -41,13 +41,12 @@
           </div>
           
           <div class="tab-content" *ngIf="isActiveTab('shipping')">
-            All rentals must be picked up and returned by the renter in downtown Boise.
-            Delivery may be available upon request and is considered on a case-by-case basis, subject to availability.
-
-            <br><br>Late returns will incur a fee of $30 per day, unless prior arrangements have been made with Final Touch Co.
-
-            <br><br>The renter is liable for any damage or loss of items during the rental period. If an item is returned broken, 
-            missing, or significantly damaged, a replacement fee of ${{ product.deposit }} will be charged.
+            All rentals are to be picked up and returned by the renter in downtown Boise.
+            Delivery may be available upon request and is evaluated on a case-by-case basis, subject to availability.
+            <br><br>Please note that late returns may incur additional fees.
+            <br><br>An additional refundable deposit of ${{ product.deposit }} will be applied to the total. This amount is held on 
+            the card during the rental period and will be released upon the safe and timely return of the items. If items 
+            are returned damaged or not in their original condition, a portion or all of the deposit may be retained.
           </div>
         </div>
       </div>

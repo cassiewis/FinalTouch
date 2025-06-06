@@ -47,17 +47,13 @@ public class ProductController {
     // Endpoint for fetching all customer facing products
     @GetMapping
     public ResponseEntity<ApiResponse<List<Product>>> getActiveProducts() {
-        System.out.println("CASSIE: getActiveProducts called");
         try {
             List<Product> products = s3ServiceProduct.getActiveProducts();
-            System.out.println("CASSIE: products = " + products);
             return ResponseEntity.ok(new ApiResponse<>(true, products, "Active products fetched successfully"));
         } catch (IllegalArgumentException e) { // Client-side error (e.g., invalid status or ID)
-            System.out.println("CASSIE: IllegalArgumentException: " + e.getMessage());
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(new ApiResponse<>(false, null, e.getMessage()));
         } catch (Exception e) { // Server-side error (e.g., unexpected exception)
-            System.out.println("CASSIE: Exception: " + e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(new ApiResponse<>(false, null, "An unexpected error occurred: " + e.getMessage()));
         }

@@ -27,9 +27,11 @@ body { margin: 0; font-family: "Philosopher", sans-serif; font-weight: normal; }
  .tan-background {
   background-color: #faf3eb;
 }
+
 .red-background {
   background-color: #c49386;
 }
+
 .green-background {
   background-color: #bbbda3;
 }
@@ -39,6 +41,7 @@ body { margin: 0; font-family: "Philosopher", sans-serif; font-weight: normal; }
 .pink-background {
   background-color: #e9bca6;
 }
+
 .yellow-background {
   background-color: #efe6b9;
 }

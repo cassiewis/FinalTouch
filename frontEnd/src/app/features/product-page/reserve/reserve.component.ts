@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule, JsonPipe } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatDatepickerModule } from '@angular/material/datepicker';
@@ -15,7 +15,6 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { CustomSnackbarComponent } from '../../../shared/custom-snackbar/custom-snackbar.component';
 import { ReservedDatesService } from '../../../services/reserved-dates.service';
 import { ConfirmNewReservationDialogComponent } from '../../../shared/confirm-new-reservation-dialog/confirm-new-reservation-dialog.component';
-import { BUFFER_DAYS } from '../../../shared/constants';
 @Component({
   selector: 'app-reserve',
   standalone: true,
@@ -24,9 +23,8 @@ import { BUFFER_DAYS } from '../../../shared/constants';
   styleUrls: ['./reserve.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ReserveComponent implements OnChanges {
-  @Input() product!: Product;
-  // product!: Product;
+export class ReserveComponent {
+  product!: Product;
   minDate: Date;
   maxDate: Date;
   reservedDates: Date[];
@@ -53,26 +51,33 @@ export class ReserveComponent implements OnChanges {
     this.reservedDates = [];
   }
 
-  ngOnChanges(changes: SimpleChanges) {
-    if (changes['product'] && this.product) {
-      // Load reserved dates for the new product
-      this.loadReservedDates();
-    }
-  }
+  ngOnInit(): void {
+    const productId = this.route.snapshot.paramMap.get('productId');
+    if (productId) {
 
-  loadReservedDates() {
-    if (this.product && this.product.productId) {
-      this.reservedDatesService.getReservedDatesByProductId(this.product.productId).subscribe(
-        (data: Date[]) => {
-          this.reservedDates = data;
+      this.productService.getProduct(productId).subscribe(
+        (product: Product) => {
+          this.product = product;
+          console.log('Product:', this.product); // Debugging
+          if (this.product.datesReserved == null) {
+            // get product's reserved Dates
+            console.log("CASSIE productId: ", this.product.productId);
+            this.reservedDatesService.getReservedDatesByProductId(this.product.productId).subscribe(
+              (data: Date[]) => {
+                this.reservedDates = data;
+                console.log('Reserved Dates:', this.reservedDates);
+              },
+              (error) => {
+                console.error('Error fetching reserved dates:', error);
+              }
+            );
+          }
         },
-        (error) => {
-          console.error('Error fetching reserved dates:', error);
-        }
+        error => console.error('Error fetching product:', error)
       );
     }
+    // todo navigate to 404
   }
-
 
 // Define the dateFilter function with buffer support
 dateFilter = (date: Date | null): boolean => {
@@ -81,14 +86,16 @@ dateFilter = (date: Date | null): boolean => {
     return true; // Enable if the date is null
   }
 
+  const bufferDays = 3; // Number of buffer days around each reserved date
+
   // // Check if the current date is within the buffer range of any reserved date
   const isDateDisabled = this.reservedDates.some((reservedDate) => {
     // Calculate start and encd of buffer period
     const reserved = new Date(reservedDate).getTime();
     const bufferStart = new Date(reservedDate);
     const bufferEnd = new Date(reservedDate);
-    bufferStart.setDate(bufferStart.getDate() - BUFFER_DAYS);
-    bufferEnd.setDate(bufferEnd.getDate() + BUFFER_DAYS);
+    bufferStart.setDate(bufferStart.getDate() - bufferDays);
+    bufferEnd.setDate(bufferEnd.getDate() + bufferDays);
 
     // Check if the current date falls within this buffer range
     const isWithinBuffer =
@@ -175,8 +182,7 @@ dateFilter = (date: Date | null): boolean => {
           price: this.product.price,
           deposit: this.product.deposit,
           datesReserved: currentDatesReserved,
-          imageUrl: this.product.imageUrl,
-          count: 1, // Default count to 1 but change when 
+          imageUrl: this.product.imageUrl
         };
             this.cartService.addToCart(cartItem);
   

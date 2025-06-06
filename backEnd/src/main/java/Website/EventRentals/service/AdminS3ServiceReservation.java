@@ -54,21 +54,6 @@ public class AdminS3ServiceReservation {
         }
     }
 
-    public Reservation addReservation(Reservation reservation) {
-        String key = reservation.getReservationId() + ".json";
-        String reservationJson = reservationToJson(reservation);
-        System.out.println("CASSIE AdminS3ServiceReservation: Adding reservation to S3: " + reservationJson);
-        s3Client.putObject(
-                PutObjectRequest.builder()
-                        .bucket(bucketName)
-                        .key(key)
-                        .build(),
-                RequestBody.fromString(reservationJson)
-        );
-
-        return reservation;
-    }
-
 
     // Fetches all reservations from S3 that are active, pending, or fulfilled
     public List<Reservation> getActiveReservations() {
