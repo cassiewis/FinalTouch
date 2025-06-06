@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { BannerComponent } from './banner.component';
+import { SuccessPageComponent } from './success-page.component';
 
-describe('BannerComponent', () => {
-  let component: BannerComponent;
-  let fixture: ComponentFixture<BannerComponent>;
+describe('SuccessPageComponent', () => {
+  let component: SuccessPageComponent;
+  let fixture: ComponentFixture<SuccessPageComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [BannerComponent]
+      imports: [SuccessPageComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(BannerComponent);
+    fixture = TestBed.createComponent(SuccessPageComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

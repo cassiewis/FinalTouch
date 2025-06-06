@@ -27,8 +27,8 @@ export class AppComponent {
   constructor(private router: Router) {
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
-        const hiddenRoutes = ['/cart', '/checkout'];
-        this.showHeader = !hiddenRoutes.includes(event.urlAfterRedirects);
+        const hiddenPrefixes = ['/cart', '/checkout', '/admin'];
+        this.showHeader = !hiddenPrefixes.some(prefix => event.urlAfterRedirects.startsWith(prefix));
       }
     });
   }

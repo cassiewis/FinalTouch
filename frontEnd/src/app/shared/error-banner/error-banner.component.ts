@@ -16,7 +16,7 @@ export class ErrorBannerComponent {
     this.bannerService.banner$.subscribe(msg => this.banner = msg);
   }
 
-  close() {
+  clear() {
     this.bannerService.clear();
   }
 

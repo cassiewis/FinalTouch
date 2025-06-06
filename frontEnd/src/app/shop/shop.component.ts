@@ -7,12 +7,21 @@ import { ActivatedRoute, RouterModule, Router } from '@angular/router';
 import { ProductListComponent } from './product-list/product-list.component';
 import { NgxSliderModule } from '@angular-slider/ngx-slider';
 import { Options } from '@angular-slider/ngx-slider';
-import {MatSliderModule} from '@angular/material/slider';
-
+import { MatSliderModule } from '@angular/material/slider';
+import { BannerService } from '../services/banner.service';
+import { ErrorBannerComponent } from '../shared/error-banner/error-banner.component';
 @Component({
   selector: 'app-shop',
   standalone: true,
-  imports: [NgxSliderModule, MatSliderModule, CommonModule, FormsModule, RouterModule, ProductListComponent],
+  imports: [
+    NgxSliderModule, 
+    MatSliderModule, 
+    CommonModule, 
+    FormsModule, 
+    RouterModule, 
+    ProductListComponent, 
+    ErrorBannerComponent
+  ],
   templateUrl: './shop.component.html',
   styleUrls: ['./shop.component.scss']
 })
@@ -60,7 +69,8 @@ export class ShopComponent implements AfterViewInit {
   constructor(
     private productService: ProductService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private bannerService: BannerService
   ) {}
 
   ngOnInit() {
@@ -72,10 +82,16 @@ export class ShopComponent implements AfterViewInit {
       this.applyAllFilters();
     });
 
-    this.productService.fetchProducts().subscribe(products => {
-      this.products = products;
-      this.applyAllFilters();
-      this.loading = false;
+    this.productService.fetchProducts().subscribe({
+      next: (products) => {
+        this.products = products;
+        this.applyAllFilters();
+        this.loading = false;
+      },
+      error: (err) => {
+        this.bannerService.show('There was an error loading products from the server. Please try again later.', 'error');
+        this.loading = false;
+      }
     });
   
     this.checkScreenSize();

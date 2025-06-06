@@ -28,8 +28,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         System.out.println("CASSIE Incoming request: " + request.getMethod() + " " + request.getRequestURI());
 
         String path = request.getRequestURI();
-        if (!path.startsWith("/api/admin")) return; // only move on and validate for admin paths
-
+        if (!path.startsWith("/api/admin")) {
+            filterChain.doFilter(request, response);
+            return;
+        }
         String jwt = getJwtFromRequest(request);
 
         if (jwt != null && tokenProvider.validateToken(jwt)) {

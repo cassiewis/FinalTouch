@@ -4,10 +4,12 @@ import { OnInit } from '@angular/core';
 import { ImageService } from '../services/image.service';
 import { Review } from '../models/review.model';
 import { DetailsService } from '../services/details.service';
+import { BannerService } from '../services/banner.service';
+import { ErrorBannerComponent } from "../shared/error-banner/error-banner.component";
 @Component({
   selector: 'app-inspo',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, ErrorBannerComponent],
   templateUrl: './inspo.component.html',
   styleUrl: './inspo.component.css'
 })
@@ -17,9 +19,11 @@ export class InspoComponent implements OnInit {
   inspoPhotos: string[] = [];
   reviews: Review[] = [];
 
-  constructor(private imageService: ImageService, private detailsService: DetailsService) {
-    
-  }
+  constructor(
+    private imageService: ImageService, 
+    private detailsService: DetailsService,
+    private bannerService: BannerService
+  ) {}
 
   // on load, fetch inspo photos from the backend
   ngOnInit() {
@@ -35,13 +39,19 @@ export class InspoComponent implements OnInit {
       },
       (error) => {
         console.error('Error fetching images:', error);
+        this.bannerService.show('There was an error fetching inspo photos from the server. Please try again later. You can also see our inspo photos on our instagram @final.touch.co', 'error');
       }
     );
   }
 
   fetchReviews() {
-    this.detailsService.getAllReviews().subscribe(reviews => {
+    this.detailsService.getAllReviews().subscribe(
+      (reviews) => {
       this.reviews = reviews;
+    },
+    (error) => {
+      console.error('Error fetching reviews:', error);
+      this.bannerService.show('There was an error fetching reviews from the server. Please try again later.', 'error');
     });
     console.log("fetched reviews: ", this.reviews);
   }

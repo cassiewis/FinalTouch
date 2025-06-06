@@ -15,7 +15,7 @@
       <div class="left-cart">
 
         <div class="cart-reservation" *ngFor="let groupKey of getGroupedKeys()">
-          <h3>Reservation: {{ formatDateRange(groupKey) }}</h3>
+          <h3>Reservation: {{ formatDateRangeFromItems(groupedItems.get(groupKey)!) }}</h3>
           <div class="cart-item" *ngFor="let item of groupedItems.get(groupKey)">
             <app-cart-item [item]="item" (updateCart)="updateCart()"></app-cart-item>
           </div>
@@ -29,7 +29,7 @@
               <div class="reservation-group">
                 <div class="bold-title">
                   <p class="reservation-header reservation-header-item">RESERVATION {{ i + 1 }}</p>
-                  <p class="reservation-header-item">{{ formatDateRange(groupKey) }}</p>
+                  <p class="reservation-header-item">{{ formatDateRangeFromItems(groupedItems.get(groupKey)!) }}</p>
                 </div>
                 <div class="subtotal-container spanned">
                   <p class="price subtotal">Subtotal:</p>
@@ -39,16 +39,6 @@
                   <p class="price tax">Idaho Sales Tax:</p>
                   <p class="price">{{ calculateTax(groupedItems.get(groupKey)!) | currency }}</p>
                 </div>
-
-                <!-- <div class="hold-container spanned">
-                  <div class="price hold"><i>Security Hold: </i>
-                    <div class="info-hover-container">
-                      <span class="info-icon">?</span>
-                      <span class="tooltip-text">This amount with be held on your card 1 day before pickup and until items are returned in good condition. See terms at checkout for more details.</span>
-                    </div>
-                  </div>
-                  <p class="price"><i>${{ calculateGroupDeposit(groupedItems.get(groupKey)!) }}</i></p>
-                </div> -->
 
                 <div class="total-container spanned">
                   <p class="price total">Total:</p>
@@ -61,12 +51,17 @@
           <p class="precursor"><b>Heads up: You won't be charged today.</b><br>Each rental will be charged 30 days before its start date.</p>
           <button
             class="checkout-button button-theme green-background"
-            (click)="goToCheckout()"
+            (click)="scrollToCheckout()"
             >Checkout
           </button>
+          
+          <!-- <button [routerLink]="[]" fragment="contact">Go to Contact</button> -->
+
         </div>
       </div>
     </div>
-    <app-checkout></app-checkout>
   </div>
+  <div #sectionRef>
+      <app-checkout (updateCart)="refreshCart()"></app-checkout>
+    </div>
 </div>

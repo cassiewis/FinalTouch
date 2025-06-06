@@ -29,8 +29,8 @@ export class ProductService {
   fetchProducts(): Observable<Product[]> {
     return this.http.get<ApiResponse<Product[]>>(this.apiUrl).pipe(
       map(response => {
-        if (response.success) return response.data; // Extract the Product array from the ApiResponse
-        else throw new Error(response.message || 'Failed to fetch products');
+        if (response && response.success) return response.data; // Extract the Product array from the ApiResponse
+        else throw new Error(response?.message || 'Failed to fetch products');
       }),
       tap(products => {
         console.log('Fetched products from backend:', products);
@@ -85,6 +85,28 @@ export class ProductService {
         else throw new Error(response.message || 'Failed to fetch products');
       })  
     );
+  }
+  // getProduct(productId: string): Observable<Product | undefined> {
+  //   if (this.productsCache && this.productsCache.length > 0) {
+  //     const product = this.productsCache.find(p => p.productId === productId);
+  //     return new Observable<Product | undefined>(subscriber => {
+  //       subscriber.next(product);
+  //       subscriber.complete();
+  //     });
+  //   }
+  //   return this.fetchProducts().pipe(
+  //     map(products => {
+  //       this.productsCache = products;
+  //       return products.find(p => p.productId === productId);
+  //     })
+  //   );
+  // }
+
+  getProductSync(productId: string): Product | undefined {
+    if (!this.productsCache || this.productsCache.length === 0) {
+      this.productsCache = this.loadCacheFromSessionStorage();
+    }
+    return this.productsCache.find(p => p.productId === productId);
   }
 
   /**
@@ -155,6 +177,5 @@ export class ProductService {
   
     return similar;
   }
-  
 
 }

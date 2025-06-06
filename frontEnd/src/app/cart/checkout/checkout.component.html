@@ -1,4 +1,4 @@
-<body class="white-background">
+<body *ngIf="!cartEmpty" class="white-background">
   <div class="title-container">
     <img src="/images/checkout.png" class="title">
   </div>
@@ -24,15 +24,6 @@
           <label>Notes</label>
           <textarea formControlName="notes"></textarea>
         </div>
-
-        <!-- <div class="form-field full-width">
-          <label>Card Details</label>
-          <div id="card-element" class="card-element"></div>
-          <div id="card-errors" class="card-errors"></div>
-        </div> -->
-
-        <div *ngIf="successMessage" class="success-message">{{ successMessage }}</div>
-        <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
       </div>
       <div class="terms-of-service">
         <h2 class="faq-category-title">Terms Summary</h2>
@@ -58,9 +49,27 @@
       </div>
     </div>
 
+    <!-- <div *ngIf="partialSuccessMessage" class="success-message">{{ partialSuccessMessage }}</div> -->
+    <!-- <div *ngIf="errorMessage" class="error-message" [innerHTML]="errorMessage"></div> -->
+    <div *ngIf="partialSuccessMessage" class="error-message">
+      <span>&#9888;&#65039;</span>
+      <span [innerHTML]="partialSuccessMessage"></span>
+    </div>
+
     <button type="submit" [disabled]="checkoutForm.invalid || loading || !checkoutForm.get('agreedToTerms')?.value">
       {{ loading ? 'Processing...' : 'Submit Reservation' }}
     </button>
 
   </form>
+
 </body>
+
+ <!-- Error popup on reservation failure -->
+  <div class="error-popup" *ngIf="errorMessage">
+    <div class="error-popup-content tan-background">
+      <div class="error-icon">!</div>
+      <h3>Reservation Failed</h3>
+      <p [innerHTML]="errorMessage"></p>
+      <button (click)="closeErrorPopup()">Got it</button>
+    </div>
+  </div>

@@ -34,6 +34,10 @@ export class AdminReviewsComponent {
   }
 
   deleteReview(reviewId: string): void {
+    const confirmed = window.confirm('Are you sure you want to delete this review?');
+    if (!confirmed) {
+      return;
+    }
     this.adminDetailsService.deleteReview(reviewId).subscribe(
       () => {
         console.log('Review deleted successfully');
