@@ -1,7 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { Product } from '../../models/product.model';
-import { ProductService } from '../../services/product.service';
 import { CommonModule } from '@angular/common';
 import { ProductBoxComponent } from '../../features/product-box/product-box.component';
 import { LoadingIconComponent } from '../../shared/loading-icon/loading-icon.component';
@@ -10,7 +9,7 @@ import { LoadingIconComponent } from '../../shared/loading-icon/loading-icon.com
   selector: 'app-product-list',
   standalone: true,
   imports: [CommonModule, ProductBoxComponent, RouterModule, LoadingIconComponent],
-  providers: [ProductService],
+  providers: [],
   templateUrl: './product-list.component.html',
   styleUrls: ['./product-list.component.css'], // corrected from styleUrl to styleUrls
 })
@@ -19,7 +18,7 @@ export class ProductListComponent implements OnInit {
   @Input() loading: boolean = false;
   private imagesLoadedCount: number = 0;
 
-  constructor(private productService: ProductService) {}
+  constructor() {}
 
   ngOnInit(): void {
     

@@ -9,18 +9,18 @@ import { SuccessPageComponent } from './cart/success-page/success-page.component
 import { ReservationSuccessGuard } from './guards/reservation-success.guard';
 import { FaqsComponent } from './home/homepage/faqs/faqs.component';
 export const routes: Routes = [
-    { path: '', component: HomepageComponent }, // Default route for homepage
-    { path: 'home', component: HomepageComponent },
-    { path: 'shop', component: ShopComponent },
+    { path: '', loadComponent: () => import('./home/homepage/homepage.component').then(m => m.HomepageComponent) },
+    { path: 'home', loadComponent: () => import('./home/homepage/homepage.component').then(m => m.HomepageComponent) },
+    { path: 'shop', loadComponent: () => import('./shop/shop.component').then(m => m.ShopComponent) },
     { path: 'inspo', loadComponent: () => import('./inspo/inspo.component').then((m) => m.InspoComponent),},
     { path: 'cart', loadComponent: () => import('./cart/cart-page/cart-page.component').then((m) => m.CartComponent),},
-    { path: 'reservation-success', component: SuccessPageComponent, canActivate: [ReservationSuccessGuard]},
-    { path: 'faqs', component: FaqsComponent },
-    { path: 'notFound', component: NotFoundComponent },
-    { path: 'product/:productId', component: ProductPageComponent },
-    { path: 'login', component: LoginComponent }, // Add the login route
+    { path: 'reservation-success', loadComponent: () => import('./cart/success-page/success-page.component').then(m => m.SuccessPageComponent), canActivate: [ReservationSuccessGuard] },
+    { path: 'faqs', loadComponent: () => import('./home/homepage/faqs/faqs.component').then(m => m.FaqsComponent) },
+    { path: 'notFound', loadComponent: () => import('./features/not-found/not-found.component').then(m => m.NotFoundComponent) },
+    { path: 'product/:productId', loadComponent: () => import('./features/product-page/product-page.component').then(m => m.ProductPageComponent) },
+    { path: 'login', loadComponent: () => import('./backoffice/login/login.component').then(m => m.LoginComponent) },
     { path: 'admin', loadChildren: () =>import('./backoffice/backoffice.module').then(m => m.BackofficeModule)},
-    { path: '**', component: HomepageComponent }, // Redirect any incorrect URLs to home
+    { path: '**', loadComponent: () => import('./features/not-found/not-found.component').then(m => m.NotFoundComponent) },
 ];
 
 @NgModule({

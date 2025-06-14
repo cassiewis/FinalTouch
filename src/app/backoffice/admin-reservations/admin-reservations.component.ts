@@ -5,7 +5,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { Reservation } from '../../models/reservation.model';
 import { ReservationService } from '../../services/reservation.service';
 import { AdminReservationsService } from '../admin-services/admin-reservations.service';
-import { MatDialog } from '@angular/material/dialog';
+// import { MatDialog } from '@angular/material/dialog';
 import { AdminReservationBoxComponent } from '../admin-shared/admin-reservation-box/admin-reservation-box.component';
 
 @Component({
@@ -26,7 +26,7 @@ export class AdminReservationsComponent {
   selectedStatuses: string[] = []; // Array to track selected statuses
   loading: boolean = true;
 
-  constructor(private reservationService: ReservationService, private adminReservationsService: AdminReservationsService, private dialog: MatDialog) {}
+  constructor(private reservationService: ReservationService, private adminReservationsService: AdminReservationsService) {}
 
   ngOnInit(): void {
     // Get reservations from service
